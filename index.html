@@ -12,7 +12,6 @@
         <link rel="stylesheet" media="screen" href="bootstrap/css/bootstrap-theme.min.css">
         <link rel="stylesheet" media="screen" href="bootstrap/css/bootstrap-switch.css">
         <link rel="stylesheet" media="screen" href="bootstrap/css/flat-ui-fonts.css">
-        <link rel="stylesheet" media="screen" href="bootstrap/css/font-awesome.min.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
         <script src="js/vendor/jquery.min.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
@@ -76,19 +75,23 @@
             </div>
             <div class="col-md-10">
                 <div class='error-status'>
-                    <div class="make-switch" data-on="success" data-off="danger" data-on-label="<i class='fa fa-check'></i>" data-off-label="<i class='fa fa-bug'></i>"><input type="checkbox" checked></div>
+                    <div class="make-switch" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>"><input type="checkbox" checked></div>
                 </div>
                 <div class="row">
                     <div class="col-md-5 error-info">
                         <div class='error-type'>ZeroDivisionError</div>
+                        <div class='error-time'>Occurred on 2013-11-06 14:02:57</div>
                         <div class='error-mesg'>divided by 0</div>
-                        <div class='error-time'>2013-11-06 14:02:57</div>
                     </div>
                     <div class="col-md-7 error-info">
                         <i class='error-desc'>This bug is caused by UserController # list, then if there's no user found, this bug will happen. I have created a ticket: <a href='http://redmine.org/issues/12312'>http://redmine.org/issues/12312</a>.</i>
                     </div>
                 </div>
-            </div>
+
+<!--                 <ul class="nav nav-tabs">
+                    <li><a href='#' data-toggle="tab"
+                </ul>
+ -->            </div>
         </div>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
