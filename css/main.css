@@ -320,6 +320,50 @@ textarea {
 
 /* Sidebar Style */
 
+.sidebar-nav .nav > li > a > .item-name {
+  display: inline-block;
+  width: 90%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.sidebar-nav .nav > li > a > .item-name:hover {
+  white-space: normal;
+}
+
 .sidebar-nav .nav > li > a > .label {
   float: right!important;
+}
+
+/* Error Detail Style */
+
+.error-info {
+  max-height: 150px;
+  overflow: scroll;
+}
+
+.error-type {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 10px;
+}
+
+.error-mesg {
+  font-size: 20px;
+  margin: 10px;
+}
+
+.error-time {
+  font-size: 15px;
+  font-style: italic;
+  color: #999;
+  margin: 10px;
+}
+
+.error-desc {
+  font-size: 15px;
+  font-style: italic;
+  color: #333;
+  margin: 10px;
 }
