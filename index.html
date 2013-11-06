@@ -88,10 +88,19 @@
                     </div>
                 </div>
 
-<!--                 <ul class="nav nav-tabs">
-                    <li><a href='#' data-toggle="tab"
-                </ul>
- -->            </div>
+                <div class="error-details">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href='#error-summary' data-toggle="tab">Summary</a></li>
+                        <li><a href='#error-backtrace' data-toggle="tab">Backtrace</a></li>
+                        <li><a href='#error-environments' data-toggle="tab">Environments</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="error-summary" class="tab-pane active">Summary</div>
+                        <div id="error-backtrace" class="tab-pane">Backtrace</div>
+                        <div id="error-environments" class="tab-pane">Environments</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
