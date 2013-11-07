@@ -294,6 +294,9 @@ textarea {
 }
 
 /* Basic Style */
+.navbar .navbar-header .navbar-brand {
+  padding: 5px;
+}
 
 .sidebar-nav .nav .nav > li > a {
   padding-top: 3px;
