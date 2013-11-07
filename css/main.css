@@ -293,7 +293,15 @@ textarea {
     }
 }
 
+/* Transition Style */
+
+.dropdown-toggle, .dropdown-menu a, .nav > li > a {
+  -webkit-transition: background 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out;
+}
+
 /* Basic Style */
+
 .navbar .navbar-header .navbar-brand {
   padding: 5px;
 }
