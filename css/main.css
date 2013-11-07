@@ -346,6 +346,18 @@ textarea {
 
 /* Error Detail Style */
 
+.error-status .has-switch label {
+  background-image: none;
+}
+
+.error-status .has-switch span.switch-success {
+  background-image: none;
+}
+
+.error-status .has-switch span.switch-danger {
+  background-image: none;
+}
+
 .error-info {
   height: 140px;
   overflow: scroll;
@@ -378,4 +390,8 @@ textarea {
 
 .error-details {
   margin-top: 5px;
+}
+
+.error-table tr:first-child td, .error-table tr:first-child th {
+  border-top: none;
 }
