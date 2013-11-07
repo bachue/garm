@@ -331,6 +331,19 @@ textarea {
   white-space: normal;
 }
 
+.nav-stat {
+  text-align: right;
+  padding-bottom: 10px;
+}
+
+.nav-stat:after {
+  clear: both;
+}
+
+.nav-stat .label {
+  margin: 10px;
+}
+
 /* Error Detail Style */
 
 .error-info {

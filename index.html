@@ -41,9 +41,9 @@
                     <li class="dropdown">
                         <a href='#' class="dropdown-toggle" data-toggle="dropdown">BUS <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href='#'>BUS</a></li>
-                            <li><a href='#'>Njord</a></li>
-                            <li><a href='#'>Phoenix</a></li>
+                            <li><a href='#'>BUS<span class='pull-right label label-danger'>12 %</span></a></li>
+                            <li><a href='#'>Njord<span class='pull-right label label-warning'>65 %</span></a></li>
+                            <li><a href='#'>Phoenix<span class='pull-right label label-success'>92 %</span></a></li>
                         </ul>
                     </li>
                 </ul>
@@ -53,6 +53,9 @@
         <div class="row">
             <div class="col-md-2">
                 <div class="sidebar-nav list-nav">
+                    <div class="nav-stat">
+                        <span class="label label-danger">12 %</span>
+                    </div>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                         <input type="search" class="form-control" placeholder="Search ..." />
@@ -84,7 +87,7 @@
                 <div class="row">
                     <div class="col-md-5 error-info">
                         <div class='error-type'>ZeroDivisionError</div>
-                        <div class='error-time'>Occurred on 2013-11-06 14:02:57</div>
+                        <div class='error-time'>Occurred on 2013-11-06 14:02:57 UTC</div>
                         <div class='error-mesg'>divided by 0</div>
                     </div>
                     <div class="col-md-7 error-info">
@@ -95,6 +98,7 @@
                 <div class="error-details">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href='#error-summary' data-toggle="tab">Summary</a></li>
+                        <li><a href='#error-parameters' data-toggle="tab">Parameters</a></li>
                         <li><a href='#error-backtrace' data-toggle="tab">Backtrace</a></li>
                         <li><a href='#error-environments' data-toggle="tab">Environments</a></li>
                     </ul>
@@ -111,15 +115,31 @@
                                 </tr>
                                 <tr>
                                     <th>Server Hostname</th>
-                                    <td>cnenzhour6m1.corp.emc.com</td>
+                                    <td>busadmin02</td>
                                 </tr>
                                 <tr>
                                     <th>Server IP</th>
                                     <td>10.43.65.38</td>
                                 </tr>
                                 <tr>
+                                    <th>PID</th>
+                                    <td>28419</td>
+                                </tr>
+                                <tr>
+                                    <th>Server Time</th>
+                                    <td>2013-11-06 22:02:57 +0800</td>
+                                </tr>
+                                <tr>
                                     <th>Version</th>
                                     <td>2.7.0.18</td>
+                                </tr>
+                                <tr>
+                                    <th>First Seen on</th>
+                                    <td>2013-11-06 12:18:22 UTC</td>
+                                </tr>
+                                <tr>
+                                    <th>First Seen in</th>
+                                    <td>2.7.0.12</td>
                                 </tr>
                                 <tr>
                                     <th>Description</th>
@@ -130,21 +150,12 @@
                                 </tr>
                             </table>
                         </div>
+                        <div id="error-parameters" class="tab-pane">Parameters</div>
                         <div id="error-backtrace" class="tab-pane">Backtrace</div>
                         <div id="error-environments" class="tab-pane">Environments</div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X');ga('send','pageview');
-        </script>
     </body>
 </html>
