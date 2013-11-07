@@ -331,10 +331,6 @@ textarea {
   white-space: normal;
 }
 
-.sidebar-nav .nav > li > a > .label {
-  float: right!important;
-}
-
 /* Error Detail Style */
 
 .error-info {
