@@ -117,6 +117,8 @@
                         <li><a href='#error-parameters' data-toggle="tab">Parameters</a></li>
                         <li><a href='#error-backtrace' data-toggle="tab">Backtrace</a></li>
                         <li><a href='#error-request' data-toggle="tab">Request</a></li>
+                        <li><a href='#error-session' data-toggle="tab">Session</a></li>
+                        <li><a href='#error-cookies' data-toggle="tab">Cookies</a></li>
                         <li><a href='#error-environments' data-toggle="tab">Environments</a></li>
                     </ul>
                     <div class="tab-content">
@@ -255,6 +257,18 @@
                                 <tr><th>rack.run_once</th><td><pre>false</pre></td></tr>
                                 <tr><th>rack.session</th><td><pre>{:oem_branding=>"bds", :oem_partner_id=>3075, :session_dialect=>nil}</pre></td></tr>
                                 <tr><th>REQUEST_PATH</th><td><pre>"/"</pre></td></tr>
+                            </table>
+                        </div>
+                        <div id="error-session" class="tab-pane">
+                            <table class="table error-table">
+                                <tr><th>oem_branding</th><td><pre>"bds"</pre></td></tr>
+                                <tr><th>oem_partner_id</th><td><pre>3075</pre></td></tr>
+                                <tr><th>session_dialect</th><td><pre>nil</pre></td></tr>
+                            </table>
+                        </div>
+                        <div id="error-cookies" class="tab-pane">
+                            <table class="table error-table">
+                                <tr><th>user_lang_pref</th><td>en</td></tr>
                             </table>
                         </div>
                         <div id="error-environments" class="tab-pane">
