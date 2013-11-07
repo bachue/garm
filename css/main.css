@@ -395,3 +395,7 @@ textarea {
 .error-table tr:first-child td, .error-table tr:first-child th {
   border-top: none;
 }
+
+.error-table tr td, .error-table tr th {
+  vertical-align: middle!important;
+}
