@@ -306,6 +306,15 @@ textarea {
   padding: 5px;
 }
 
+.navbar .btn-add-project {
+  margin: 18px 0 18px 18px;
+  color: inherit;
+}
+
+.navbar .btn-add-project:hover {
+  color: inherit;
+}
+
 .sidebar-nav .nav .nav > li > a {
   padding-top: 3px;
   padding-bottom: 3px;
