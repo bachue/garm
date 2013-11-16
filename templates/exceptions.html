@@ -1,0 +1,310 @@
+<div class="row">
+    <div class="col-md-2">
+        <div class="sidebar-nav list-nav">
+            <div class="nav-stat">
+                <span class="label label-danger">12 %</span>
+            </div>
+            <table>
+                <tr>
+                    <td>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                            <input type="search" class="form-control" placeholder="Search ..." />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                All <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a tabindex="-1" href="#">All</a></li>
+                                <li><a tabindex="-1" href="#">Unresolved Only</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <ul class="nav">
+                <li class="active">
+                    <a href='#'><span class="item-name">ZeroDivisionError: divided by 0</span><span class="pull-right label label-danger">5</a>
+                    <ul class="nav">
+                        <li><a href='#'>2013-11-06 16:29:31</a></li>
+                        <li><a href='#'>2013-11-06 16:11:23</a></li>
+                        <li><a href='#'>2013-11-06 15:08:19</a></li>
+                        <li class="active"><a href='#'>2013-11-06 14:02:57</a></li>
+                        <li><a href='#'>2013-11-06 12:18:22</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href='#'><span class="item-name">NameError: uninitialized constant Rails</span><span class="pull-right label label-danger">2</a>
+                </li>
+                <li>
+                    <a href='#'><span class="item-name">SystemStackError: stack level too deep</span><span class="pull-right label label-success">1</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class='error-status'>
+            <div class="make-switch" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>"><input type="checkbox"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 error-info">
+                <div class='error-type'>ZeroDivisionError</div>
+                <div class='error-time'>Occurred on 2013-11-06 14:02:57 UTC</div>
+                <div class='error-mesg'>divided by 0</div>
+            </div>
+            <div class="col-md-7 error-info">
+                <i class='error-desc'>This bug is caused by UserController # list, then if there's no user found, this bug will happen. I have created a ticket: <a href='http://redmine.org/issues/12312'>http://redmine.org/issues/12312</a>.</i>
+            </div>
+        </div>
+
+        <div class="error-details">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href='#error-summary'>Summary</a></li>
+                <li><a href='#error-parameters'>Parameters</a></li>
+                <li><a href='#error-backtrace'>Backtrace</a></li>
+                <li><a href='#error-request'>Request</a></li>
+                <li><a href='#error-session'>Session</a></li>
+                <li><a href='#error-cookies'>Cookies</a></li>
+                <li><a href='#error-environments'>Environments</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="error-summary" class="tab-pane active">
+                    <table class="table error-table">
+                        <tr>
+                            <th>URL</th>
+                            <td>https://www.bachue.com/resource/show_additional_info_for_product?id=333648&base_product_id=10106912</td>
+                        </tr>
+                        <tr>
+                            <th>Request IP Address</th>
+                            <td>72.211.220.149</td>
+                        </tr>
+                        <tr>
+                            <th>Server Hostname</th>
+                            <td>busadmin02</td>
+                        </tr>
+                        <tr>
+                            <th>Server IP</th>
+                            <td>10.43.65.38</td>
+                        </tr>
+                        <tr>
+                            <th>PID</th>
+                            <td>28419</td>
+                        </tr>
+                        <tr>
+                            <th>Server Time</th>
+                            <td>2013-11-06 22:02:57 +0800</td>
+                        </tr>
+                        <tr>
+                            <th>Version</th>
+                            <td>2.7.0.18</td>
+                        </tr>
+                        <tr>
+                            <th>First Seen on</th>
+                            <td>2013-11-06 12:18:22 UTC</td>
+                        </tr>
+                        <tr>
+                            <th>First Seen in</th>
+                            <td>2.7.0.12</td>
+                        </tr>
+                        <tr>
+                            <th>Seen on current version</th>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>A ZeroDivisionError occurred in resource#show_additional_info_for_product</td>
+                        <tr>
+                            <th>Position</th>
+                            <td>/usr/lib/ruby/1.8/net/protocol.rb:135:in `sysread'</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="error-parameters" class="tab-pane">
+                    <table class="table error-table">
+                        <tr>
+                            <th>action</th>
+                            <td>show_additional_info_for_product</td>
+                        </tr>
+                        <tr>
+                            <th>base_product_id</th>
+                            <td>10106912</td>
+                        </tr>
+                        <tr>
+                            <th>controller</th>
+                            <td>resource</td>
+                        </tr>
+                        <tr>
+                            <th>id</th>
+                            <td>333648</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="error-backtrace" class="tab-pane">
+                    <table class="table error-table">
+                        <tr><td>/usr/lib/ruby/1.8/benchmark.rb:308:in `realtime'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/rack/request_handler.rb:92:in `process_request'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/abstract_request_handler.rb:207:in `main_loop'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/railz/application_spawner.rb:418:in `start_request_handler'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/railz/application_spawner.rb:358:in `handle_spawn_application'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/utils.rb:184:in `safe_fork'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/railz/application_spawner.rb:354:in `handle_spawn_application'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/abstract_server.rb:352:in `__send__'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/abstract_server.rb:352:in `main_loop'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/abstract_server.rb:196:in `start_synchronously'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/abstract_server.rb:163:in `start'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/railz/application_spawner.rb:213:in `start'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/spawn_manager.rb:262:in `spawn_rails_application'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/abstract_server_collection.rb:126:in `lookup_or_add'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/spawn_manager.rb:256:in `spawn_rails_application'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/abstract_server_collection.rb:80:in `synchronize'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/abstract_server_collection.rb:79:in `synchronize'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/spawn_manager.rb:255:in `spawn_rails_application'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/spawn_manager.rb:154:in `spawn_application'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/spawn_manager.rb:287:in `handle_spawn_application'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/abstract_server.rb:352:in `__send__'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/abstract_server.rb:352:in `main_loop'</td></tr>
+                        <tr><td>/usr/lib/ruby/1.8/phusion_passenger/abstract_server.rb:196:in `start_synchronously'</td></tr>
+                        <tr><td>/usr/lib/phusion_passenger/passenger-spawn-server:61</td></tr>
+                    </table>
+                </div>
+                <div id="error-request" class="tab-pane">
+                    <table class="table error-table">
+                        <tr><th>rack.request.query_hash</th><td><pre>{"old_school"=>"1"}</pre></td></tr>
+                        <tr><th>REQUEST_URI</th><td><pre>"http://0.0.0.0:3000/login/admin?old_school=1"</pre></td></tr>
+                        <tr><th>rack.multithread</th><td><pre>false</pre></td></tr>
+                        <tr><th>HTTP_VERSION</th><td><pre>"HTTP/1.1"</pre></td></tr>
+                        <tr><th>action_controller.request.request_parameters</th><td><pre>{}</pre></td></tr>
+                        <tr><th>QUERY_STRING</th><td><pre>"old_school=1"</pre></td></tr>
+                        <tr><th>rack.multiprocess</th><td><pre>false</pre></td></tr>
+                        <tr><th>rack.version</th><td><pre>[1, 1]</pre></td></tr>
+                        <tr><th>rack.session.record</th><td><pre>#<ActiveRecord::SessionStore::Session id: nil, sessid: "d16db18c69e463ad1ce573a8509787d5", data: nil, updated_at: nil></pre></td></tr>
+                        <tr><th>PATH_INFO</th><td><pre>"/login/admin"</pre></td></tr>
+                        <tr><th>SERVER_PROTOCOL</th><td><pre>"HTTP/1.1"</pre></td></tr>
+                        <tr><th>rack.url_scheme</th><td><pre>"http"</pre></td></tr>
+                        <tr><th>rack.request.query_string</th><td><pre>"old_school=1"</pre></td></tr>
+                        <tr><th>action_controller.rescue.response</th><td><pre>#<ActionController::Response:0x10d860638 @session={:oem_branding=>"bds", :oem_partner_id=>3075, :session_dialect=>nil}, @assigns=[], @writer=#<Proc:0x000000010d85f0f8@/Users/zhour6/.rvm/gems/ruby-1.8.7-p374/gems/actionpack-2.3.18/lib/action_controller/response.rb:46>, @block=nil, @request=#<ActionController::Request:0x10d8626e0 @env={"rack.request.query_hash"=>{"old_school"=>"1"}, "REQUEST_URI"=>"http://0.0.0.0:3000/login/admin?old_school=1", "rack.multithread"=>false, "HTTP_VERSION"=>"HTTP/1.1", "action_controller.request.request_parameters"=>{}, "QUERY_STRING"=>"old_school=1", "rack.multiprocess"=>false, "rack.version"=>[1, 1], "rack.session.record"=>#<ActiveRecord::SessionStore::Session id: nil, sessid: "d16db18c69e463ad1ce573a8509787d5", data: nil, updated_at: nil>, "PATH_INFO"=>"/login/admin", "SERVER_PROTOCOL"=>"HTTP/1.1", "rack.url_scheme"=>"http", "rack.request.query_string"=>"old_school=1", "action_controller.rescue.response"=>#<ActionController::Response:0x10d860638 ...>, "HTTP_HOST"=>"0.0.0.0:3000", "REMOTE_HOST"=>"localhost", "SERVER_PORT"=>"3000", "SERVER_SOFTWARE"=>"WEBrick/1.3.1 (Ruby/1.8.7/2013-06-27)", "SCRIPT_NAME"=>"", "HTTP_USER_AGENT"=>"curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8x zlib/1.2.5", "HTTP_ACCEPT"=>"*/*", "rack.errors"=>#<IO:0x10a30cb80>, "action_controller.request.query_parameters"=>{"old_school"=>"1"}, "action_controller.request.path_parameters"=>{"action"=>"admin", "controller"=>"login"}, "REMOTE_ADDR"=>"127.0.0.1", "rack.input"=>#<StringIO:0x10da87a88>, "action_controller.rescue.request"=>#<ActionController::Request:0x10d8626e0 ...>, "REQUEST_METHOD"=>"GET", "rack.session.options"=>{:httponly=>true, :expire_after=>nil, :path=>"/", :cookie_only=>true, :secure=>false, :key=>"_session_id", :cache=>{}, :id=>"d16db18c69e463ad1ce573a8509787d5", :domain=>nil}, "GATEWAY_INTERFACE"=>"CGI/1.1", "SERVER_NAME"=>"0.0.0.0", "rack.run_once"=>false, "rack.session"=>{:oem_branding=>"bds", :oem_partner_id=>3075, :session_dialect=>nil}, "REQUEST_PATH"=>"/"}, @content_type=nil, @request_method=:get, @parameters={"old_school"=>"1", "action"=>"admin", "controller"=>"login"}>, @header={"Set-Cookie"=>"user_lang_pref=en; path=/; expires=Fri, 07-Nov-2014 06:17:54 GMT", "Cache-Control"=>"no-cache"}, @template=#<ActionView::Base:0x10d7e6f90 @assigns_added=nil, @_first_render=nil, @assigns={}, @helpers=#<ActionView::Base::ProxyModule:0x10d7e6f18>, @view_paths=["/Users/zhour6/Projects/bus/app/views"], @controller=#<LoginController:0x10d7e7120 @no_middle=true, @_session={:oem_branding=>"bds", :oem_partner_id=>3075, :session_dialect=>nil}, @url=#<ActionController::UrlRewriter:0x10d7e5fa0 @parameters={"old_school"=>"1", "action"=>"admin", "controller"=>"login"}, @request=#<ActionController::Request:0x10d8626e0 @env={"rack.request.query_hash"=>{"old_school"=>"1"}, "REQUEST_URI"=>"http://0.0.0.0:3000/login/admin?old_school=1", "rack.multithread"=>false, "HTTP_VERSION"=>"HTTP/1.1", "action_controller.request.request_parameters"=>{}, "QUERY_STRING"=>"old_school=1", "rack.multiprocess"=>false, "rack.version"=>[1, 1], "rack.session.record"=>#<ActiveRecord::SessionStore::Session id: nil, sessid: "d16db18c69e463ad1ce573a8509787d5", data: nil, updated_at: nil>, "PATH_INFO"=>"/login/admin", "SERVER_PROTOCOL"=>"HTTP/1.1", "rack.url_scheme"=>"http", "rack.request.query_string"=>"old_school=1", "action_controller.rescue.response"=>#<ActionController::Response:0x10d860638 ...>, "HTTP_HOST"=>"0.0.0.0:3000", "REMOTE_HOST"=>"localhost", "SERVER_PORT"=>"3000", "SERVER_SOFTWARE"=>"WEBrick/1.3.1 (Ruby/1.8.7/2013-06-27)", "SCRIPT_NAME"=>"", "HTTP_USER_AGENT"=>"curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8x zlib/1.2.5", "HTTP_ACCEPT"=>"*/*", "rack.errors"=>#<IO:0x10a30cb80>, "action_controller.request.query_parameters"=>{"old_school"=>"1"}, "action_controller.request.path_parameters"=>{"action"=>"admin", "controller"=>"login"}, "REMOTE_ADDR"=>"127.0.0.1", "rack.input"=>#<StringIO:0x10da87a88>, "action_controller.rescue.request"=>#<ActionController::Request:0x10d8626e0 ...>, "REQUEST_METHOD"=>"GET", "rack.session.options"=>{:httponly=>true, :expire_after=>nil, :path=>"/", :cookie_only=>true, :secure=>false, :key=>"_session_id", :cache=>{}, :id=>"d16db18c69e463ad1ce573a8509787d5", :domain=>nil}, "GATEWAY_INTERFACE"=>"CGI/1.1", "SERVER_NAME"=>"0.0.0.0", "rack.run_once"=>false, "rack.session"=>{:oem_branding=>"bds", :oem_partner_id=>3075, :session_dialect=>nil}, "REQUEST_PATH"=>"/"}, @content_type=nil, @request_method=:get, @parameters={"old_school"=>"1", "action"=>"admin", "controller"=>"login"}>>, @_params={"old_school"=>"1", "action"=>"admin", "controller"=>"login"}, @performed_render=false, @request_origin="127.0.0.1 at 2013-11-07 14:17:54", @_request=#<ActionController::Request:0x10d8626e0 @env={"rack.request.query_hash"=>{"old_school"=>"1"}, "REQUEST_URI"=>"http://0.0.0.0:3000/login/admin?old_school=1", "rack.multithread"=>false, "HTTP_VERSION"=>"HTTP/1.1", "action_controller.request.request_parameters"=>{}, "QUERY_STRING"=>"old_school=1", "rack.multiprocess"=>false, "rack.version"=>[1, 1], "rack.session.record"=>#<ActiveRecord::SessionStore::Session id: nil, sessid: "d16db18c69e463ad1ce573a8509787d5", data: nil, updated_at: nil>, "PATH_INFO"=>"/login/admin", "SERVER_PROTOCOL"=>"HTTP/1.1", "rack.url_scheme"=>"http", "rack.request.query_string"=>"old_school=1", "action_controller.rescue.response"=>#<ActionController::Response:0x10d860638 ...>, "HTTP_HOST"=>"0.0.0.0:3000", "REMOTE_HOST"=>"localhost", "SERVER_PORT"=>"3000", "SERVER_SOFTWARE"=>"WEBrick/1.3.1 (Ruby/1.8.7/2013-06-27)", "SCRIPT_NAME"=>"", "HTTP_USER_AGENT"=>"curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8x zlib/1.2.5", "HTTP_ACCEPT"=>"*/*", "rack.errors"=>#<IO:0x10a30cb80>, "action_controller.request.query_parameters"=>{"old_school"=>"1"}, "action_controller.request.path_parameters"=>{"action"=>"admin", "controller"=>"login"}, "REMOTE_ADDR"=>"127.0.0.1", "rack.input"=>#<StringIO:0x10da87a88>, "action_controller.rescue.request"=>#<ActionController::Request:0x10d8626e0 ...>, "REQUEST_METHOD"=>"GET", "rack.session.options"=>{:httponly=>true, :expire_after=>nil, :path=>"/", :cookie_only=>true, :secure=>false, :key=>"_session_id", :cache=>{}, :id=>"d16db18c69e463ad1ce573a8509787d5", :domain=>nil}, "GATEWAY_INTERFACE"=>"CGI/1.1", "SERVER_NAME"=>"0.0.0.0", "rack.run_once"=>false, "rack.session"=>{:oem_branding=>"bds", :oem_partner_id=>3075, :session_dialect=>nil}, "REQUEST_PATH"=>"/"}, @content_type=nil, @request_method=:get, @parameters={"old_school"=>"1", "action"=>"admin", "controller"=>"login"}>, @cookies={"user_lang_pref"=>"en"}, @before_filter_chain_aborted=false, @_headers={"Set-Cookie"=>"user_lang_pref=en; path=/; expires=Fri, 07-Nov-2014 06:17:54 GMT", "Cache-Control"=>"no-cache"}, @performed_redirect=false, @oem_partner=#<ProPartner id: 3075, created_at: "2007-02-07 04:16:35", approved_at: "2007-03-07 04:16:35", deleted_at: nil, requesting_ip: "192.168.188.80", name: "MozyPro", root_admin_id: 3797, new_resources_policy: "credit card up front", key_distribution_method: "manual", pro_plan_id: 1, subdomain_name: nil, company_type: "bds", renew_at: nil, account_balance: nil, bill_at: nil, bill_transaction_id: nil, contact_name: nil, contact_title: nil, contact_phone: nil, contact_city: nil, contact_state: nil, contact_country: nil, contact_best_time: nil, contact_licenses_needed: nil, contact_comments: nil, billing_period: "M", new_billing_period: "M", in_free_trial: false, overdraft_enabled: false, parent_pro_partner_id: 3074, tree_sortkey: "0000000000000001", root_role_id: 2, api_key: "Fi8YtDY49D4a1NwnCfyqVv2MKFTNQoCS84IZiCSeuFbPdsP6LUd...", product_name: "mozypro", marketing_source_id: nil, one_time_discount: false, industry: nil, num_employees: nil, commission_end_date: nil, product_name_short: "BDS Remote Backup", user_account_type: "pro", payjunction_config: nil, default_user_group_id: 3783, support_email: nil, support_url: nil, api_allowed_ips: "127.0.0.1", email_prefs: true, newsletter_prefs: true, smtp_server_id: nil, default_currency_id: nil, bus_domain: nil, consumer_domain: nil, error_code_prefix: "Bds", downloads_domain: nil, overdraft_cost: #<BigDecimal:10d28bf78,'0.0',9(18)>, restore_prepend_subdomain: true, external_id: nil, pro_promotion_id: nil, updated_at: "2012-06-30 01:55:15", display_dialect_picklist: true, suspended_at: nil, scrub_pending: nil, scrubbed_at: nil, websharing_enabled_at: nil, websharing_user_config_enabled_at: nil, cobranding_enabled: false, aria_id: nil, contact_zip: nil, cancellation_reason: nil, migrated_to_aria_at: nil, backup_suspended_at: nil, pricing_type: nil, add_on_charge: nil, add_on_invoice_note: nil>, @s_mainwrapper_attrs="class='full'", @template=#<ActionView::Base:0x10d7e6f90 ...>, @real_format=nil, @action_name="admin", @_response=#<ActionController::Response:0x10d860638 ...>, @valid_params={}>, @_current_render=nil>, @redirected_to=nil, @body=["", []], @status=200></pre></td></tr>
+                        <tr><th>HTTP_HOST</th><td><pre>"0.0.0.0:3000"</pre></td></tr>
+                        <tr><th>REMOTE_HOST</th><td><pre>"localhost"</pre></td></tr>
+                        <tr><th>SERVER_PORT</th><td><pre>"3000"</pre></td></tr>
+                        <tr><th>SERVER_SOFTWARE</th><td><pre>"WEBrick/1.3.1 (Ruby/1.8.7/2013-06-27)"</pre></td></tr>
+                        <tr><th>SCRIPT_NAME</th><td><pre>""</pre></td></tr>
+                        <tr><th>HTTP_USER_AGENT</th><td><pre>"curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8x zlib/1.2.5"</pre></td></tr>
+                        <tr><th>HTTP_ACCEPT</th><td><pre>"*/*"</pre></td></tr>
+                        <tr><th>rack.errors</th><td><pre>#<IO:0x10a30cb80></pre></td></tr>
+                        <tr><th>action_controller.request.query_parameters</th><td><pre>{"old_school"=>"1"}</pre></td></tr>
+                        <tr><th>action_controller.request.path_parameters</th><td><pre>{"action"=>"admin", "controller"=>"login"}</pre></td></tr>
+                        <tr><th>REMOTE_ADDR</th><td><pre>"127.0.0.1"</pre></td></tr>
+                        <tr><th>rack.input</th><td><pre>#<StringIO:0x10da87a88></pre></td></tr>
+                        <tr><th>action_controller.rescue.request</th><td><pre>#<ActionController::Request:0x10d8626e0 @env={"rack.request.query_hash"=>{"old_school"=>"1"}, "REQUEST_URI"=>"http://0.0.0.0:3000/login/admin?old_school=1", "rack.multithread"=>false, "HTTP_VERSION"=>"HTTP/1.1", "action_controller.request.request_parameters"=>{}, "QUERY_STRING"=>"old_school=1", "rack.multiprocess"=>false, "rack.version"=>[1, 1], "rack.session.record"=>#<ActiveRecord::SessionStore::Session id: nil, sessid: "d16db18c69e463ad1ce573a8509787d5", data: nil, updated_at: nil>, "PATH_INFO"=>"/login/admin", "SERVER_PROTOCOL"=>"HTTP/1.1", "rack.url_scheme"=>"http", "rack.request.query_string"=>"old_school=1", "action_controller.rescue.response"=>#<ActionController::Response:0x10d860638 @session={:oem_branding=>"bds", :oem_partner_id=>3075, :session_dialect=>nil}, @assigns=[], @writer=#<Proc:0x000000010d85f0f8@/Users/zhour6/.rvm/gems/ruby-1.8.7-p374/gems/actionpack-2.3.18/lib/action_controller/response.rb:46>, @block=nil, @request=#<ActionController::Request:0x10d8626e0 ...>, @header={"Set-Cookie"=>"user_lang_pref=en; path=/; expires=Fri, 07-Nov-2014 06:17:54 GMT", "Cache-Control"=>"no-cache"}, @template=#<ActionView::Base:0x10d7e6f90 @assigns_added=nil, @_first_render=nil, @assigns={}, @helpers=#<ActionView::Base::ProxyModule:0x10d7e6f18>, @view_paths=["/Users/zhour6/Projects/bus/app/views"], @controller=#<LoginController:0x10d7e7120 @no_middle=true, @_session={:oem_branding=>"bds", :oem_partner_id=>3075, :session_dialect=>nil}, @url=#<ActionController::UrlRewriter:0x10d7e5fa0 @parameters={"old_school"=>"1", "action"=>"admin", "controller"=>"login"}, @request=#<ActionController::Request:0x10d8626e0 ...>>, @_params={"old_school"=>"1", "action"=>"admin", "controller"=>"login"}, @performed_render=false, @request_origin="127.0.0.1 at 2013-11-07 14:17:54", @_request=#<ActionController::Request:0x10d8626e0 ...>, @cookies={"user_lang_pref"=>"en"}, @before_filter_chain_aborted=false, @_headers={"Set-Cookie"=>"user_lang_pref=en; path=/; expires=Fri, 07-Nov-2014 06:17:54 GMT", "Cache-Control"=>"no-cache"}, @performed_redirect=false, @oem_partner=#<ProPartner id: 3075, created_at: "2007-02-07 04:16:35", approved_at: "2007-03-07 04:16:35", deleted_at: nil, requesting_ip: "192.168.188.80", name: "MozyPro", root_admin_id: 3797, new_resources_policy: "credit card up front", key_distribution_method: "manual", pro_plan_id: 1, subdomain_name: nil, company_type: "bds", renew_at: nil, account_balance: nil, bill_at: nil, bill_transaction_id: nil, contact_name: nil, contact_title: nil, contact_phone: nil, contact_city: nil, contact_state: nil, contact_country: nil, contact_best_time: nil, contact_licenses_needed: nil, contact_comments: nil, billing_period: "M", new_billing_period: "M", in_free_trial: false, overdraft_enabled: false, parent_pro_partner_id: 3074, tree_sortkey: "0000000000000001", root_role_id: 2, api_key: "Fi8YtDY49D4a1NwnCfyqVv2MKFTNQoCS84IZiCSeuFbPdsP6LUd...", product_name: "mozypro", marketing_source_id: nil, one_time_discount: false, industry: nil, num_employees: nil, commission_end_date: nil, product_name_short: "BDS Remote Backup", user_account_type: "pro", payjunction_config: nil, default_user_group_id: 3783, support_email: nil, support_url: nil, api_allowed_ips: "127.0.0.1", email_prefs: true, newsletter_prefs: true, smtp_server_id: nil, default_currency_id: nil, bus_domain: nil, consumer_domain: nil, error_code_prefix: "Bds", downloads_domain: nil, overdraft_cost: #<BigDecimal:10d284cf0,'0.0',9(18)>, restore_prepend_subdomain: true, external_id: nil, pro_promotion_id: nil, updated_at: "2012-06-30 01:55:15", display_dialect_picklist: true, suspended_at: nil, scrub_pending: nil, scrubbed_at: nil, websharing_enabled_at: nil, websharing_user_config_enabled_at: nil, cobranding_enabled: false, aria_id: nil, contact_zip: nil, cancellation_reason: nil, migrated_to_aria_at: nil, backup_suspended_at: nil, pricing_type: nil, add_on_charge: nil, add_on_invoice_note: nil>, @s_mainwrapper_attrs="class='full'", @template=#<ActionView::Base:0x10d7e6f90 ...>, @real_format=nil, @action_name="admin", @_response=#<ActionController::Response:0x10d860638 ...>, @valid_params={}>, @_current_render=nil>, @redirected_to=nil, @body=["", []], @status=200>, "HTTP_HOST"=>"0.0.0.0:3000", "REMOTE_HOST"=>"localhost", "SERVER_PORT"=>"3000", "SERVER_SOFTWARE"=>"WEBrick/1.3.1 (Ruby/1.8.7/2013-06-27)", "SCRIPT_NAME"=>"", "HTTP_USER_AGENT"=>"curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8x zlib/1.2.5", "HTTP_ACCEPT"=>"*/*", "rack.errors"=>#<IO:0x10a30cb80>, "action_controller.request.query_parameters"=>{"old_school"=>"1"}, "action_controller.request.path_parameters"=>{"action"=>"admin", "controller"=>"login"}, "REMOTE_ADDR"=>"127.0.0.1", "rack.input"=>#<StringIO:0x10da87a88>, "action_controller.rescue.request"=>#<ActionController::Request:0x10d8626e0 ...>, "REQUEST_METHOD"=>"GET", "rack.session.options"=>{:httponly=>true, :expire_after=>nil, :path=>"/", :cookie_only=>true, :secure=>false, :key=>"_session_id", :cache=>{}, :id=>"d16db18c69e463ad1ce573a8509787d5", :domain=>nil}, "GATEWAY_INTERFACE"=>"CGI/1.1", "SERVER_NAME"=>"0.0.0.0", "rack.run_once"=>false, "rack.session"=>{:oem_branding=>"bds", :oem_partner_id=>3075, :session_dialect=>nil}, "REQUEST_PATH"=>"/"}, @content_type=nil, @request_method=:get, @parameters={"old_school"=>"1", "action"=>"admin", "controller"=>"login"}></pre></td></tr>
+                        <tr><th>REQUEST_METHOD</th><td><pre>"GET"</pre></td></tr>
+                        <tr><th>rack.session.options</th><td><pre>{:httponly=>true, :expire_after=>nil, :path=>"/", :cookie_only=>true, :secure=>false, :key=>"_session_id", :cache=>{}, :id=>"d16db18c69e463ad1ce573a8509787d5", :domain=>nil}</pre></td></tr>
+                        <tr><th>GATEWAY_INTERFACE</th><td><pre>"CGI/1.1"</pre></td></tr>
+                        <tr><th>SERVER_NAME</th><td><pre>"0.0.0.0"</pre></td></tr>
+                        <tr><th>rack.run_once</th><td><pre>false</pre></td></tr>
+                        <tr><th>rack.session</th><td><pre>{:oem_branding=>"bds", :oem_partner_id=>3075, :session_dialect=>nil}</pre></td></tr>
+                        <tr><th>REQUEST_PATH</th><td><pre>"/"</pre></td></tr>
+                    </table>
+                </div>
+                <div id="error-session" class="tab-pane">
+                    <table class="table error-table">
+                        <tr><th>oem_branding</th><td><pre>"bds"</pre></td></tr>
+                        <tr><th>oem_partner_id</th><td><pre>3075</pre></td></tr>
+                        <tr><th>session_dialect</th><td><pre>nil</pre></td></tr>
+                    </table>
+                </div>
+                <div id="error-cookies" class="tab-pane">
+                    <table class="table error-table">
+                        <tr><th>user_lang_pref</th><td>en</td></tr>
+                    </table>
+                </div>
+                <div id="error-environments" class="tab-pane">
+                    <table class="table error-table">
+                        <tr><th>Apple_PubSub_Socket_Render</th><td>/tmp/launch-PFzkGE/Render</td></tr>
+                        <tr><th>Apple_Ubiquity_Message</th><td>/tmp/launch-s0BkxK/Apple_Ubiquity_Message</td></tr>
+                        <tr><th>BDS_SITE</th><td>tc</td></tr>
+                        <tr><th>BUNDLE_BIN_PATH</th><td>/Users/zhour6/.rvm/gems/ruby-1.8.7-p374@global/gems/bundler-1.3.5/bin/bundle</td></tr>
+                        <tr><th>BUNDLE_GEMFILE</th><td>/Users/zhour6/Projects/bus/Gemfile</td></tr>
+                        <tr><th>COLORFGBG</th><td>7;0</td></tr>
+                        <tr><th>COLUMNS</th><td>101</td></tr>
+                        <tr><th>COMMAND_MODE</th><td>unix2003</td></tr>
+                        <tr><th>DISABLE_AUTO_UPDATE</th><td>true</td></tr>
+                        <tr><th>EDITOR</th><td>/usr/bin/vi</td></tr>
+                        <tr><th>GEM_HOME</th><td>/Users/zhour6/.rvm/gems/ruby-1.8.7-p374</td></tr>
+                        <tr><th>GEM_PATH</th><td>/Users/zhour6/.rvm/gems/ruby-1.8.7-p374:/Users/zhour6/.rvm/gems/ruby-1.8.7-p374@global</td></tr>
+                        <tr><th>GREP_COLOR</th><td>1;32</td></tr>
+                        <tr><th>GREP_OPTIONS--</th><td>color=auto</td></tr>
+                        <tr><th>HOME</th><td>/Users/zhour6</td></tr>
+                        <tr><th>IRBRC</th><td>/Users/zhour6/.rvm/rubies/ruby-1.8.7-p374/.irbrc</td></tr>
+                        <tr><th>ITERM_PROFILE</th><td>Default</td></tr>
+                        <tr><th>ITERM_SESSION_ID</th><td>w0t2p0</td></tr>
+                        <tr><th>LANG</th><td>en_US.UTF-8</td></tr>
+                        <tr><th>LC_CTYPE</th><td>en_US.UTF-8</td></tr>
+                        <tr><th>LESS-</th><td>R</td></tr>
+                        <tr><th>LINES</th><td>46</td></tr>
+                        <tr><th>LOGNAME</th><td>zhour6</td></tr>
+                        <tr><th>LSCOLORS</th><td>Gxfxcxdxbxegedabagacad</td></tr>
+                        <tr><th>MY_RUBY_HOME</th><td>/Users/zhour6/.rvm/rubies/ruby-1.8.7-p374</td></tr>
+                        <tr><th>OLDPWD</th><td>/Users/zhour6</td></tr>
+                        <tr><th>PAGER</th><td>less</td></tr>
+                        <tr><th>PATH</th><td>/Users/zhour6/.rvm/gems/ruby-1.8.7-p374/bin:/Users/zhour6/.rvm/gems/ruby-1.8.7-p374@global/bin:/Users/zhour6/.rvm/rubies/ruby-1.8.7-p374/bin:/Users/zhour6/.rvm/bin:/Users/zhour6/.oh-my-zsh/bin:/usr/local/Cellar/postgresql8/8.4.17/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin</td></tr>
+                        <tr><th>PAYMENT_NO_PROCESS</th><td>1</td></tr>
+                        <tr><th>PWD</th><td>/Users/zhour6/Projects/bus</td></tr>
+                        <tr><th>RAILS_ENV</th><td>development</td></tr>
+                        <tr><th>RUBYOPT-</th><td>I/Users/zhour6/.rvm/gems/ruby-1.8.7-p374@global/gems/bundler-1.3.5/lib -rbundler/setup</td></tr>
+                        <tr><th>RUBY_VERSION</th><td>ruby-1.8.7-p374</td></tr>
+                        <tr><th>SHELL</th><td>/bin/zsh</td></tr>
+                        <tr><th>SHLVL</th><td>1</td></tr>
+                        <tr><th>SSH_AUTH_SOCK</th><td>/tmp/launch-0iy5RN/Listeners</td></tr>
+                        <tr><th>SUBLIME_PROJECT</th><td>/Users/zhour6/Library/Application Support/Sublime Text 2/Packages/</td></tr>
+                        <tr><th>TERM</th><td>xterm</td></tr>
+                        <tr><th>TERM_PROGRAM</th><td>iTerm.app</td></tr>
+                        <tr><th>TMPDIR</th><td>/var/folders/_p/ptzpwxgx6tg8dpb6w08l8t6j_tvbyv/T/</td></tr>
+                        <tr><th>USER</th><td>zhour6</td></tr>
+                        <tr><th>VIM_APP_DIR</th><td>/Applications</td></tr>
+                        <tr><th>_</th><td>/Users/zhour6/Projects/bus/script/server</td></tr>
+                        <tr><th>_ORIGINAL_GEM_PATH</th><td>/Users/zhour6/.rvm/gems/ruby-1.8.7-p374:/Users/zhour6/.rvm/gems/ruby-1.8.7-p374@global</td></tr>
+                        <tr><th>__CF_USER_TEXT_ENCODING</th><td>0x55ADAFDB:0:0</td></tr>
+                        <tr><th>_system_arch</th><td>x86_64</td></tr>
+                        <tr><th>_system_name</th><td>OSX</td></tr>
+                        <tr><th>_system_type</th><td>Darwin</td></tr>
+                        <tr><th>_system_version</th><td>10.8</td></tr>
+                        <tr><th>rvm_alias_expanded</th><td></td></tr>
+                        <tr><th>rvm_bin_flag</th><td></td></tr>
+                        <tr><th>rvm_bin_path</th><td>/Users/zhour6/.rvm/bin</td></tr>
+                        <tr><th>rvm_delete_flag</th><td>0</td></tr>
+                        <tr><th>rvm_docs_type</th><td></td></tr>
+                        <tr><th>rvm_file_name</th><td></td></tr>
+                        <tr><th>rvm_gemstone_package_file</th><td></td></tr>
+                        <tr><th>rvm_gemstone_url</th><td></td></tr>
+                        <tr><th>rvm_niceness</th><td></td></tr>
+                        <tr><th>rvm_nightly_flag</th><td></td></tr>
+                        <tr><th>rvm_only_path_flag</th><td></td></tr>
+                        <tr><th>rvm_path</th><td>/Users/zhour6/.rvm</td></tr>
+                        <tr><th>rvm_prefix</th><td>/Users/zhour6</td></tr>
+                        <tr><th>rvm_proxy</th><td></td></tr>
+                        <tr><th>rvm_quiet_flag</th><td></td></tr>
+                        <tr><th>rvm_ruby_alias</th><td></td></tr>
+                        <tr><th>rvm_ruby_bits</th><td></td></tr>
+                        <tr><th>rvm_ruby_file</th><td></td></tr>
+                        <tr><th>rvm_ruby_make</th><td></td></tr>
+                        <tr><th>rvm_ruby_make_install</th><td></td></tr>
+                        <tr><th>rvm_ruby_mode</th><td></td></tr>
+                        <tr><th>rvm_ruby_string</th><td>ruby-1.8.7-p374</td></tr>
+                        <tr><th>rvm_script_name</th><td></td></tr>
+                        <tr><th>rvm_sdk</th><td></td></tr>
+                        <tr><th>rvm_silent_flag</th><td></td></tr>
+                        <tr><th>rvm_sticky_flag</th><td></td></tr>
+                        <tr><th>rvm_system_flag</th><td></td></tr>
+                        <tr><th>rvm_use_flag</th><td></td></tr>
+                        <tr><th>rvm_user_flag</th><td></td></tr>
+                        <tr><th>rvm_version</th><td>1.22.14 (stable)</td></tr>
+                        <tr><th>rvm_wrapper_name</th><td></td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
