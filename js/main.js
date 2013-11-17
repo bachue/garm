@@ -18,8 +18,14 @@ garmApp.config(function($routeProvider, $locationProvider) {
 });
 
 var global = garmApp.controller('Global', function($scope) {
-    $scope.controller_names = ['Exceptions'];
-    $scope.projects = [{name: 'BUS', percent: 12}, {name: 'Njord', percent: 65}, {name: 'Phoenix', percent: 92}];
+    // <Mock>
+        $scope.controller_names = ['Exceptions'];
+        $scope.projects = [
+            {name: 'BUS', percent: 12},
+            {name: 'Njord', percent: 65},
+            {name: 'Phoenix', percent: 92}
+        ];
+    // </Mock>
     $scope.current_project = $scope.projects[0];
 });
 
