@@ -70,7 +70,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-md-9 tab-content">
+                            <form role="form" class="col-md-9 tab-content config-modal-form" name="config_modal_form">
                                 <div class="tab-pane fade" data-ng-class="{active: $first, in: $first}" data-ng-repeat="project in projects" id="config-project-{{project.name}}">
                                     <div class="config-project-table">
                                         <div class="row btn-group show">
@@ -87,7 +87,7 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                            <input type="email" class="form-control" data-ng-model="subscription.email" placeholder="Email address" />
+                                            <input type="email" name="email" class="form-control" data-ng-model="subscription.email" placeholder="Email address" required/>
                                             <div class="input-group-btn">
                                                 <button class="btn btn-default" type="button" data-ng-click="remove_subscription(subscription, project)"><span class="glyphicon glyphicon-minus-sign"></span></button>
                                             </div>
@@ -97,13 +97,13 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success left" ng-click="add_project()">New Project</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-click="save_config()">Save changes</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-disabled="check_config()" data-ng-click="save_config()">Save changes</button>
                     </div>
                 </div>
             </div>

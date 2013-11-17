@@ -293,6 +293,14 @@ textarea {
     }
 }
 
+/* Core Extension Style */
+input.ng-invalid, textarea.ng-invalid, select.ng-invalid{
+  color: red;
+  border-color: red;
+  box-shadow: 0 0 6px #d9534f;
+  -webkit-box-shadow: 0 0 6px #d9534f;
+}
+
 /* Transition Style */
 
 .dropdown-toggle, .dropdown-menu a, .nav > li > a {

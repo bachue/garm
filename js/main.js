@@ -104,8 +104,11 @@ var global = garmApp.controller('Global', function($scope) {
     };
 
     $scope.save_config = function() {
-        //TODO: Validation here
         $scope.config_saving_confirmed = true;
+    };
+
+    $scope.check_config = function() {
+        return $(config_modal_form).hasClass('ng-invalid');
     };
 
     //TODO: Modified subscriptions
