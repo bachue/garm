@@ -450,3 +450,12 @@ textarea {
   padding-left: 24px;
   padding-right: 24px;
 }
+
+.modal-dialog .modal-footer {
+  position: relative;
+}
+
+.modal-dialog .modal-footer .left {
+  position: absolute;
+  left: 20px;
+}

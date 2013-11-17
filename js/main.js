@@ -45,8 +45,14 @@ var global = garmApp.controller('Global', function($scope) {
         else throw 'Not support days > 7';
     };
 
+    $scope.show_config_modal = function() {
+        $scope.projects_backup = angular.copy($scope.projects);
+        $('#config-modal').modal();
+    };
+
     $scope.add_subscriptions = function(subscriptions) {
-        subscriptions.unshift({email: localStorage['last_used_email'], interval_days: localStorage['last_used_interval'] || 1});
+        subscriptions.unshift({interval_days: 1});
+        //TODO: Focus new input box
     };
 
     $scope.remove_subscription = function(subscription, project) {
@@ -58,27 +64,36 @@ var global = garmApp.controller('Global', function($scope) {
         }
     };
 
-    $scope.delete_project = function(project) {
-        var title = 'Are you ABSOLUTELY sure?';
-        var message = 'This action CANNOT be undone.<br />This will delete the ' + project.name + ' project permanently.';
-        bootbox.dialog({title: title, message: message, buttons: {
-            'Cancel': {},
-            'Delete': {
-                className: 'btn-danger',
-                callback: function() {
-                    var idx = $scope.projects.indexOf(project);
-                    $scope.projects.splice(idx, 1);
-
-                    if(!$scope.deleted_projects) $scope.deleted_projects = [];
-                    $scope.deleted_projects.push(project);
-
-                    $('#config-modal ul.nav li:eq(' + idx +')').remove();
-                    var nextTab = $('#config-modal ul.nav li:eq(' + idx +') a,#config-modal ul.nav li:eq(0) a').last();
-                    if(nextTab) $(nextTab).tab('show');
-                    //TODO: Should create a new project after delete all projects
+    $scope.add_project = function() {
+        bootbox.prompt('New project name?', function(name) {
+            if (name) {
+                if(_.contains(_.map($scope.projects, function(project) {return project.name;}), name)) {
+                    var title = 'Cannot Create this Project';
+                    var message = 'The ' + name + ' project is existed.<br />You should choose another name.';
+                    bootbox.alert({title: title, message: message});
+                    return;
                 }
+
+                $scope.projects.push({name: name, percent: 100, subscriptions: []});
+                $scope.$apply();
+
+                $('#config-modal ul.nav li:last a').tab('show');
             }
-        }});
+        });
+    };
+
+    $scope.delete_project = function(project) {
+        var idx = $scope.projects.indexOf(project);
+        $scope.projects.splice(idx, 1);
+
+        if(!$scope.deleted_projects) $scope.deleted_projects = [];
+        $scope.deleted_projects.push(project);
+
+        $scope.$apply();
+        
+        var nextTab = $('#config-modal ul.nav li:eq(' + idx +') a,#config-modal ul.nav li:eq(0) a').last();
+        if(nextTab) $(nextTab).tab('show');
+        //TODO: Should create a new project after delete all projects
     };
 });
 
