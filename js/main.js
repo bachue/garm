@@ -61,18 +61,22 @@ var global = garmApp.controller('Global', function($scope) {
     $scope.delete_project = function(project) {
         var title = 'Are you ABSOLUTELY sure?';
         var message = 'This action CANNOT be undone.<br />This will delete the ' + project.name + ' project permanently.';
-        bootbox.confirm({title: title, message: message, callback: function(result) {
-            if(result) {
-                var idx = $scope.projects.indexOf(project);
-                $scope.projects.splice(idx, 1);
+        bootbox.dialog({title: title, message: message, buttons: {
+            'Cancel': {},
+            'Delete': {
+                className: 'btn-danger',
+                callback: function() {
+                    var idx = $scope.projects.indexOf(project);
+                    $scope.projects.splice(idx, 1);
 
-                if(!$scope.deleted_projects) $scope.deleted_projects = [];
-                $scope.deleted_projects.push(project);
+                    if(!$scope.deleted_projects) $scope.deleted_projects = [];
+                    $scope.deleted_projects.push(project);
 
-                $('#config-modal ul.nav li:eq(' + idx +')').remove();
-                var nextTab = $('#config-modal ul.nav li:eq(' + idx +') a,#config-modal ul.nav li:eq(0) a').last();
-                if(nextTab) $(nextTab).tab('show');
-                //TODO: Should create a new project after delete all projects
+                    $('#config-modal ul.nav li:eq(' + idx +')').remove();
+                    var nextTab = $('#config-modal ul.nav li:eq(' + idx +') a,#config-modal ul.nav li:eq(0) a').last();
+                    if(nextTab) $(nextTab).tab('show');
+                    //TODO: Should create a new project after delete all projects
+                }
             }
         }});
     };
