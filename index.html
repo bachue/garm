@@ -41,7 +41,7 @@
                 <ul class="nav navbar-nav navbar-items">
                     <li data-ng-class="{active: $first}" data-ng-repeat="name in controller_names"><a href='#' data-ng-bind="name"></a></li>
                 </ul>
-                <a href="#" class="btn-add-project navbar-right glyphicon glyphicon-wrench" alt="config" data-ng-click="show_config_modal()"></a>
+                <a href="#" class="btn-add-project navbar-right glyphicon glyphicon-wrench" alt="config" data-toggle="modal" data-target="#config-modal"></a>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href='#' class="dropdown-toggle" data-toggle="dropdown"><span data-ng-bind="current_project.name"></span> <b class="caret"></b></a>
@@ -59,7 +59,6 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title" id="config-modal-label">Projects</h4>
                     </div>
                     <div class="modal-body">
@@ -104,7 +103,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success left" ng-click="add_project()">New Project</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-click="save_config()">Save changes</button>
                     </div>
                 </div>
             </div>

@@ -18,6 +18,16 @@ garmApp.config(function($routeProvider, $locationProvider) {
 });
 
 var global = garmApp.controller('Global', function($scope) {
+    $('#config-modal').
+        on('show.bs.modal', function() {
+            $scope.projects_backup = angular.copy($scope.projects);
+        }).
+        on('hidden.bs.modal', function() {
+            if(!$scope.config_saving_confirmed) {
+                $scope.projects = $scope.projects_backup;
+            }
+        });
+
     // <Mock>
         $scope.controller_names = ['Exceptions'];
         $scope.projects = [
@@ -43,11 +53,6 @@ var global = garmApp.controller('Global', function($scope) {
         else if(days == 7) return '1 week';
         else if(days < 7) return days + ' days';
         else throw 'Not support days > 7';
-    };
-
-    $scope.show_config_modal = function() {
-        $scope.projects_backup = angular.copy($scope.projects);
-        $('#config-modal').modal();
     };
 
     $scope.add_subscriptions = function(subscriptions) {
@@ -95,6 +100,13 @@ var global = garmApp.controller('Global', function($scope) {
         if(nextTab) $(nextTab).tab('show');
         //TODO: Should create a new project after delete all projects
     };
+
+    $scope.save_config = function() {
+        //TODO: Validation here
+        $scope.config_saving_confirmed = true;
+    };
+
+    //TODO: Modified subscriptions
 });
 
 global.controller('Exception', function($scope) {
