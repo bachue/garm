@@ -412,13 +412,23 @@ textarea {
   margin-top: 5px;
 }
 
-.error-table tr:first-child td, .error-table tr:first-child th,
-.config-project-table tr:first-child td, .error-table tr:first-child th {
+.error-table tr:first-child td, .error-table tr:first-child th {
   border-top: none;
 }
 
 .error-table tr td, .error-table tr th {
   vertical-align: middle!important;
+}
+
+/* Project config dialog style */
+
+.config-project-table .row {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.config-project-table .row:first-child {
+  margin-top: 0;
 }
 
 .config-project-table .input-group .dropdown-toggle span:first-child {
