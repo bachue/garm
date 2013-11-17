@@ -39,10 +39,14 @@ var global = garmApp.controller('Global', function($scope) {
         return Array.prototype.slice.call(arguments, 0).join('-');
     };
     $scope.humanize_days = function(days) {
-        if(days == 1) return '1 day'; 
+        if(days == 1) return '1 day';
         else if(days == 7) return '1 week';
         else if(days < 7) return days + ' days';
         else throw 'Not support days > 7';
+    };
+
+    $scope.add_project = function(subscriptions) {
+        subscriptions.unshift({email: localStorage['last_used_email'], interval_days: localStorage['last_used_interval'] || 1});
     };
 });
 
