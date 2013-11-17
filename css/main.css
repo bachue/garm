@@ -421,7 +421,11 @@ textarea {
   vertical-align: middle!important;
 }
 
-.config-project-table .input-group .dropdown-toggle span:first-child{
+.config-project-table .input-group .dropdown-toggle span:first-child {
   display: inline-block;
   width: 50px;
+}
+
+.config-project-table .input-group .input-group-btn .glyphicon-minus-sign {
+  color: red;
 }
