@@ -45,9 +45,18 @@ var global = garmApp.controller('Global', function($scope) {
         else throw 'Not support days > 7';
     };
 
-    $scope.add_project = function(subscriptions) {
+    $scope.add_subscriptions = function(subscriptions) {
         subscriptions.unshift({email: localStorage['last_used_email'], interval_days: localStorage['last_used_interval'] || 1});
     };
+
+    $scope.remove_subscription = function(subscription, project) {
+        var idx = project.subscriptions.indexOf(subscription);
+        project.subscriptions.splice(idx, 1);
+        if(subscription.id) {
+            if(!project.deleted_subscriptions) project.deleted_subscriptions = [];
+            project.deleted_subscriptions.push(subscription);
+        }
+    }
 });
 
 global.controller('Exception', function($scope) {
