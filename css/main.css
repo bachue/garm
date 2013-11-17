@@ -437,7 +437,7 @@ textarea {
 }
 
 .config-project-table .input-group .input-group-btn .glyphicon-minus-sign {
-  color: red;
+  color: #d9534f;
 }
 
 .centered-row {
