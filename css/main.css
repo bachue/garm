@@ -412,10 +412,16 @@ textarea {
   margin-top: 5px;
 }
 
-.error-table tr:first-child td, .error-table tr:first-child th {
+.error-table tr:first-child td, .error-table tr:first-child th,
+.config-project-table tr:first-child td, .error-table tr:first-child th {
   border-top: none;
 }
 
 .error-table tr td, .error-table tr th {
   vertical-align: middle!important;
+}
+
+.config-project-table .input-group .dropdown-toggle span:first-child{
+  display: inline-block;
+  width: 50px;
 }
