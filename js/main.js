@@ -28,7 +28,7 @@ var global = garmApp.controller('Global', function($scope) {
             }
         });
 
-    // <Mock>
+    // <Mock> TODO: Remove Mock
         $scope.controller_names = ['Exceptions'];
         $scope.projects = [
             {id: 1, name: 'BUS', percent: 12, subscriptions: [
@@ -55,9 +55,11 @@ var global = garmApp.controller('Global', function($scope) {
         else throw 'Not support days > 7';
     };
 
-    $scope.add_subscriptions = function(subscriptions) {
-        subscriptions.unshift({interval_days: 1});
-        //TODO: Focus new input box
+    $scope.add_subscriptions = function(project) {
+        project.subscriptions.unshift({interval_days: 1});
+        setTimeout(function() {
+            $('#config-project-' + project.name + ' input[type=email]:first').focus();
+        }, 200);
     };
 
     $scope.remove_subscription = function(subscription, project) {
@@ -94,11 +96,11 @@ var global = garmApp.controller('Global', function($scope) {
         if(!$scope.deleted_projects) $scope.deleted_projects = [];
         $scope.deleted_projects.push(project);
 
-        $scope.$apply();
+        $('#config-modal ul.nav li:eq(' + idx +')').remove();
         
-        var nextTab = $('#config-modal ul.nav li:eq(' + idx +') a,#config-modal ul.nav li:eq(0) a').last();
+        var nextTab = _.last($('#config-modal ul.nav li:eq(' + idx +') a,#config-modal ul.nav li:eq(0) a'));
         if(nextTab) $(nextTab).tab('show');
-        //TODO: Should create a new project after delete all projects
+        else $scope.add_project();
     };
 
     $scope.save_config = function() {

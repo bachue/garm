@@ -74,7 +74,7 @@
                                 <div class="tab-pane fade" data-ng-class="{active: $first, in: $first}" data-ng-repeat="project in projects" id="config-project-{{project.name}}">
                                     <div class="config-project-table">
                                         <div class="row btn-group show">
-                                            <button type="button" class="btn btn-success btn-add-subscription" data-ng-click="add_subscriptions(project.subscriptions)"><span class="glyphicon glyphicon-plus"></span></button>
+                                            <button type="button" class="btn btn-success btn-add-subscription" data-ng-click="add_subscriptions(project)"><span class="glyphicon glyphicon-plus"></span></button>
                                         </div>
                                         <div data-ng-repeat="subscription in project.subscriptions" class="row input-group">
                                             <div class="input-group-btn">
@@ -87,7 +87,7 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                            <input type="text" class="form-control" data-ng-model="subscription.email" />
+                                            <input type="email" class="form-control" data-ng-model="subscription.email" placeholder="Email address" />
                                             <div class="input-group-btn">
                                                 <button class="btn btn-default" type="button" data-ng-click="remove_subscription(subscription, project)"><span class="glyphicon glyphicon-minus-sign"></span></button>
                                             </div>
