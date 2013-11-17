@@ -424,7 +424,6 @@ textarea {
 
 .config-project-table .row {
   margin-top: 15px;
-  margin-bottom: 15px;
 }
 
 .config-project-table .row:first-child {
@@ -438,4 +437,15 @@ textarea {
 
 .config-project-table .input-group .input-group-btn .glyphicon-minus-sign {
   color: red;
+}
+
+.centered-row {
+  width: 100%;
+  text-align: center;
+}
+
+.config-project-table .centered-row .btn-delete-project {
+  float: none;
+  padding-left: 24px;
+  padding-right: 24px;
 }

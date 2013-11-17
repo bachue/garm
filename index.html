@@ -72,23 +72,27 @@
                             <div class="col-md-9 tab-content">
                                 <div class="tab-pane fade" data-ng-class="{active: $first, in: $first}" data-ng-repeat="project in projects" id="config-project-{{project.name}}">
                                     <div class="config-project-table">
-                                        <div data-ng-repeat="subscription in project.subscriptions" class="row">
-                                            <div class="input-group">
-                                                <div class="input-group-btn">
-                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                                        <span ng-bind="humanize_days(subscription.interval_days)"></span> <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" role="menu">
-                                                        <li ng-repeat="day in avaiable_interval_days">
-                                                            <a href="#" ng-bind="humanize_days(day)"></a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <input type="text" class="form-control" ng-model="subscription.email" />
-                                                <div class="input-group-btn">
-                                                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-minus-sign"></span></button>
-                                                </div>
+                                        <div class="row btn-group">
+                                            <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
+                                        </div>
+                                        <div data-ng-repeat="subscription in project.subscriptions" class="row input-group">
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                    <span ng-bind="humanize_days(subscription.interval_days)"></span> <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li ng-repeat="day in avaiable_interval_days">
+                                                        <a href="#" ng-bind="humanize_days(day)"></a>
+                                                    </li>
+                                                </ul>
                                             </div>
+                                            <input type="text" class="form-control" ng-model="subscription.email" />
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-minus-sign"></span></button>
+                                            </div>
+                                        </div>
+                                        <div class="row btn-group centered-row">
+                                            <button type="button" class="btn btn-danger btn-delete-project">Delete this Project</button>
                                         </div>
                                     </div>
                                 </div>
