@@ -116,13 +116,13 @@
                     </div>
                     <div class="modal-body">
                         <div class="input-group col-xs-12">
-                            <input type="text" class="form-control" placeholder="Project Name" id="edit_project_name" data-ng-model="edit_project_name" name="project_name" required />
-                            <textarea class="form-control" placeholder="Project Config" id="edit_project_config" data-ng-model="edit_project_config" name="project_name"></textarea>
+                            <input type="text" class="form-control" placeholder="Project Name" data-ng-model="edit_project_name" name="project_name" required />
+                            <textarea class="form-control" placeholder="Project Config" data-ng-model="edit_project_config" name="project_name"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" ng-disabled="valid_project()">Save changes</button>
+                        <button type="button" class="btn btn-primary" data-ng-disabled="valid_project()" data-ng-click="submit_project()">Save changes</button>
                     </div>
                 </div>
             </div>

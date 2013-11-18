@@ -28,6 +28,10 @@ var global = garmApp.controller('Global', function($scope) {
             }
         });
 
+    $('#edit-project-modal').on('shown.bs.modal', function() {
+            $('#edit-project-modal input:first').focus();
+        });
+
     // <Mock> TODO: Remove Mock
         $scope.controller_names = ['Exceptions'];
         $scope.projects = [
@@ -72,8 +76,22 @@ var global = garmApp.controller('Global', function($scope) {
     };
 
     $scope.add_project = function() {
-        $scope.edit_project_modal_title = 'Create new Project';
+        $scope.edit_project_modal_title = 'Create Project';
         $('#edit-project-modal').modal();
+    };
+
+    $scope.submit_project = function() {
+        if($scope.edit_project_modal_title == 'Create Project') {
+            $scope.projects.push({name: $scope.edit_project_name, percent: 100, subscriptions: [], ext_config: $scope.edit_project_config});
+            delete $scope.edit_project_name;
+            delete $scope.edit_project_config;
+            $('#edit-project-modal').modal('hide');
+
+            $('#edit-project-modal').on('hidden.bs.modal', function() {
+                $('#config-modal ul.nav li:last a').tab('show');
+                $('#edit-project-modal').off('hidden.bs.modal');
+            });
+        }
     };
 
     // $scope.submit_project = function() {
@@ -95,7 +113,7 @@ var global = garmApp.controller('Global', function($scope) {
     // };
 
     $scope.valid_project = function() {
-        var input = $('#edit_project_name');
+        var input = $('#edit-project-modal input[name=project_name]');
         if(input.hasClass('ng-invalid')) return true;
         return _.contains(_.map($scope.projects, function(project) { return project.name; }), input.val());
     };
