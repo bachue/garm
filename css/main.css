@@ -467,3 +467,9 @@ input.ng-invalid, textarea.ng-invalid, select.ng-invalid{
   position: absolute;
   left: 20px;
 }
+
+#edit-project-modal .input-group input,
+#edit-project-modal .input-group textarea {
+  margin-top: 5;
+  margin-bottom: 10px;
+}

@@ -72,21 +72,32 @@ var global = garmApp.controller('Global', function($scope) {
     };
 
     $scope.add_project = function() {
-        bootbox.prompt('New project name?', function(name) {
-            if (name) {
-                if(_.contains(_.map($scope.projects, function(project) {return project.name;}), name)) {
-                    var title = 'Cannot Create this Project';
-                    var message = 'The ' + name + ' project is existed.<br />You should choose another name.';
-                    bootbox.alert({title: title, message: message});
-                    return;
-                }
+        $scope.edit_project_modal_title = 'Create new Project';
+        $('#edit-project-modal').modal();
+    };
 
-                $scope.projects.push({name: name, percent: 100, subscriptions: []});
-                $scope.$apply();
+    // $scope.submit_project = function() {
+    //     bootbox.prompt('New project name?', function(name) {
+    //         if (name) {
+    //             if(_.contains(_.map($scope.projects, function(project) {return project.name;}), name)) {
+    //                 var title = 'Cannot Create this Project';
+    //                 var message = 'The ' + name + ' project is existed.<br />You should choose another name.';
+    //                 bootbox.alert({title: title, message: message});
+    //                 return;
+    //             }
 
-                $('#config-modal ul.nav li:last a').tab('show');
-            }
-        });
+    //             $scope.projects.push({name: name, percent: 100, subscriptions: []});
+    //             $scope.$apply();
+
+    //             $('#config-modal ul.nav li:last a').tab('show');
+    //         }
+    //     });
+    // };
+
+    $scope.valid_project = function() {
+        var input = $('#edit_project_name');
+        if(input.hasClass('ng-invalid')) return true;
+        return _.contains(_.map($scope.projects, function(project) { return project.name; }), input.val());
     };
 
     $scope.delete_project = function(project) {
