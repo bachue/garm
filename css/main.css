@@ -473,3 +473,15 @@ input.ng-invalid, textarea.ng-invalid, select.ng-invalid{
   margin-top: 5;
   margin-bottom: 10px;
 }
+
+#config-modal .edit-project-icon {
+  position: absolute;
+  right: 15px;
+  top: 12px;
+  color: #428bca;
+  cursor: pointer;
+}
+
+#config-modal .active .edit-project-icon {
+  color: white;
+}

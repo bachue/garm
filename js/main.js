@@ -94,24 +94,6 @@ var global = garmApp.controller('Global', function($scope) {
         }
     };
 
-    // $scope.submit_project = function() {
-    //     bootbox.prompt('New project name?', function(name) {
-    //         if (name) {
-    //             if(_.contains(_.map($scope.projects, function(project) {return project.name;}), name)) {
-    //                 var title = 'Cannot Create this Project';
-    //                 var message = 'The ' + name + ' project is existed.<br />You should choose another name.';
-    //                 bootbox.alert({title: title, message: message});
-    //                 return;
-    //             }
-
-    //             $scope.projects.push({name: name, percent: 100, subscriptions: []});
-    //             $scope.$apply();
-
-    //             $('#config-modal ul.nav li:last a').tab('show');
-    //         }
-    //     });
-    // };
-
     $scope.valid_project = function() {
         var input = $('#edit-project-modal input[name=project_name]');
         if(input.hasClass('ng-invalid')) return true;
