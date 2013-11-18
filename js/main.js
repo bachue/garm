@@ -32,6 +32,11 @@ var global = garmApp.controller('Global', function($scope) {
             $('#edit-project-modal input:first').focus();
         });
 
+    $('#edit-project-modal input[name=project_name]').on('keypress', function(e) {
+        if(e.charCode === 13 && $scope.valid_project() === false)
+            $scope.submit_project();
+    });
+
     // <Mock> TODO: Remove Mock
         $scope.controller_names = ['Exceptions'];
         $scope.projects = [
@@ -53,8 +58,8 @@ var global = garmApp.controller('Global', function($scope) {
         return Array.prototype.slice.call(arguments, 0).join('-');
     };
     $scope.humanize_days = function(days) {
-        if(days == 1) return '1 day';
-        else if(days == 7) return '1 week';
+        if(days === 1) return '1 day';
+        else if(days === 7) return '1 week';
         else if(days < 7) return days + ' days';
         else throw 'Not support days > 7';
     };
@@ -62,7 +67,7 @@ var global = garmApp.controller('Global', function($scope) {
     $scope.add_subscriptions = function(project) {
         project.subscriptions.unshift({interval_days: 1});
         setTimeout(function() {
-            $('#config-project-' + project.name + ' input[type=email]:first').focus();
+            $('#' + $scope.join('config', 'project', project.name) + ' input[type=email]:first').focus();
         }, 200);
     };
 
@@ -92,24 +97,28 @@ var global = garmApp.controller('Global', function($scope) {
     };
 
     $scope.submit_project = function() {
-        if($scope.edit_project_modal_title == CREATE_PROJECT_STRING) {
+        if($scope.edit_project_modal_title === CREATE_PROJECT_STRING) {
             $scope.projects.push({name: $scope.edit_project_name, percent: 100, subscriptions: [], ext_config: $scope.edit_project_config});
-            $('#edit-project-modal').modal('hide');
-
-            $('#edit-project-modal').on('hidden.bs.modal', function() {
-                $('#config-modal ul.nav li:last a').tab('show');
-                $('#edit-project-modal').off('hidden.bs.modal');
-            });
+        } else if($scope.edit_project_modal_title === EDIT_PROJECT_STRING) {
+            var project = _.find($scope.projects, function(project) { return project.name === $scope.edit_project_original_name; });
+            project.name = $scope.edit_project_name;
+            project.ext_config = $scope.edit_project_config;
         }
-        delete $scope.edit_project_name;
-        delete $scope.edit_project_origin_name;
-        delete $scope.edit_project_config;
+
+        $('#edit-project-modal').modal('hide');
+        $('#edit-project-modal').on('hidden.bs.modal', function() {
+            $('a[data-ng-href="#' + $scope.join('config', 'project', $scope.edit_project_name) + '""]').tab('show');
+            $('#edit-project-modal').off('hidden.bs.modal');
+            delete $scope.edit_project_name;
+            delete $scope.edit_project_origin_name;
+            delete $scope.edit_project_config;
+        });
     };
 
     $scope.valid_project = function() {
         if($('#edit-project-modal input[name=project_name]').hasClass('ng-invalid'))
             return true;
-        if($scope.edit_project_modal_title == EDIT_PROJECT_STRING && $scope.edit_project_name == $scope.edit_project_original_name) return false;
+        if($scope.edit_project_modal_title === EDIT_PROJECT_STRING && $scope.edit_project_name === $scope.edit_project_original_name) return false;
         return _.contains(_.map($scope.projects, function(project) { return project.name; }), $scope.edit_project_name);
     };
 
