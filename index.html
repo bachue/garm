@@ -41,7 +41,7 @@
                 <ul class="nav navbar-nav navbar-items">
                     <li data-ng-class="{active: $first}" data-ng-repeat="name in controller_names"><a href='#' data-ng-bind="name"></a></li>
                 </ul>
-                <a href="#" class="btn-add-project navbar-right glyphicon glyphicon-wrench" alt="config" data-toggle="modal" data-target="#config-modal"></a>
+                <a href="#" class="btn-add-project navbar-right glyphicon glyphicon-wrench" alt="config" data-toggle="modal" data-target="#config-modal" title="Config Projects"></a>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href='#' class="dropdown-toggle" data-toggle="dropdown"><span data-ng-bind="current_project.name"></span> <b class="caret"></b></a>
@@ -67,7 +67,7 @@
                                 <ul class="nav nav-pills nav-stacked">
                                     <li data-ng-class="{active: $first}" data-ng-repeat="project in projects">
                                         <a data-ng-href="#{{join('config', 'project', project.name)}}" data-ng-bind="project.name" data-toggle="tab"></a>
-                                        <span class="edit-project-icon glyphicon glyphicon-wrench" data-ng-click="edit_project(project)"></span>
+                                        <span class="edit-project-icon glyphicon glyphicon-wrench" title="Config this Project" data-ng-click="edit_project(project)"></span>
                                     </li>
                                 </ul>
                             </div>
@@ -75,7 +75,7 @@
                                 <div class="tab-pane fade" data-ng-class="{active: $first, in: $first}" data-ng-repeat="project in projects" id="config-project-{{project.name}}">
                                     <div class="config-project-table">
                                         <div class="row btn-group show">
-                                            <button type="button" class="btn btn-success btn-add-subscription" data-ng-click="add_subscriptions(project)">New Subscription</button>
+                                            <button type="button" class="btn btn-success btn-add-subscription" data-ng-click="add_subscription(project)">New Subscription</button>
                                         </div>
                                         <div data-ng-repeat="subscription in project.subscriptions" class="row input-group">
                                             <div class="input-group-btn">
@@ -84,13 +84,13 @@
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
                                                     <li data-ng-repeat="day in avaiable_interval_days">
-                                                        <a href="#" data-ng-bind="humanize_days(day)"></a>
+                                                        <a href="#" data-ng-bind="humanize_days(day)" data-ng-click="set_subscription_interval_days(day, subscription, project)"></a>
                                                     </li>
                                                 </ul>
                                             </div>
-                                            <input type="email" name="email" class="form-control" data-ng-model="subscription.email" placeholder="Email address" required/>
+                                            <input type="email" name="email" class="form-control" data-ng-model="subscription.email" placeholder="Email address" data-ng-change="update_subscription(subscription, project)" required/>
                                             <div class="input-group-btn">
-                                                <button class="btn btn-default" type="button" data-ng-click="remove_subscription(subscription, project)"><span class="glyphicon glyphicon-minus-sign"></span></button>
+                                                <button class="btn btn-default" type="button" data-ng-click="remove_subscription(subscription, project)"><span class="glyphicon glyphicon-minus-sign" title="Remove this Subscription"></span></button>
                                             </div>
                                         </div>
                                         <div class="row btn-group centered-row">
