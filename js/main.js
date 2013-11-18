@@ -75,16 +75,25 @@ var global = garmApp.controller('Global', function($scope) {
         }
     };
 
+    var CREATE_PROJECT_STRING = 'Create Project';
+    var EDIT_PROJECT_STRING = 'Edit Project';
+
     $scope.add_project = function() {
-        $scope.edit_project_modal_title = 'Create Project';
+        $scope.edit_project_modal_title = CREATE_PROJECT_STRING;
+        $('#edit-project-modal').modal();
+    };
+
+    $scope.edit_project = function(project) {
+        $scope.edit_project_modal_title = EDIT_PROJECT_STRING;
+        $scope.edit_project_name = project.name;
+        $scope.edit_project_original_name = project.name;
+        $scope.edit_project_config = project.ext_config;
         $('#edit-project-modal').modal();
     };
 
     $scope.submit_project = function() {
-        if($scope.edit_project_modal_title == 'Create Project') {
+        if($scope.edit_project_modal_title == CREATE_PROJECT_STRING) {
             $scope.projects.push({name: $scope.edit_project_name, percent: 100, subscriptions: [], ext_config: $scope.edit_project_config});
-            delete $scope.edit_project_name;
-            delete $scope.edit_project_config;
             $('#edit-project-modal').modal('hide');
 
             $('#edit-project-modal').on('hidden.bs.modal', function() {
@@ -92,12 +101,16 @@ var global = garmApp.controller('Global', function($scope) {
                 $('#edit-project-modal').off('hidden.bs.modal');
             });
         }
+        delete $scope.edit_project_name;
+        delete $scope.edit_project_origin_name;
+        delete $scope.edit_project_config;
     };
 
     $scope.valid_project = function() {
-        var input = $('#edit-project-modal input[name=project_name]');
-        if(input.hasClass('ng-invalid')) return true;
-        return _.contains(_.map($scope.projects, function(project) { return project.name; }), input.val());
+        if($('#edit-project-modal input[name=project_name]').hasClass('ng-invalid'))
+            return true;
+        if($scope.edit_project_modal_title == EDIT_PROJECT_STRING && $scope.edit_project_name == $scope.edit_project_original_name) return false;
+        return _.contains(_.map($scope.projects, function(project) { return project.name; }), $scope.edit_project_name);
     };
 
     $scope.delete_project = function(project) {

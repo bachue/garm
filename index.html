@@ -67,7 +67,7 @@
                                 <ul class="nav nav-pills nav-stacked">
                                     <li data-ng-class="{active: $first}" data-ng-repeat="project in projects">
                                         <a data-ng-href="#{{join('config', 'project', project.name)}}" data-ng-bind="project.name" data-toggle="tab"></a>
-                                        <span class="edit-project-icon glyphicon glyphicon-wrench"></span>
+                                        <span class="edit-project-icon glyphicon glyphicon-wrench" data-ng-click="edit_project(project)"></span>
                                     </li>
                                 </ul>
                             </div>
