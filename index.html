@@ -20,10 +20,12 @@
         <script src="js/vendor/angular.min.js"></script>
         <script src="js/vendor/angular-route.min.js"></script>
         <script src="js/plugins.js"></script>
-        <script src="js/helper.js"></script>
+        <script src="js/helper.js"></script> <!-- TODO: refactor here -->
         <script src="js/main.js"></script>
+        <script src="js/application.js"></script>
+        <script src="js/exceptions.js"></script>
     </head>
-    <body data-ng-controller="Global">
+    <body data-ng-controller="Application">
         <!--[if lt IE 8]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -47,7 +49,7 @@
                         <a href='#' class="dropdown-toggle" data-toggle="dropdown"><span data-ng-bind="current_project.name"></span> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li data-ng-repeat="project in projects">
-                                <a href="#"><span data-ng-bind="project.name"></span><span set-percent-color class='pull-right label'><span data-ng-bind="project.percent"></span> %</span></a>
+                                <a href="#" data-ng-click="set_current_project(project)"><span data-ng-bind="project.name"></span><span set-percent-color class='pull-right label'><span data-ng-bind="project.percent"></span> %</span></a>
                             </li>
                         </ul>
                     </li>
