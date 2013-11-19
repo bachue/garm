@@ -12,10 +12,10 @@
                 "resolved": false,
                 "exceptions": [
                     {
-                        "time_utc": "2013-11-06 14:02:57",
+                        "time_utc": 1383746577,
                         "svr_host": "busadmin02",
                         "svr_ip": "10.43.65.38",
-                        "time_svr": "2013-11-06 22:02:57 +0800",
+                        "svr_zone": "+02:00",
                         "pid": 28419,
                         "version": "2.7.0.18",
                         "tag": ["billing", "dps"],
