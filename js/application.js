@@ -139,11 +139,13 @@ garmApp.application = garmApp.controller('Application', function($scope) {
             $scope.config_change_commands.push({cmd: 'del_project', project_id: project.id});
         }
 
-        $('#config-modal ul.nav li:eq(' + idx +')').remove();
+        setTimeout(function() {
+            $('#config-modal ul.nav li:eq(' + idx +')').remove();
 
-        var nextTab = _.last($('#config-modal ul.nav li:eq(' + idx +') a,#config-modal ul.nav li:eq(0) a'));
-        if(nextTab) $(nextTab).tab('show');
-        else $scope.add_project();
+            var nextTab = _.last($('#config-modal ul.nav li:eq(' + idx +') a,#config-modal ul.nav li:eq(0) a'));
+            if(nextTab) $(nextTab).tab('show');
+            else $scope.add_project();
+        }, 200);
     };
 
     $scope.update_subscription = function(subscription, project) {
