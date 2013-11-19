@@ -1,4 +1,4 @@
-garmApp.application = garmApp.controller('Application', function($scope) {
+garmApp.application = garmApp.controller('Application', function($scope, $timeout) {
     $('#config-modal').
         on('show.bs.modal', function() {
             $scope.projects_backup = angular.copy($scope.projects);
@@ -46,9 +46,9 @@ garmApp.application = garmApp.controller('Application', function($scope) {
         project.subscriptions.unshift(subscription);
         $scope.config_change_commands.push({cmd: 'add_subscription', subscription: subscription, project: project});
 
-        setTimeout(function() {
+        $timeout(function() {
             $('#config-project-' + project.name + ' input[type=email]:first').focus();
-        }, 200);
+        });
     };
 
     $scope.remove_subscription = function(subscription, project) {
@@ -135,13 +135,13 @@ garmApp.application = garmApp.controller('Application', function($scope) {
             $scope.config_change_commands.push({cmd: 'del_project', project_id: project.id});
         }
 
-        setTimeout(function() {
+        $timeout(function() {
             $('#config-modal ul.nav li:eq(' + idx +')').remove();
 
             var nextTab = _.last($('#config-modal ul.nav li:eq(' + idx +') a,#config-modal ul.nav li:eq(0) a'));
             if(nextTab) $(nextTab).tab('show');
             else $scope.add_project();
-        }, 200);
+        });
     };
 
     $scope.update_subscription = function(subscription, project) {
