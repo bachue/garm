@@ -34,8 +34,10 @@ var global = garmApp.controller('Global', function($scope) {
         });
 
     $('#edit-project-modal input[name=project_name]').on('keypress', function(e) {
-        if(e.charCode === 13 && $scope.valid_project() === false)
+        if(e.charCode === 13 && $scope.valid_project() === false) {
             $scope.submit_project();
+            $scope.$apply();
+        }
     });
 
     // <Mock> TODO: Remove Mock
@@ -120,7 +122,7 @@ var global = garmApp.controller('Global', function($scope) {
 
         $('#edit-project-modal').modal('hide');
         $('#edit-project-modal').on('hidden.bs.modal', function() {
-            $('a[data-ng-href="#' + $scope.join('config', 'project', $scope.edit_project_name) + '""]').tab('show');
+            $('a[data-ng-href="#' + $scope.join('config', 'project', $scope.edit_project_name) + '"]').tab('show');
             $('#edit-project-modal').off('hidden.bs.modal');
             delete $scope.edit_project_modal_title;
             delete $scope.edit_project_name;
