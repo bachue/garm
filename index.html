@@ -43,7 +43,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-items">
-                    <li data-ng-class="{active: $first}" data-ng-repeat="name in controller_names"><a href='#' data-ng-bind="name"></a></li>
+                    <li data-ng-class="{active: name === current_controller}" data-ng-repeat="name in controller_names"><a href='#' data-ng-bind="name"></a></li>
                 </ul>
                 <a href="#" class="btn-add-project navbar-right glyphicon glyphicon-wrench" alt="config" data-toggle="modal" data-target="#config-modal" title="Config Projects"></a>
                 <ul class="nav navbar-nav navbar-right">

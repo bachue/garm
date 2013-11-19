@@ -1,4 +1,4 @@
-garmApp.application = garmApp.controller('Application', function($scope, $timeout) {
+garmApp.application = garmApp.controller('Application', function($scope, $timeout, $location) {
     $('#config-modal').
         on('show.bs.modal', function() {
             $scope.projects_backup = angular.copy($scope.projects);
@@ -21,8 +21,9 @@ garmApp.application = garmApp.controller('Application', function($scope, $timeou
         }
     });
 
+    $scope.controller_names = ['Exceptions'];
+
     // <Mock> TODO: Remove Mock
-        $scope.controller_names = ['Exceptions'];
         $.ajax({url: '/mock-data.json', async: false, dataType: 'json', success: function(data) { $scope.projects = data; }});
     // </Mock>
     $scope.avaiable_interval_days = [1, 3, 7];

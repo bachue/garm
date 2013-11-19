@@ -3,9 +3,9 @@ garmApp = angular.module('GarmApp', ['ngRoute', 'ngSanitize']);
 garmApp.config(function($routeProvider, $locationProvider) {
     $routeProvider.
         when('/', {
-            redirectTo: '/exceptions'
+            redirectTo: '/exceptions/'
         }).
-        when('/exceptions', {
+        when('/exceptions/:project_id?/:category_id?/:exception_id?', {
             controller: 'Exception',
             templateUrl: 'templates/exceptions.html'
         }).
@@ -13,6 +13,7 @@ garmApp.config(function($routeProvider, $locationProvider) {
             redirectTo: '/'
         });
 
+    // Not to use:
     // $locationProvider.html5Mode(true);
     // $locationProvider.hashPrefix('!');
 });

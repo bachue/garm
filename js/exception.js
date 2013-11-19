@@ -1,4 +1,5 @@
-garmApp.application.controller('Exception', function($scope) {
+garmApp.application.controller('Exception', function($scope, $rootScope, $routeParams) {
+    $rootScope.current_controller = 'Exceptions';
     $('.make-switch').bootstrapSwitch(false);
     $('.nav-tabs a').click(function (e) {
         e.preventDefault();
