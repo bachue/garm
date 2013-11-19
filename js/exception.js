@@ -4,4 +4,7 @@ garmApp.application.controller('Exception', function($scope) {
         e.preventDefault();
         $(this).tab('show');
     });
+
+    $scope.test = 'exception';
+    debugger;
 });

@@ -24,7 +24,7 @@
         <script src="js/helper.js"></script> <!-- TODO: refactor here -->
         <script src="js/main.js"></script>
         <script src="js/application.js"></script>
-        <script src="js/exceptions.js"></script>
+        <script src="js/exception.js"></script>
     </head>
     <body data-ng-controller="Application">
         <!--[if lt IE 8]>
@@ -50,7 +50,7 @@
                         <a href='#' class="dropdown-toggle" data-toggle="dropdown"><span data-ng-bind="current_project.name"></span> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li data-ng-repeat="project in projects">
-                                <a href="#" data-ng-click="set_current_project(project)"><span data-ng-bind="project.name"></span><span set-percent-color class='pull-right label'><span data-ng-bind="project.percent"></span> %</span></a>
+                                <a href="#" data-ng-click="set_current_project(project)"><span data-ng-bind="project.name"></span><span data-set-percent-color class='pull-right label'><span data-ng-bind="project.percent"></span> %</span></a>
                             </li>
                         </ul>
                     </li>
