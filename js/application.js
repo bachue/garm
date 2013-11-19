@@ -169,6 +169,7 @@ garmApp.application = garmApp.controller('Application', function($scope, $timeou
         }
 
         //TODO: Send cmds to backend
+        //TODO: Think about how to assign id to new projects and subscriptions
         console.log($scope.config_change_commands);
     };
 

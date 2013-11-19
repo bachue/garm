@@ -1,4 +1,4 @@
-garmApp = angular.module('GarmApp', ['ngRoute']);
+garmApp = angular.module('GarmApp', ['ngRoute', 'ngSanitize']);
 
 garmApp.config(function($routeProvider, $locationProvider) {
     $routeProvider.

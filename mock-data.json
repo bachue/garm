@@ -3,7 +3,7 @@
         "id": 1, "name": "BUS", "percent": 12, "subscriptions": [
             {"id": 1, "email": "bachue.shu@mail.com", "interval_days": 1},
             {"id": 2, "email": "rong.zhou@mail.com", "interval_days": 7}
-        ], "exception_categorys": [
+        ], "exception_categories": [
             {
                 "type": "ZeroDivisionError",
                 "message": "divided by 0",
@@ -154,17 +154,27 @@
                                 "LSCOLORS": "Gxfxcxdxbxegedabagacad"
                             }
                         }
+                    }, {
+                        "time_utc": 1383755371
+                    }, {
+                        "time_utc": 1383754283
+                    }, {
+                        "time_utc": 1383750499
+                    }, {
+                        "time_utc": 1383740302
                     }
                 ]
             }, {
                 "type": "NameError",
                 "message": "uninitialized constant Rails",
                 "comment": "",
+                "resolved": false,
                 "exceptions": []
             }, {
                 "type": "SystemStackError",
                 "message": "stack level too deep",
                 "comment": "",
+                "resolved": true,
                 "exceptions": []
             }
         ]
