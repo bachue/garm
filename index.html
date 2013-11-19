@@ -76,7 +76,7 @@
                                 </ul>
                             </div>
                             <form role="form" class="col-md-9 tab-content config-modal-form" name="config_modal_form">
-                                <div class="tab-pane fade" data-ng-class="{active: $first, in: $first}" data-ng-repeat="project in projects" id="config-project-{{project.name}}">
+                                <div class="tab-pane fade" data-ng-class="{'active in': $first}" data-ng-repeat="project in projects" id="config-project-{{project.name}}">
                                     <div class="config-project-table">
                                         <div class="row btn-group show">
                                             <button type="button" class="btn btn-success btn-add-subscription" data-ng-click="add_subscription(project)">New Subscription</button>
