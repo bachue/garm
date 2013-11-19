@@ -40,8 +40,6 @@ garmApp.application = garmApp.controller('Application', function($scope, $timeou
         $scope.current_project = project;
     };
 
-    $scope.set_current_project($scope.projects[0]);
-
     $scope.add_subscription = function(project) {
         var subscription = {interval_days: 1};
         project.subscriptions.unshift(subscription);

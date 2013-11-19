@@ -5,6 +5,7 @@
             {"id": 2, "email": "rong.zhou@mail.com", "interval_days": 7}
         ], "exception_categories": [
             {
+                "id": 1,
                 "type": "ZeroDivisionError",
                 "message": "divided by 0",
                 "comment": "This bug is caused by UserController#list, then if there's no user found, this bug will happen. I have created a ticket:\nhttp://redmine.org/issues/12312.",
@@ -12,6 +13,7 @@
                 "resolved": false,
                 "exceptions": [
                     {
+                        "id": 1,
                         "time_utc": 1383746577,
                         "svr_host": "busadmin02",
                         "svr_ip": "10.43.65.38",
@@ -155,22 +157,28 @@
                             }
                         }
                     }, {
+                        "id": 2,
                         "time_utc": 1383755371
                     }, {
+                        "id": 3,
                         "time_utc": 1383754283
                     }, {
+                        "id": 4,
                         "time_utc": 1383750499
                     }, {
+                        "id": 5,
                         "time_utc": 1383740302
                     }
                 ]
             }, {
+                "id": 2,
                 "type": "NameError",
                 "message": "uninitialized constant Rails",
                 "comment": "",
                 "resolved": false,
                 "exceptions": []
             }, {
+                "id": 3,
                 "type": "SystemStackError",
                 "message": "stack level too deep",
                 "comment": "",

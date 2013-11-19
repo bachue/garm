@@ -26,10 +26,10 @@
                 </tr>
             </table>
             <ul class="nav">
-                <li data-ng-class="{active: $first}" data-ng-repeat="exception_category in current_project.exception_categories">
+                <li data-ng-class="{active: exception_category === current_category}" data-ng-repeat="exception_category in current_project.exception_categories">
                     <a href='#'><span class="item-name" data-ng-bind="exception_category.type + ': ' + exception_category.message"></span><span class="pull-right label" data-ng-class="{'label-success': exception_category.resolved, 'label-danger': !exception_category.resolved}" data-ng-bind="exception_category.exceptions.length"></a>
                     <ul class="nav" data-ng-repeat="exception in exception_category.exceptions | orderBy:'time_utc':true">
-                        <li data-ng-class="{active: $first}"><a href='#' data-ng-bind="get_utc_string_without_tz(exception.time_utc)"></a></li>
+                        <li data-ng-class="{active: exception === current_exception}"><a href='#' data-ng-bind="get_utc_string_without_tz(exception.time_utc)"></a></li>
                     </ul>
                 </li>
             </ul>
