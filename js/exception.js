@@ -6,5 +6,4 @@ garmApp.application.controller('Exception', function($scope) {
     });
 
     $scope.test = 'exception';
-    debugger;
 });

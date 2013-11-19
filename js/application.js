@@ -28,10 +28,6 @@ garmApp.application = garmApp.controller('Application', function($scope) {
     $scope.avaiable_interval_days = [1, 3, 7];
     $scope.config_change_commands = [];
 
-    $scope.join = function() {
-        return Array.prototype.slice.call(arguments, 0).join('-');
-    };
-
     $scope.humanize_days = function(days) {
         if(days === 1) return '1 day';
         else if(days === 7) return '1 week';
@@ -51,7 +47,7 @@ garmApp.application = garmApp.controller('Application', function($scope) {
         $scope.config_change_commands.push({cmd: 'add_subscription', subscription: subscription, project: project});
 
         setTimeout(function() {
-            $('#' + $scope.join('config', 'project', project.name) + ' input[type=email]:first').focus();
+            $('#config-project-' + project.name + ' input[type=email]:first').focus();
         }, 200);
     };
 
@@ -109,7 +105,7 @@ garmApp.application = garmApp.controller('Application', function($scope) {
 
         $('#edit-project-modal').modal('hide');
         $('#edit-project-modal').on('hidden.bs.modal', function() {
-            $('a[data-ng-href="#' + $scope.join('config', 'project', $scope.edit_project_name) + '"]').tab('show');
+            $('a[data-ng-href="#config-project-' + $scope.edit_project_name + '"]').tab('show');
             $('#edit-project-modal').off('hidden.bs.modal');
             delete $scope.edit_project_modal_title;
             delete $scope.edit_project_name;
@@ -184,7 +180,8 @@ garmApp.application = garmApp.controller('Application', function($scope) {
 garmApp.application.directive('setPercentColor', function() {
     return {
         link: function(scope, element) {
-            element.addClass('label-' + getPercentColor(scope.project.percent));
+            var project = scope.project || scope.current_project;
+            element.addClass('label-' + getPercentColor(project.percent));
         }
     };
 });
