@@ -15,7 +15,7 @@ garmApp.application.controller('Exception', function($scope, $rootScope, $routeP
                 $scope.current_exception = _.find($scope.current_category.exceptions, function(exception) {
                     return exception.id === Number($routeParams.exception_id);
                 });
-            };
+            }
         }
     }
 
@@ -34,5 +34,14 @@ garmApp.application.controller('Exception', function($scope, $rootScope, $routeP
 
     $scope.get_utc_string_without_tz = function(timestamp) {
         return moment.unix(timestamp).utc().format(DATE_FORMAT_WITHOUT_TIMEZONE);
+    };
+
+    $scope.set_current_category = function(category) {
+        $rootScope.current_category = category;
+        $scope.set_current_exception(category.exceptions[0]);
+    };
+
+    $scope.set_current_exception = function(exception) {
+        $rootScope.current_exception = exception;
     };
 });

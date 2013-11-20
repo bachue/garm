@@ -14,7 +14,7 @@
                 "exceptions": [
                     {
                         "id": 1,
-                        "time_utc": 1383746577,
+                        "time_utc": 1384761048,
                         "svr_host": "busadmin02",
                         "svr_ip": "10.43.65.38",
                         "svr_zone": "+02:00",
@@ -176,14 +176,29 @@
                 "message": "uninitialized constant Rails",
                 "comment": "",
                 "resolved": false,
-                "exceptions": []
+                "exceptions": [{
+                    "id": 6,
+                    "time_utc": 1384193318
+                }, {
+                    "id": 7,
+                    "time_utc": 1383803936
+                }, {
+                    "id": 8,
+                    "time_utc": 1383707403
+                }]
             }, {
                 "id": 3,
                 "type": "SystemStackError",
                 "message": "stack level too deep",
                 "comment": "",
                 "resolved": true,
-                "exceptions": []
+                "exceptions": [{
+                    "id": 9,
+                    "time_utc": 1384161596
+                }, {
+                    "id": 10,
+                    "time_utc": 1384049456
+                }]
             }
         ]
     },
