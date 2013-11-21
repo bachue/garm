@@ -7,26 +7,37 @@ garmApp.application.exception = garmApp.application.controller('Exception', func
         });
 
         if ($routeParams.category_id) {
-            $scope.current_category = _.find($rootScope.current_project.exception_categories, function(category) {
+            $rootScope.current_category = _.find($rootScope.current_project.exception_categories, function(category) {
                 return category.id === Number($routeParams.category_id);
             });
 
             if ($routeParams.exception_id) {
-                $scope.current_exception = _.find($scope.current_category.exceptions, function(exception) {
+                $rootScope.current_exception = _.find($rootScope.current_category.exceptions, function(exception) {
                     return exception.id === Number($routeParams.exception_id);
                 });
+
+                if($routeParams.tab) {
+                    $rootScope.current_exception.tabs = _.keys($scope.current_exception.ext);
+                    $rootScope.current_tab = _.find($rootScope.current_exception.tabs, function(tab) {
+                        return $routeParams.tab === tab;
+                    });
+                }
             }
         }
     }
-    
+
     if(!$rootScope.current_project) $rootScope.current_project = $scope.projects[0];
-    if(!$rootScope.current_category) $rootScope.current_category = $scope.current_project.exception_categories[0];
-    if(!$rootScope.current_exception) $rootScope.current_exception = $scope.current_category.exceptions[0];
-    // TODO: Current Tab
+    if(!$rootScope.current_category) $rootScope.current_category = $rootScope.current_project.exception_categories[0];
+    if(!$rootScope.current_exception) $rootScope.current_exception = $rootScope.current_category.exceptions[0];
+    if(!$rootScope.current_tab) $rootScope.current_tab = 'Summary';
+
+    $rootScope.current_exception.tabs = _.keys($rootScope.current_exception.ext);
+    $rootScope.current_exception.tabs.unshift('Summary', 'Backtrace');
+
     // TODO: If these variable changes, please change the hash in URL
 
     $('.make-switch').bootstrapSwitch(false);
-    $('.make-switch').bootstrapSwitch('setState', $rootScope.current_category.important);
+    if ($rootScope.current_category) $('.make-switch').bootstrapSwitch('setState', $rootScope.current_category.important);
     $('.nav-tabs a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');

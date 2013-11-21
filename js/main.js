@@ -5,7 +5,7 @@ garmApp.config(function($routeProvider, $locationProvider) {
         when('/', {
             redirectTo: '/exceptions/'
         }).
-        when('/exceptions/:project?/:category_id?/:exception_id?', {
+        when('/exceptions/:project?/:category_id?/:exception_id?/:tab?', {
             controller: 'Exception',
             templateUrl: 'templates/exceptions.html'
         }).
