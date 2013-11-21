@@ -8,7 +8,7 @@
                 "id": 1,
                 "type": "ZeroDivisionError",
                 "message": "divided by 0",
-                "comment": "This bug is caused by UserController#list, then if there's no user found, this bug will happen. I have created a ticket:\nhttp://redmine.org/issues/12312.",
+                "comment": "This bug is caused by UserController#list, then if there's no user found, this bug will happen.\nI have created a ticket: http://redmine.org/issues/12312.",
                 "important": true,
                 "resolved": false,
                 "exceptions": [
@@ -74,7 +74,7 @@
                             "Cookies": {
                                 "user_lang_pref": "en"
                             },
-                            "Environment": {
+                            "Environments": {
                                 "COLUMNS": "133",
                                 "rvm_script_name": "",
                                 "rvm_quiet_flag": "",

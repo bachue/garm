@@ -45,12 +45,16 @@
         </div>
         <div class="row">
             <div class="col-md-5 error-info">
-                <div class='error-type'>ZeroDivisionError</div>
-                <div class='error-time'>Occurred on 2013-11-06 14:02:57 UTC</div>
-                <div class='error-mesg'>divided by 0</div>
+                <div class='error-type' data-ng-bind="current_category.type"></div>
+                <div class='error-time' data-ng-bind="'Occurred on ' + get_utc_string_with_tz(current_exception.time_utc)"></div>
+                <div class='error-mesg' data-ng-bind="current_category.message"></div>
             </div>
             <div class="col-md-7 error-info">
-                <i class='error-desc'>This bug is caused by UserController # list, then if there's no user found, this bug will happen. I have created a ticket: <a href='http://redmine.org/issues/12312'>http://redmine.org/issues/12312</a>.</i>
+                <pre class='error-comment' data-ng-bind-html="current_category.comment | linky" data-ng-click="set_editing_comment(current_category.comment)" data-ng-hide="current_category.editing_comment"></pre>
+                <form data-ng-show="current_category.editing_comment">
+                    <div class="form-group"><textarea class="error-comment form-control" data-ng-model="current_category.comment_draft"></textarea></div>
+                    <button type="button" class="btn btn-primary btn-xs" data-ng-click="unset_editing_comment(current_category.comment_draft)">Save</button>
+                </form>
             </div>
         </div>
 

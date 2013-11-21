@@ -1,4 +1,4 @@
-garmApp.application.controller('Exception', function($scope, $rootScope, $routeParams) {
+garmApp.application.exception = garmApp.application.controller('Exception', function($scope, $rootScope, $routeParams) {
     $rootScope.current_controller = 'Exceptions';
 
     if($routeParams.project) {
@@ -18,12 +18,15 @@ garmApp.application.controller('Exception', function($scope, $rootScope, $routeP
             }
         }
     }
-
+    
     if(!$rootScope.current_project) $rootScope.current_project = $scope.projects[0];
     if(!$rootScope.current_category) $rootScope.current_category = $scope.current_project.exception_categories[0];
     if(!$rootScope.current_exception) $rootScope.current_exception = $scope.current_category.exceptions[0];
+    // TODO: Current Tab
+    // TODO: If these variable changes, please change the hash in URL
 
     $('.make-switch').bootstrapSwitch(false);
+    $('.make-switch').bootstrapSwitch('setState', $rootScope.current_category.important);
     $('.nav-tabs a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
@@ -36,6 +39,10 @@ garmApp.application.controller('Exception', function($scope, $rootScope, $routeP
         return moment.unix(timestamp).utc().format(DATE_FORMAT_WITHOUT_TIMEZONE);
     };
 
+    $scope.get_utc_string_with_tz = function(timestamp) {
+        return moment.unix(timestamp).utc().format(DATE_FORMAT_WITH_TIMEZONE);
+    };
+
     $scope.set_current_category = function(category) {
         $rootScope.current_category = category;
         $scope.set_current_exception(category.exceptions[0]);
@@ -43,5 +50,16 @@ garmApp.application.controller('Exception', function($scope, $rootScope, $routeP
 
     $scope.set_current_exception = function(exception) {
         $rootScope.current_exception = exception;
+    };
+
+    $scope.set_editing_comment = function(comment) {
+        $rootScope.current_category.editing_comment = true;
+        $rootScope.current_category.comment_draft = comment;
+    };
+
+    $scope.unset_editing_comment = function(draft) {
+        $rootScope.current_category.editing_comment = false;
+        $rootScope.current_category.comment = draft;
+        // TODO: To send request here
     };
 });

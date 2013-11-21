@@ -410,11 +410,15 @@ input.ng-invalid, textarea.ng-invalid, select.ng-invalid{
   margin: 10px;
 }
 
-.error-desc {
-  font-size: 15px;
+pre.error-comment {
+  font-size: 13px;
   font-style: italic;
   color: #333;
   margin: 10px;
+}
+
+textarea.error-comment {
+  height: 100px;
 }
 
 .error-details {
