@@ -17,7 +17,7 @@ garmApp.application.exception = garmApp.application.controller('Exception', func
                 });
 
                 if($routeParams.tab) {
-                    $rootScope.current_exception.tabs = _.keys($scope.current_exception.ext);
+                    $rootScope.current_exception.tabs = _.keys($scope.current_exception.ext || {});
                     $rootScope.current_tab = _.find($rootScope.current_exception.tabs, function(tab) {
                         return $routeParams.tab === tab;
                     });
@@ -31,7 +31,7 @@ garmApp.application.exception = garmApp.application.controller('Exception', func
     if(!$rootScope.current_exception) $rootScope.current_exception = $rootScope.current_category.exceptions[0];
     if(!$rootScope.current_tab) $rootScope.current_tab = 'Summary';
 
-    $rootScope.current_exception.tabs = _.keys($rootScope.current_exception.ext);
+    $rootScope.current_exception.tabs = _.keys($rootScope.current_exception.ext || {});
     $rootScope.current_exception.all_tabs = ['Summary', 'Backtrace'].concat($rootScope.current_exception.tabs);
 
     // TODO: If these variable changes, please change the hash in URL
@@ -51,7 +51,7 @@ garmApp.application.exception = garmApp.application.controller('Exception', func
     };
 
     $scope.get_locale_string_with_tz = function(timestamp, tz) {
-        return moment.unix(timestamp).zone(tz).format(DATE_FORMAT_WITH_TIMEZONE);
+        return moment.unix(timestamp).zone(tz || '+00:00').format(DATE_FORMAT_WITH_TIMEZONE);
     };
 
     $scope.get_tab_name = function(tab) {
@@ -102,6 +102,7 @@ garmApp.application.exception = garmApp.application.controller('Exception', func
 
     $rootScope.current_exception.all_summaries = (function(exception, category) {
         var summaries_from_exception = _.pick(exception, SUMMARY_KEYS_FROM_EXCEPTION);
+        debugger;
         summaries_from_exception['svr_time'] = $scope.get_locale_string_with_tz(exception.time_utc, exception.svr_zone);
         var summaries_from_category = _.pick(category, SUMMARY_KEYS_FROM_CATEGROY);
         summaries_from_category['first_seen_on'] = $scope.get_utc_string_with_tz(category.first_seen_on);
