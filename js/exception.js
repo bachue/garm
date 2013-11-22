@@ -32,27 +32,31 @@ garmApp.application.exception = garmApp.application.controller('Exception', func
     if(!$rootScope.current_tab) $rootScope.current_tab = 'Summary';
 
     $rootScope.current_exception.tabs = _.keys($rootScope.current_exception.ext);
-    $rootScope.current_exception.tabs.unshift('Summary', 'Backtrace');
+    $rootScope.current_exception.all_tabs = ['Summary', 'Backtrace'].concat($rootScope.current_exception.tabs);
 
     // TODO: If these variable changes, please change the hash in URL
 
     $('.make-switch').bootstrapSwitch(false);
     if ($rootScope.current_category) $('.make-switch').bootstrapSwitch('setState', $rootScope.current_category.important);
-    $('.nav-tabs a').click(function (e) {
-        e.preventDefault();
-        $(this).tab('show');
-    });
 
-    var DATE_FORMAT_WITHOUT_TIMEZONE = 'YYYY-MM-DD HH:mm:ss';
-    var DATE_FORMAT_WITH_TIMEZONE    = 'YYYY-MM-DD HH:mm:ss z';
+    var DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+    var DATE_FORMAT_WITH_TIMEZONE = 'YYYY-MM-DD HH:mm:ss Z';
 
     $scope.get_utc_string_without_tz = function(timestamp) {
-        return moment.unix(timestamp).utc().format(DATE_FORMAT_WITHOUT_TIMEZONE);
+        return moment.unix(timestamp).utc().format(DATE_FORMAT);
     };
 
     $scope.get_utc_string_with_tz = function(timestamp) {
-        return moment.unix(timestamp).utc().format(DATE_FORMAT_WITH_TIMEZONE);
+        return $scope.get_utc_string_without_tz(timestamp) + ' UTC';
     };
+
+    $scope.get_locale_string_with_tz = function(timestamp, tz) {
+        return moment.unix(timestamp).zone(tz).format(DATE_FORMAT_WITH_TIMEZONE);
+    };
+
+    $scope.get_tab_name = function(tab) {
+        return tab.toLowerCase();
+    }
 
     $scope.set_current_category = function(category) {
         $rootScope.current_category = category;
@@ -73,4 +77,44 @@ garmApp.application.exception = garmApp.application.controller('Exception', func
         $rootScope.current_category.comment = draft;
         // TODO: To send request here
     };
+
+    $scope.switch_to_tab = function(tab, $event) {
+        $event.preventDefault();
+        $($event.target).tab('show');
+        $rootScope.current_tab = tab;
+    };
+
+    var SUMMARY_KEYS_FROM_EXCEPTION = ['svr_host', 'svr_ip', 'pid', 'version', 'seen_on_current_version', 'description', 'position'];
+    var SUMMARY_KEYS_FROM_CATEGROY  = ['first_seen_on', 'first_seen_in'];
+    var SUMMARY_KEYS_ORDER = ['svr_host', 'svr_ip', 'pid', 'svr_time', 'version', 'first_seen_on', 'first_seen_in', 'seen_on_current_version', 'description', 'position'];
+    var SUMMARY_KEYS_I18N = {
+        svr_host:                'Server Hostname',
+        svr_ip:                  'Server IP',
+        pid:                     'PID',
+        svr_time:                'Server Time',
+        version:                 'Version',
+        first_seen_in:           'First Seen in',
+        first_seen_on:           'First Seen on',
+        seen_on_current_version: 'Seen on current version',
+        description:             'Description',
+        position:                'Postion'
+    };
+
+    $rootScope.current_exception.all_summaries = (function(exception, category) {
+        var summaries_from_exception = _.pick(exception, SUMMARY_KEYS_FROM_EXCEPTION);
+        summaries_from_exception['svr_time'] = $scope.get_locale_string_with_tz(exception.time_utc, exception.svr_zone);
+        var summaries_from_category = _.pick(category, SUMMARY_KEYS_FROM_CATEGROY);
+        summaries_from_category['first_seen_on'] = $scope.get_utc_string_with_tz(category.first_seen_on);
+        var summaries = _.extend(summaries_from_exception, summaries_from_category, exception.summaries);
+        summaries = _.map(summaries, function(value, key) { return {key: SUMMARY_KEYS_I18N[key] ? SUMMARY_KEYS_I18N[key] : key, value: value}; });
+        summaries = _.sortBy(summaries, function(element) {
+            var idx = SUMMARY_KEYS_ORDER.indexOf(element.key);
+            return idx > 0 ? idx : SUMMARY_KEYS_ORDER.length;
+        });
+        return summaries;
+    })($rootScope.current_exception, $rootScope.current_category);
+
+    if(_.isString($rootScope.current_exception.backtrace)) {
+        $rootScope.current_exception.backtrace = $rootScope.current_exception.backtrace.split('\n');
+    }
 });
