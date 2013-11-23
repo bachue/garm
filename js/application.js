@@ -1,4 +1,4 @@
-garmApp.application = garmApp.controller('Application', function($scope, $timeout, $location) {
+garmApp.application = garmApp.controller('Application', function($scope, $rootScope, $timeout, $location) {
     $('#config-modal').
         on('show.bs.modal', function() {
             $scope.projects_backup = angular.copy($scope.projects);
@@ -37,7 +37,7 @@ garmApp.application = garmApp.controller('Application', function($scope, $timeou
     };
 
     $scope.set_current_project = function(project) {
-        $scope.current_project = project;
+        $rootScope.current_project = project;
     };
 
     $scope.add_subscription = function(project) {
@@ -163,8 +163,8 @@ garmApp.application = garmApp.controller('Application', function($scope, $timeou
     $scope.save_config = function() {
         $scope.config_saving_confirmed = true;
 
-        if($scope.projects.indexOf($scope.current_project) == -1) {
-            $scope.current_project = $scope.projects[0];
+        if($scope.projects.indexOf($rootScope.current_project) == -1) {
+            $scope.set_current_project($scope.projects[0]);
         }
 
         //TODO: Send cmds to backend
