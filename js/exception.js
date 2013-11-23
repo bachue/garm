@@ -1,4 +1,4 @@
-garmApp.application.exception = garmApp.application.controller('Exception', function($scope, $rootScope, $routeParams) {
+garmApp.application.exception = garmApp.application.controller('Exception', function($scope, $rootScope, $routeParams, $location) {
     $rootScope.current_controller = 'Exceptions';
 
     if($routeParams.project) {
@@ -6,18 +6,18 @@ garmApp.application.exception = garmApp.application.controller('Exception', func
             return $routeParams.project === project.name;
         });
 
-        if ($routeParams.category_id) {
+        if ($routeParams.category_id && $rootScope.current_project) {
             $rootScope.current_category = _.find($rootScope.current_project.exception_categories, function(category) {
                 return category.id === Number($routeParams.category_id);
             });
 
-            if ($routeParams.exception_id) {
+            if ($routeParams.exception_id && $rootScope.current_category) {
                 $rootScope.current_exception = _.find($rootScope.current_category.exceptions, function(exception) {
                     return exception.id === Number($routeParams.exception_id);
                 });
 
-                if($routeParams.tab) {
-                    $rootScope.current_exception.tabs = _.keys($scope.current_exception.ext || {});
+                if($routeParams.tab && $rootScope.current_exception) {
+                    $rootScope.current_exception.tabs = ['Summary', 'Backtrace'].concat(_.keys($scope.current_exception.ext || {}));
                     $rootScope.current_tab = _.find($rootScope.current_exception.tabs, function(tab) {
                         return $routeParams.tab === tab;
                     });
@@ -30,6 +30,18 @@ garmApp.application.exception = garmApp.application.controller('Exception', func
     if(!$rootScope.current_category) $rootScope.current_category = $rootScope.current_project.exception_categories[0];
     if(!$rootScope.current_exception) $rootScope.current_exception = $rootScope.current_category.exceptions[0];
     if(!$rootScope.current_tab) $rootScope.current_tab = 'Summary';
+ 
+    var update_path = function() {
+        var path = '/exceptions/';
+        path += [$rootScope.current_project.name,
+                 $rootScope.current_category.id,
+                 $rootScope.current_exception.id,
+                 $rootScope.current_tab].join('/');
+        $location.path(path);
+    };
+
+
+    if(!$routeParams.project) update_path();
 
     $rootScope.current_exception.tabs = _.keys($rootScope.current_exception.ext || {});
     $rootScope.current_exception.all_tabs = ['Summary', 'Backtrace'].concat($rootScope.current_exception.tabs);
@@ -56,7 +68,7 @@ garmApp.application.exception = garmApp.application.controller('Exception', func
 
     $scope.get_tab_name = function(tab) {
         return tab.toLowerCase();
-    }
+    };
 
     $scope.set_current_category = function(category) {
         $rootScope.current_category = category;
@@ -80,8 +92,9 @@ garmApp.application.exception = garmApp.application.controller('Exception', func
 
     $scope.switch_to_tab = function(tab, $event) {
         $event.preventDefault();
-        $($event.target).tab('show');
         $rootScope.current_tab = tab;
+        update_path();
+        $($event.target).tab('show');
     };
 
     var SUMMARY_KEYS_FROM_EXCEPTION = ['svr_host', 'svr_ip', 'pid', 'version', 'seen_on_current_version', 'description', 'position'];
@@ -100,20 +113,21 @@ garmApp.application.exception = garmApp.application.controller('Exception', func
         position:                'Postion'
     };
 
-    $rootScope.current_exception.all_summaries = (function(exception, category) {
-        var summaries_from_exception = _.pick(exception, SUMMARY_KEYS_FROM_EXCEPTION);
-        debugger;
-        summaries_from_exception['svr_time'] = $scope.get_locale_string_with_tz(exception.time_utc, exception.svr_zone);
-        var summaries_from_category = _.pick(category, SUMMARY_KEYS_FROM_CATEGROY);
-        summaries_from_category['first_seen_on'] = $scope.get_utc_string_with_tz(category.first_seen_on);
-        var summaries = _.extend(summaries_from_exception, summaries_from_category, exception.summaries);
-        summaries = _.map(summaries, function(value, key) { return {key: SUMMARY_KEYS_I18N[key] ? SUMMARY_KEYS_I18N[key] : key, value: value}; });
-        summaries = _.sortBy(summaries, function(element) {
-            var idx = SUMMARY_KEYS_ORDER.indexOf(element.key);
-            return idx > 0 ? idx : SUMMARY_KEYS_ORDER.length;
-        });
-        return summaries;
-    })($rootScope.current_exception, $rootScope.current_category);
+    if(!$rootScope.current_exception.all_summaries) {
+        $rootScope.current_exception.all_summaries = (function(exception, category) {
+            var summaries_from_exception = _.pick(exception, SUMMARY_KEYS_FROM_EXCEPTION);
+            summaries_from_exception['svr_time'] = $scope.get_locale_string_with_tz(exception.time_utc, exception.svr_zone);
+            var summaries_from_category = _.pick(category, SUMMARY_KEYS_FROM_CATEGROY);
+            summaries_from_category['first_seen_on'] = $scope.get_utc_string_with_tz(category.first_seen_on);
+            var summaries = _.extend(summaries_from_exception, summaries_from_category, exception.summaries);
+            summaries = _.map(summaries, function(value, key) { return {key: SUMMARY_KEYS_I18N[key] ? SUMMARY_KEYS_I18N[key] : key, value: value}; });
+            summaries = _.sortBy(summaries, function(element) {
+                var idx = SUMMARY_KEYS_ORDER.indexOf(element.key);
+                return idx > 0 ? idx : SUMMARY_KEYS_ORDER.length;
+            });
+            return summaries;
+        })($rootScope.current_exception, $rootScope.current_category);
+    }
 
     if(_.isString($rootScope.current_exception.backtrace)) {
         $rootScope.current_exception.backtrace = $rootScope.current_exception.backtrace.split('\n');
