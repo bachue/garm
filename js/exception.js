@@ -1,4 +1,4 @@
-garmApp.application.exception = garmApp.application.controller('Exception', function($scope, $rootScope, $routeParams, $location) {
+garmApp.application.exception = garmApp.application.controller('Exception', function($scope, $rootScope, $routeParams, $timeout, $location) {
     $rootScope.current_controller = 'Exceptions';
 
     if($routeParams.project) {
@@ -95,6 +95,64 @@ garmApp.application.exception = garmApp.application.controller('Exception', func
         $rootScope.current_tab = tab;
         update_path();
         $($event.target).tab('show');
+    };
+
+    if (!$rootScope.exception_search) $rootScope.exception_search = {keyword: '', scope: 'All'};
+    $scope.set_search_options = function(key, value) {
+        if (key === 'keyword') throw 'keyword cannot be used as a key in search options';
+        $rootScope.exception_search[key] = value;
+    };
+
+    $scope.truncate = function(string, length) {
+        if (string.length <= length) return string;
+        else {
+            var arr = string.split('');
+            arr.splice(length - 3, string.length, '.', '.', '.');
+            return arr.join('');
+        }
+    };
+
+    $scope.show_search = function() {
+        return $rootScope.exception_search.keyword.length > 0 && $rootScope.exception_search.focusing;
+    };
+
+    $scope.focus_on_search = function() {
+        $rootScope.exception_search.focusing = true;
+    };
+
+    $scope.blur_on_search = function() {
+        $timeout(function() {
+            delete $rootScope.exception_search.focusing;
+        }, 10);
+    };
+
+    $scope.start_searching = function() {
+        if (!$rootScope.exception_search.keyword.length) return;
+        var request_id = Math.random();
+        $.ajax({url: '/mock-search.json', dataType: 'json', success: function(data) {
+            $timeout(function() {
+                $rootScope.exception_search.results = data;
+            });
+        }});
+    };
+
+    $scope.switch_to_exception = function(category_id, exception_id) {
+        var category = _.find($rootScope.current_project.exception_categories, function(category) { return category.id == category_id; }), exception;
+        if (category) {
+            exception = _.find(category.exceptions, function(exception) { return exception.id == exception_id; });
+        }
+        if (category && exception) {
+            $rootScope.current_category = category;
+            $rootScope.current_exception = exception;
+        } else {
+            $scope.load_exceptions_from_remote($rootScope.current_project.name, category_id, exception_id);
+            $scope.switch_to_exception(category_id, exception_id);
+        }
+    };
+
+    $scope.load_exceptions_from_remote = function(project_name, category_id, exception_id) {
+        //TODO: to implement it
+        throw 'Not implemented';
     };
 
     var SUMMARY_KEYS_FROM_EXCEPTION = ['svr_host', 'svr_ip', 'pid', 'version', 'seen_on_current_version', 'description', 'position'];

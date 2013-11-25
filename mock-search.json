@@ -1,0 +1,32 @@
+[
+    {
+        "type": "ZeroDivisionError",
+        "time_utc": 1384761048,
+        "category_id": 1,
+        "exception_id": 2
+    },
+    {
+        "type": "RuntimeError",
+        "time_utc": 1384731998,
+        "category_id": 1,
+        "exception_id": 3
+    },
+    {
+        "type": "SignalException",
+        "time_utc": 1384743921,
+        "category_id": 1,
+        "exception_id": 4
+    },
+    {
+        "type": "SystemStackError",
+        "time_utc": 1384734171,
+        "category_id": 1,
+        "exception_id": 5
+    },
+    {
+        "type": "ArgumentError",
+        "time_utc": 1384731536,
+        "category_id": 2,
+        "exception_id": 3
+    }
+]

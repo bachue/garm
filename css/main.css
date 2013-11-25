@@ -360,6 +360,10 @@ input.ng-invalid, textarea.ng-invalid, select.ng-invalid{
   white-space: normal;
 }
 
+.sidebar-nav .list-group .list-group-item-heading {
+  font-size: 15px;
+}
+
 .nav-stat {
   text-align: right;
   padding-bottom: 10px;
