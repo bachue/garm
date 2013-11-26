@@ -1,31 +1,38 @@
 <!DOCTYPE html>
-<html class="no-js" data-ng-app="GarmApp">
+<html>
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>Garm</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" media="screen" href="css/normalize.css">
+        <link rel="stylesheet" media="screen" href="css/vendor/normalize.min.css">
         <link rel="stylesheet" media="screen" href="css/vendor/bootstrap.min.css">
         <link rel="stylesheet" media="screen" href="css/vendor/bootstrap-switch.css">
-        <link rel="stylesheet" media="screen" href="css/vendor/flat-ui-fonts.css">
         <link rel="stylesheet" media="screen" href="css/main.css">
-        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
-        <script src="js/vendor/jquery.min.js"></script>
-        <script src="js/vendor/underscore-min.js"></script>
-        <script src="js/vendor/bootstrap.min.js"></script>
-        <script src="js/vendor/bootstrap-switch.min.js"></script>
-        <script src="js/vendor/bootbox.min.js"></script>
-        <script src="js/vendor/angular.min.js"></script>
-        <script src="js/vendor/angular-route.min.js"></script>
-        <script src="js/vendor/angular-sanitize.min.js"></script>
-        <script src="js/vendor/moment.min.js"></script>
-        <script src="js/plugins.js"></script>
-        <script src="js/helper.js"></script> <!-- TODO: refactor here -->
-        <script src="js/main.js"></script>
-        <script src="js/application.js"></script>
-        <script src="js/exception.js"></script>
+        <script>
+            //TODO: ERb embed here!
+            env = 'dev';
+            var load_js_by_env = function(files, env, opts) {
+                document.write("\x3Cscript src='" + files[env] + "' defer async='true' " + opts + ">\x3C/script>");
+            };
+        </script>
+        <!--[if lt IE 9]>
+            <script>
+                load_js_by_env({
+                    dev: 'js/vendor/dev/html5shiv.js',
+                    cdn: 'http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv-printshiv.min.js',
+                    internal: 'js/vendor/prod/html5shiv.min.js'
+                }, env);
+            </script>
+        <![endif]-->
+        <script>
+            load_js_by_env({
+                dev: 'js/vendor/dev/require.js',
+                cdn: 'http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.9/require.min.js',
+                internal: 'js/vendor/prod/require.min.js'
+            }, env, 'data-main="js/main"');
+        </script>
     </head>
     <body data-ng-controller="Application">
         <!--[if lt IE 8]>
@@ -39,7 +46,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href='/'><img src="img/branding.png" alt="mozy" onerror="$(this).parent().html('Garm').css('padding', '15px');" height="40" /></a>
+                <a class="navbar-brand" href='/'><img src="img/branding.png" alt="branding" height="40" /></a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-items">
