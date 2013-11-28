@@ -10,6 +10,7 @@
                 "message": "divided by 0",
                 "comment": "This bug is caused by UserController#list, then if there's no user found, this bug will happen.\nI have created a ticket: http://redmine.org/issues/12312.",
                 "important": true,
+                "wont_fix": false,
                 "resolved": false,
                 "first_seen_on": 1383740302,
                 "first_seen_in": "2.7.0.12",
