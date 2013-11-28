@@ -99,7 +99,7 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                            <input type="email" name="email" class="form-control" data-ng-model="subscription.email" placeholder="Email address" data-ng-change="update_subscription(subscription, project)" required/>
+                                            <input type="email" name="email" class="form-control" data-ng-model="subscription.email" placeholder="Email address" data-ng-change="update_subscription(subscription, project)" required data-ng-maxlength="40" />
                                             <div class="input-group-btn">
                                                 <button class="btn btn-default" type="button" data-ng-click="remove_subscription(subscription, project)"><span class="glyphicon glyphicon-minus-sign" title="Remove this Subscription"></span></button>
                                             </div>
