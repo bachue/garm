@@ -27,6 +27,8 @@ require 'bundler'
 
 Bundler.require :default, options[:env]
 
+set :database, 'sqlite3:///development.sqlite3'
+
 get '/' do
   'Hello world !'
 end
