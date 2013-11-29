@@ -10,9 +10,8 @@
         <link rel="stylesheet" media="screen" href="css/vendor/bootstrap.min.css">
         <link rel="stylesheet" media="screen" href="css/vendor/bootstrap-switch.css">
         <link rel="stylesheet" media="screen" href="css/main.css">
+        <script src='js/env.js'></script>
         <script>
-            //TODO: ERb embed here!
-            env = 'dev';
             var load_js_by_env = function(files, env, opts) {
                 document.write("\x3Cscript src='" + files[env] + "' defer async='true' " + opts + ">\x3C/script>");
             };

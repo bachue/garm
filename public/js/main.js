@@ -81,13 +81,8 @@ require(['angular', 'app', 'domReady', 'jquery', 'bootstrap', 'plugins', 'applic
         otherwise({
             redirectTo: '/'
         });
-
-        // Not to use now:
-        // $locationProvider.html5Mode(true);
-        // $locationProvider.hashPrefix('!');
     });
     domReady(function() {
         angular.bootstrap(document, ['GarmApp']);
-        $('html').addClass('ng-app: GarmApp');
     });
 });

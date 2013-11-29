@@ -41,7 +41,6 @@ define(['application', 'jquery', 'underscore', 'moment', 'bootstrap_switch'], fu
             $location.path(path);
         };
 
-
         if (!$routeParams.project) update_path();
 
         $rootScope.current_exception.tabs = _.keys($rootScope.current_exception.ext || {});

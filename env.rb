@@ -13,8 +13,16 @@ OptionParser.new do |opts|
       $options = env.downcase
     else
       $stderr.puts 'Garm can run in development, production or test environment'
-      exit -1
+      exit(-1)
     end
+  end
+
+  opts.on('--cdn', 'Load JS files from CDN') do
+    $options.cdn = true
+  end
+
+  opts.on('--no-cdn', 'Not to load JS files from CDN') do
+    $options.cdn = false
   end
 
   opts.on('-v', '--version', 'Show version') do
