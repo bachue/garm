@@ -1,12 +1,4 @@
 define(['directives'], function(directives) {
-    var getPercentColor = function (percent) {
-        var getPercentLevel = function(percent) {
-            if (percent < 60) return 0;
-            else if (percent < 80) return 1;
-            else return 2;
-        };
-        return ['danger', 'warning', 'success'][getPercentLevel(percent)];
-    };
 
     return directives.directive('setPercentColor', function() {
         return {
@@ -17,3 +9,12 @@ define(['directives'], function(directives) {
         };
     });
 });
+
+var getPercentColor = function (percent) {
+    var getPercentLevel = function(percent) {
+        if (percent < 60) return 0;
+        else if (percent < 80) return 1;
+        else return 2;
+    };
+    return ['danger', 'warning', 'success'][getPercentLevel(percent)];
+};

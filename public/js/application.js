@@ -5,10 +5,10 @@ define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
                 $scope.projects_backup = angular.copy($scope.projects);
             }).
             on('hidden.bs.modal', function() {
-                if(!$scope.config_saving_confirmed) {
-                    $scope.projects = $scope.projects_backup;
+                $timeout(function() {
+                    if(!$scope.config_saving_confirmed) $scope.projects = $scope.projects_backup;
                     $scope.config_change_commands = [];
-                }
+                });
             });
 
         $('#edit-project-modal').on('shown.bs.modal', function() {
@@ -168,7 +168,11 @@ define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
                 $scope.set_current_project($scope.projects[0]);
             }
 
-            //TODO: Send cmds to backend
+            var commands = {commands: generate_commands($scope.config_change_commands)};
+            //convert cmd here
+            $.ajax({type: 'POST', url: '/projects/run_commands', data: commands, dataType: 'json', success: function() {
+
+            }});
             //TODO: Think about how to assign id to new projects and subscriptions
             console.log($scope.config_change_commands);
         };
@@ -178,3 +182,18 @@ define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
         };
     });
 });
+
+var generate_commands = function(objects) {
+    var commands = _.map(objects, function(object) {
+        if (object.cmd === 'add_project') {
+            return {cmd: object.cmd, project_name: object.project.name};
+        } else if (object.cmd === 'add_subscription') {
+            return {cmd: object.cmd, subscription: {email: object.subscription.email, interval_days: object.subscription.interval_days}, project_name: object.project.name};
+        } else if (object.cmd === 'del_subscription') {
+            return {cmd: object.cmd, subscription_id: object.subscription_id, project_id: object.project.id};
+        } else {
+            return object;
+        }
+    });
+    return JSON.stringify(commands);
+};
