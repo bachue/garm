@@ -6,5 +6,9 @@ if $options.env.development?
 end
 
 get '/' do
-  'Hello world !'
+  send_file File.join(File.dirname(__FILE__), 'public', 'index.html')
+end
+
+get '/exceptions/*' do
+  redirect to('#/exceptions/' + params[:splat][0])
 end
