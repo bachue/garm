@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20131128160601) do
     t.text     "comment"
     t.integer  "project_id",                               null: false
     t.boolean  "important",                default: false, null: false
-    t.boolean  "mute",                     default: false, null: false
+    t.boolean  "wont_fix",                 default: false, null: false
     t.boolean  "resolved",                 default: false, null: false
     t.string   "hash",          limit: 40,                 null: false
     t.datetime "first_seen_on",                            null: false
@@ -26,6 +26,8 @@ ActiveRecord::Schema.define(version: 20131128160601) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "exception_categories", ["hash"], name: "exception_categories_hash_uniq_index", unique: true
 
   create_table "exceptions", force: true do |t|
     t.datetime "time",                   null: false
@@ -47,6 +49,8 @@ ActiveRecord::Schema.define(version: 20131128160601) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "projects", ["name"], name: "projects_name_uniq_index", unique: true
 
   create_table "summary_subscriptions", force: true do |t|
     t.string   "email",         limit: 40, null: false

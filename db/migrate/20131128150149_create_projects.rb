@@ -4,6 +4,8 @@ class CreateProjects < ActiveRecord::Migration
       t.string :name, limit: 20, null: false
       t.timestamps
     end
+
+    add_index :projects, :name, name: 'projects_name_uniq_index', unique: true
   end
 
   def down

@@ -13,6 +13,8 @@ class CreateExceptionCategories < ActiveRecord::Migration
       t.string :first_seen_in, limits: 11
       t.timestamps
     end
+
+    add_index :exception_categories, :hash, name: 'exception_categories_hash_uniq_index', unique: true
   end
 
   def down
