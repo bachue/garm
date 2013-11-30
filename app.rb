@@ -5,10 +5,9 @@ require_relative 'env'
 require_relative 'models'
 require_relative 'helpers'
 
-enable :logging
-
-if $options.env.development?
-  set :database, 'sqlite3:///db/development.sqlite3'
+configure do
+  enable :logging
+  set :database, 'sqlite3:///db/development.sqlite3' if settings.development?
 end
 
 post '/projects/run_commands' do
@@ -47,9 +46,9 @@ end
 get '/js/env.js' do
   content_type 'text/javascript'
   $jsenv ||= case
-             when $options.cdn
+             when settings.cdn?
                'cdn'
-             when $options.production?
+             when settings.production?
                'internal'
              else
                'dev'
