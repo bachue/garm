@@ -3,13 +3,16 @@ require 'sinatra/json'
 
 require_relative 'env'
 require_relative 'models'
+require_relative 'helpers'
+
+enable :logging
 
 if $options.env.development?
   set :database, 'sqlite3:///db/development.sqlite3'
 end
 
 post '/projects/run_commands' do
-  return status 400 if params['commands'].blank?
+  error 400 if params['commands'].blank?
   commands = JSON.load(params['commands'])
   new_project_list, new_subscription_list = {}, {}
 
@@ -21,20 +24,20 @@ post '/projects/run_commands' do
         if project.save
           new_project_list[project.name] = project.id
         else
-          status 400 and raise ActiveRecord::Rollback
+          rollback 400, "Failed to create project: #{project.errors.full_messages}"
         end
       when 'edit_project'
-        project = Project.find command['project_id'] rescue status 400 and raise ActiveRecord::Rollback
+        project = Project.find command['project_id'] rescue rollback(400)
         project.update name: command['project_name']
-        status 400 and raise ActiveRecord::Rollback unless project.save
+        rollback 400, "Failed to update project: #{project.errors.full_messages}"
       when 'del_project'
-        project = Project.find command['project_id'] rescue status 400 and raise ActiveRecord::Rollback
-        status 400 and raise ActiveRecord::Rollback unless project.destroy
+        project = Project.find command['project_id'] rescue rollback(400)
+        project.destroy
       when 'add_subscription'
       when 'edit_subscription'
       when 'del_subscription'
       else
-        status 400 and raise ActiveRecord::Rollback
+        rollback 400, "Command not found: #{command['cmd']}"
       end
     end
   end
