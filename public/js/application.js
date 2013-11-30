@@ -136,8 +136,6 @@ define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
             }
 
             $timeout(function() {
-                $('#config-modal ul.nav li:eq(' + idx +')').remove();
-
                 var nextTab = _.last($('#config-modal ul.nav li:eq(' + idx +') a,#config-modal ul.nav li:eq(0) a'));
                 if(nextTab) $(nextTab).tab('show');
                 else $scope.add_project();
@@ -183,7 +181,7 @@ define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
                     } else if (object.cmd === 'edit_project') {
                         ret = {project_id: object.project.id, project_name: object.project.name};
                     } else if (object.cmd === 'del_project') {
-                        ret = {project_id: object.project.id};
+                        ret = {project_id: object.project_id};
                     } else if (object.cmd === 'add_subscription') {
                         ret = {subscription: {email: object.subscription.email, interval_days: object.subscription.interval_days}};
                         if (object.project.id) ret['project_id'] = object.project.id;
