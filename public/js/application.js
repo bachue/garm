@@ -180,18 +180,18 @@ define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
                 var commands = _.map(objects, function(object, ret) {
                     if (object.cmd === 'add_project') {
                         ret = {project_name: object.project.name};
+                    } else if (object.cmd === 'edit_project') {
+                        ret = {project_id: object.project.id, project_name: object.project.name};
+                    } else if (object.cmd === 'del_project') {
+                        ret = {project_id: object.project.id};
                     } else if (object.cmd === 'add_subscription') {
                         ret = {subscription: {email: object.subscription.email, interval_days: object.subscription.interval_days}};
                         if (object.project.id) ret['project_id'] = object.project.id;
                         else ret['project_name'] = object.project.name;
-                    } else if (object.cmd === 'del_subscription') {
-                        ret = {subscription_id: object.subscription_id, project_id: object.project.id};
-                    } else if (object.cmd === 'edit_project') {
-                        ret = {project_id: object.project.id, project_name: object.project.name};
                     } else if (object.cmd === 'edit_subscription') {
                         ret = {project_id: object.project.id, subscription: {id: object.subscription.id, email: object.subscription.email, interval_days: object.subscription.interval_days}};
-                    } else {
-                        return object;
+                    } else if (object.cmd === 'del_subscription') {
+                        ret = {subscription_id: object.subscription_id, project_id: object.project.id};
                     }
                     return _.extend(ret, {cmd: object.cmd});
                 });
