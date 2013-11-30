@@ -1,13 +1,16 @@
 #!/usr/bin/env ruby
-require 'sinatra/json'
-
 require_relative 'env'
 require_relative 'models'
 require_relative 'helpers'
 
+require 'sinatra/json'
+
 configure do
   enable :logging
-  set :database, 'sqlite3:///db/development.sqlite3' if settings.development?
+end
+
+configure :development, :test do
+  set :database, "sqlite3:///db/#{settings.environment}.sqlite3"
 end
 
 post '/projects/run_commands' do
