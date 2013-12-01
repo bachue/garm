@@ -2,7 +2,7 @@ class CreateSubscriptions < ActiveRecord::Migration
   def up
     create_table :subscriptions do |t|
       t.string :email, limit: 40, null: false
-      t.integer :project_id, null: false
+      t.references :project, index: true, null: false
       t.integer :interval_days, null: false
       t.date
       t.timestamps

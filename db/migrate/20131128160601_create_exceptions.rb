@@ -1,7 +1,7 @@
 class CreateExceptions < ActiveRecord::Migration
   def up
     create_table :exceptions do |t|
-      t.integer :exception_category_id, null: false
+      t.references :exceptions, :exception_category, index: true, null: false
       t.integer :time, null: false
       t.string :svr_host, limit: 40, null: false
       t.string :svr_ip, limit: 15, null: false

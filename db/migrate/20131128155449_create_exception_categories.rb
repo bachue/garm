@@ -4,7 +4,7 @@ class CreateExceptionCategories < ActiveRecord::Migration
       t.string :exception_type, limit: 40, null: false
       t.text :message, null: false
       t.text :comment
-      t.integer :project_id, null: false
+      t.references :project, index: true, null: false
       t.boolean :important, default: false, null: false
       t.boolean :wont_fix, default: false, null: false
       t.boolean :resolved, default: false, null: false
