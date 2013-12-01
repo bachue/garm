@@ -1,4 +1,4 @@
-define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
+define(['controllers', 'jquery', 'underscore', 'projects'], function(controllers, $, _, projects) {
     return controllers.controller('Application', function($scope, $rootScope, $timeout, $location) {
         $('#config-modal').
             on('show.bs.modal', function() {
@@ -24,9 +24,8 @@ define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
 
         $scope.controller_names = ['Exceptions'];
 
-        // <Mock> TODO: Remove Mock
-            $.ajax({url: '/mock-data.json', async: false, dataType: 'json', success: function(data) { $scope.projects = data; }});
-        // </Mock>
+        projects.success(function(projects) { $scope.projects = projects; });
+
         $scope.avaiable_interval_days = [1, 3, 7];
         $scope.config_change_commands = [];
 

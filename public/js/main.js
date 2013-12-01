@@ -67,7 +67,7 @@ if(env === 'dev') {
     });
 }
 
-require(['angular', 'app', 'domReady', 'jquery', 'bootstrap', 'plugins', 'application', 'exception', 'application_directives'],
+require(['angular', 'app', 'domReady', 'jquery', 'bootstrap', 'plugins', 'application', 'exception', 'application_directives', 'projects'],
     function(angular, app, domReady, $) {
     app.config(function($routeProvider, $locationProvider) {
     $routeProvider.

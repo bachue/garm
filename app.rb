@@ -15,6 +15,12 @@ configure :development, :test do
   set :database, "sqlite3:///db/#{settings.environment}.sqlite3"
 end
 
+get '/projects' do
+  json  Project.includes(:subscriptions).
+          as_json(only: [:id, :name],
+                  include: {subscriptions: {only: [:id, :email, :interval_days]}})
+end
+
 post '/projects/_run_commands' do
   error 400 if params['commands'].blank?
   commands = JSON.load(params['commands'])
