@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20131128160601) do
 
   add_index "projects", ["name"], name: "projects_name_uniq_index", unique: true
 
-  create_table "summary_subscriptions", force: true do |t|
+  create_table "subscriptions", force: true do |t|
     t.string   "email",         limit: 40, null: false
     t.integer  "project_id",               null: false
     t.integer  "interval_days",            null: false
@@ -60,6 +60,6 @@ ActiveRecord::Schema.define(version: 20131128160601) do
     t.datetime "updated_at"
   end
 
-  add_index "summary_subscriptions", ["email", "project_id"], name: "summary_subscriptions_email_project_uniq_index", unique: true
+  add_index "subscriptions", ["email", "project_id"], name: "subscriptions_email_project_uniq_index", unique: true
 
 end

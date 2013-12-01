@@ -43,7 +43,7 @@ post '/projects/_run_commands' do
         end
         rollback 400 unless project
 
-        subscription = project.summary_subscriptions.build command['subscription'].slice('email', 'interval_days')
+        subscription = project.subscriptions.build command['subscription'].slice('email', 'interval_days')
         if subscription.save
           new_subscription_list[project.id][subscription.email] = subscription.id
         else
