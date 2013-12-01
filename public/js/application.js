@@ -16,7 +16,7 @@ define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
             });
 
         $('#edit-project-modal input[name=project_name]').on('keypress', function(e) {
-            if(e.charCode === 13 && $scope.valid_project() === false) {
+            if(e.charCode === 13 && $scope.edit_project_form.$valid) {
                 $scope.submit_project();
                 $scope.$apply();
             }
@@ -112,13 +112,6 @@ define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
                 delete $scope.edit_project_origin_name;
                 delete $scope.edit_project_config;
             });
-        };
-
-        $scope.valid_project = function() {
-            if($('#edit-project-modal input[name=project_name]').hasClass('ng-invalid'))
-                return true;
-            if($scope.edit_project_modal_title === EDIT_PROJECT_STRING && $scope.edit_project_name === $scope.edit_project_original_name) return false;
-            return _.contains(_.map($scope.projects, function(project) { return project.name; }), $scope.edit_project_name);
         };
 
         $scope.delete_project = function(project) {

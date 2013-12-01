@@ -18,6 +18,7 @@ class CreateExceptionCategories < ActiveRecord::Migration
   end
 
   def down
+    remove_index :exception_categories, name: 'exception_categories_hash_uniq_index'
     drop_table :exception_categories
   end
 end

@@ -60,4 +60,6 @@ ActiveRecord::Schema.define(version: 20131128160601) do
     t.datetime "updated_at"
   end
 
+  add_index "summary_subscriptions", ["email", "project_id"], name: "summary_subscriptions_email_project_uniq_index", unique: true
+
 end
