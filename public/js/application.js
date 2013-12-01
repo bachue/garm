@@ -24,7 +24,7 @@ define(['controllers', 'jquery', 'underscore', 'projects'], function(controllers
 
         $scope.controller_names = ['Exceptions'];
 
-        projects.success(function(projects) { $scope.projects = projects; });
+        projects.done(function(projects) { $scope.projects = projects; });
 
         $scope.avaiable_interval_days = [1, 3, 7];
         $scope.config_change_commands = [];
