@@ -1,9 +1,11 @@
 #!/usr/bin/env ruby
 require_relative 'env'
 require_relative 'models'
+require_relative 'services'
 require_relative 'helpers'
 
 include Garm::Model
+include Garm::Service
 
 require 'sinatra/json'
 
@@ -16,9 +18,7 @@ configure :development, :test do
 end
 
 get '/projects' do
-  json  Project.includes(:subscriptions).
-          as_json(only: [:id, :name],
-                  include: {subscriptions: {only: [:id, :email, :interval_days]}})
+  json ProjectQuickLoader.load(10, 10)
 end
 
 post '/projects/_run_commands' do
