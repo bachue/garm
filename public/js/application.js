@@ -59,7 +59,7 @@ define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
                 return cmd.subscription === subscription;
             });
             if(subscription.id) {
-                $scope.config_change_commands.push({cmd: 'del_subscription', subscription_id: subscription.id, project: project});
+                $scope.config_change_commands.push({cmd: 'del_subscription', subscription_id: subscription.id});
             }
         };
 
@@ -149,7 +149,7 @@ define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
                 });
 
                 if(!last) {
-                    $scope.config_change_commands.push({cmd: 'edit_subscription', subscription: subscription, project: project});
+                    $scope.config_change_commands.push({cmd: 'edit_subscription', subscription: subscription});
                 }
             }
         };
@@ -187,9 +187,9 @@ define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
                         if (object.project.id) ret['project_id'] = object.project.id;
                         else ret['project_name'] = object.project.name;
                     } else if (object.cmd === 'edit_subscription') {
-                        ret = {project_id: object.project.id, subscription: {id: object.subscription.id, email: object.subscription.email, interval_days: object.subscription.interval_days}};
+                        ret = {subscription: {id: object.subscription.id, email: object.subscription.email, interval_days: object.subscription.interval_days}};
                     } else if (object.cmd === 'del_subscription') {
-                        ret = {subscription_id: object.subscription_id, project_id: object.project.id};
+                        ret = {subscription_id: object.subscription_id};
                     }
                     return _.extend(ret, {cmd: object.cmd});
                 });

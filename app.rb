@@ -16,7 +16,7 @@ end
 post '/projects/run_commands' do
   error 400 if params['commands'].blank?
   commands = JSON.load(params['commands'])
-  new_project_list, new_subscription_list = {}, {}
+  new_project_list, new_subscription_list = {}, Hash.new {|h, k| h[k] = {} }
 
   Project.transaction do
     commands.each do |command|
@@ -30,14 +30,32 @@ post '/projects/run_commands' do
         end
       when 'edit_project'
         project = Project.find command['project_id'] rescue rollback(400)
-        project.update name: command['project_name']
-        rollback 400, "Failed to update project: #{project.errors.full_messages}"
+        unless project.update name: command['project_name']
+          rollback 400, "Failed to update project: #{project.errors.full_messages}"
+        end
       when 'del_project'
-        project = Project.find command['project_id'] rescue rollback(400)
-        project.destroy
+        Project.find(command['project_id']).destroy rescue rollback(400)
       when 'add_subscription'
+        if command['project_id']
+          project = Project.find command['project_id'] rescue rollback(400)
+        elsif command['project_name']
+          project = Project.find_by name: command['project_name']
+        end
+        rollback 400 unless project
+
+        subscription = project.summary_subscriptions.build command['subscription'].slice('email', 'interval_days')
+        if subscription.save
+          new_subscription_list[project.id][subscription.email] = subscription.id
+        else
+          rollback 400, "Failed to create subscription: #{subscription.errors.full_messages}"
+        end
       when 'edit_subscription'
+        subscription = SummarySubscription.find command['subscription']['id'] rescue rollback(400)
+        unless subscription.update command['subscription'].slice('email', 'interval_days')
+          rollback 400, "Failed to update subscription: #{subscription.errors.full_messages}"
+        end
       when 'del_subscription'
+        SummarySubscription.find(command['subscription_id']).destroy rescue rollback(400)
       else
         rollback 400, "Command not found: #{command['cmd']}"
       end
