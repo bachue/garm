@@ -75,19 +75,17 @@ define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
             $scope.edit_project_modal_title = EDIT_PROJECT_STRING;
             $scope.edit_project_name = project.name;
             $scope.edit_project_original_name = project.name;
-            $scope.edit_project_config = project.ext_config;
             $('#edit-project-modal').modal();
         };
 
         $scope.submit_project = function() {
             if($scope.edit_project_modal_title === CREATE_PROJECT_STRING) {
-                var project = {name: $scope.edit_project_name, percent: 100, subscriptions: [], ext_config: $scope.edit_project_config};
+                var project = {name: $scope.edit_project_name, percent: 100, subscriptions: []};
                 $scope.projects.push(project);
                 $scope.config_change_commands.push({cmd: 'add_project', project: project});
             } else if($scope.edit_project_modal_title === EDIT_PROJECT_STRING) {
                 var project = _.find($scope.projects, function(project) { return project.name === $scope.edit_project_original_name; });
                 project.name = $scope.edit_project_name;
-                project.ext_config = $scope.edit_project_config;
 
                 // if this project is existed in backend, 
                 // try to find last edit cmd or create an edit cmd, 
@@ -161,11 +159,20 @@ define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
 
             var commands = {commands: generate_commands($scope.config_change_commands)};
             //convert cmd here
-            $.ajax({type: 'POST', url: '/projects/run_commands', data: commands, dataType: 'json', success: function() {
-
+            $.ajax({type: 'POST', url: '/projects/run_commands', data: commands, dataType: 'json', success: function(data) {
+                var new_project_list = data['new_projects'], new_subscription_list = data['new_subscriptions'];
+                _.each(new_project_list, function(id, name) {
+                    var project = _.find($scope.projects, function(project) { return !project.id && project.name === name; });
+                    if(project) project.id = id;
+                });
+                _.each(new_subscription_list, function(array, project_id) {
+                    var project = _.find($scope.projects, function(project) { return project.id === Number(project_id); });
+                    _.each(array, function(subscription_id, email) {
+                        var subscription = _.find(project.subscriptions, function(sub) { return !sub.id && sub.email === email; });
+                        if(subscription) subscription.id = subscription_id;
+                    });
+                });
             }});
-            //TODO: Think about how to assign id to new projects and subscriptions
-            console.log($scope.config_change_commands);
 
             function generate_commands (objects) {
                 var commands = _.map(objects, function(object, ret) {
