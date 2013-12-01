@@ -159,7 +159,7 @@ define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
 
             var commands = {commands: generate_commands($scope.config_change_commands)};
             //convert cmd here
-            $.ajax({type: 'POST', url: '/projects/run_commands', data: commands, dataType: 'json', success: function(data) {
+            $.ajax({type: 'POST', url: '/projects/_run_commands', data: commands, dataType: 'json', success: function(data) {
                 var new_project_list = data['new_projects'], new_subscription_list = data['new_subscriptions'];
                 _.each(new_project_list, function(id, name) {
                     var project = _.find($scope.projects, function(project) { return !project.id && project.name === name; });

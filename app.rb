@@ -13,7 +13,7 @@ configure :development, :test do
   set :database, "sqlite3:///db/#{settings.environment}.sqlite3"
 end
 
-post '/projects/run_commands' do
+post '/projects/_run_commands' do
   error 400 if params['commands'].blank?
   commands = JSON.load(params['commands'])
   new_project_list, new_subscription_list = {}, Hash.new {|h, k| h[k] = {} }
