@@ -13,30 +13,31 @@
 ActiveRecord::Schema.define(version: 20131128160601) do
 
   create_table "exception_categories", force: true do |t|
-    t.string   "type",          limit: 40,                 null: false
-    t.text     "message",                                  null: false
+    t.string   "exception_type", limit: 40,                 null: false
+    t.text     "message",                                   null: false
     t.text     "comment"
-    t.integer  "project_id",                               null: false
-    t.boolean  "important",                default: false, null: false
-    t.boolean  "wont_fix",                 default: false, null: false
-    t.boolean  "resolved",                 default: false, null: false
-    t.string   "hash",          limit: 40,                 null: false
-    t.datetime "first_seen_on",                            null: false
+    t.integer  "project_id",                                null: false
+    t.boolean  "important",                 default: false, null: false
+    t.boolean  "wont_fix",                  default: false, null: false
+    t.boolean  "resolved",                  default: false, null: false
+    t.string   "key",            limit: 40,                 null: false
+    t.datetime "first_seen_on",                             null: false
     t.string   "first_seen_in"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "exception_categories", ["hash"], name: "exception_categories_hash_uniq_index", unique: true
+  add_index "exception_categories", ["key"], name: "exception_categories_key_uniq_index", unique: true
 
   create_table "exceptions", force: true do |t|
-    t.datetime "time",                   null: false
-    t.string   "svr_host",    limit: 40, null: false
-    t.string   "svr_ip",      limit: 15, null: false
-    t.string   "svr_zone",    limit: 6,  null: false
-    t.integer  "pid",                    null: false
-    t.string   "version",     limit: 11
-    t.text     "backtrace",              null: false
+    t.integer  "exception_category_id",            null: false
+    t.datetime "time",                             null: false
+    t.string   "svr_host",              limit: 40, null: false
+    t.string   "svr_ip",                limit: 15, null: false
+    t.string   "svr_zone",              limit: 6,  null: false
+    t.integer  "pid",                              null: false
+    t.string   "version",               limit: 11
+    t.text     "backtrace",                        null: false
     t.text     "tag"
     t.text     "position"
     t.text     "description"

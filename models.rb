@@ -16,8 +16,8 @@ module Garm
     class ExceptionCategory < ActiveRecord::Base
       belongs_to :project
       has_many :exceptions
-      validates :hash, uniqueness: true
-      validates :exception_type, :message, :project_id, :hash, :first_seen_on, presence: true
+      validates :key, uniqueness: true
+      validates :exception_type, :message, :project_id, :key, :first_seen_on, presence: true
     end
 
     class Exception < ActiveRecord::Base
