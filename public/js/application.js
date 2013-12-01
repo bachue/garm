@@ -196,9 +196,5 @@ define(['controllers', 'jquery', 'underscore'], function(controllers, $, _) {
                 return JSON.stringify(commands);
             }
         };
-
-        $scope.check_config = function() {
-            return $(config_modal_form).hasClass('ng-invalid');
-        };
     });
 });

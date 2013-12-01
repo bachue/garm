@@ -114,27 +114,27 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success left" data-ng-click="add_project()" id="start-edit-project-modal">New Project</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-disabled="check_config()" data-ng-click="save_config()">Save changes</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-disabled="config_modal_form.$invalid" data-ng-click="save_config()">Save changes</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="modal fade" id="edit-project-modal" tabindex="-1" role="dialog" aria-labelledby="edit-project-label" aria-hidden="true">
             <div class="modal-dialog">
-                <div class="modal-content">
+                <form class="modal-content" name="edit_project_form">
                     <div class="modal-header">
                         <h4 class="modal-title" data-ng-bind="edit_project_modal_title"></h4>
                     </div>
                     <div class="modal-body">
                         <div class="input-group col-xs-12">
-                            <input type="text" class="form-control" placeholder="Project Name" data-ng-model="edit_project_name" name="project_name" required data-ng-maxlength="20" />
+                            <input type="text" class="form-control" placeholder="Project Name" data-ng-model="edit_project_name" data-uniq-project name="project_name" required data-ng-maxlength="20" />
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" data-ng-disabled="valid_project()" data-ng-click="submit_project()">Save changes</button>
+                        <button type="button" class="btn btn-primary" data-ng-disabled="edit_project_form.$invalid" data-ng-click="submit_project()">Save changes</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </body>

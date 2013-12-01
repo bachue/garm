@@ -20,6 +20,18 @@ define(['directives'], function(directives) {
         };
     });
 
+    directives.directive('uniqProject', function() {
+        return {
+            require: '?ngModel',
+            link: function(scope, element, attrs, ngModel) {
+                scope.$watch('edit_project_name', function(value) {
+                    var names = _.map(scope.projects, function(project) { return project.name; });
+                    ngModel.$setValidity('uniq', !_.contains(names, value));
+                });
+            }
+        };
+    });
+
     function getPercentColor(percent) {
         function getPercentLevel(percent) {
             if (percent < 60) return 0;
