@@ -9,7 +9,7 @@ class CreateExceptionCategories < ActiveRecord::Migration
       t.boolean :wont_fix, default: false, null: false
       t.boolean :resolved, default: false, null: false
       t.string :key, limit: 40, null: false
-      t.datetime :first_seen_on, null: false
+      t.integer :first_seen_on, null: false
       t.string :first_seen_in, limits: 11
       t.timestamps
     end
