@@ -7,6 +7,8 @@ ARTHOR = 'Bachue'
 
 settings.disable :cdn
 
+settings.environment = ENV['ENV'] if ENV['ENV']
+
 OptionParser.new do |opts|
   opts.banner = "Usage: #{$0} [options]"
 
