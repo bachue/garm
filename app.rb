@@ -3,6 +3,8 @@ require_relative 'env'
 require_relative 'models'
 require_relative 'helpers'
 
+include Garm::Model
+
 require 'sinatra/json'
 
 configure do

@@ -1,10 +1,27 @@
-class Project < ActiveRecord::Base
-  has_many :subscriptions
-  validates :name, presence: true, length: { maximum: 20 }, uniqueness: true
-end
+module Garm
+  module Model
+    class Project < ActiveRecord::Base
+      has_many :subscriptions
+      validates :name, presence: true, length: { maximum: 20 }, uniqueness: true
+    end
 
-class Subscription < ActiveRecord::Base
-  belongs_to :project
-  validates :project_id, :interval_days, presence: true
-  validates :email, presence: true, length: {maximum: 40}
+    class Subscription < ActiveRecord::Base
+      belongs_to :project
+      validates :project_id, :interval_days, presence: true
+      validates :email, presence: true, length: {maximum: 40}
+      validates_uniqueness_of :email, :scope => :project_id
+    end
+
+    class ExceptionCategory < ActiveRecord::Base
+      belongs_to :project
+      has_many :exceptions
+      validates :hash, uniqueness: true
+      validates :type, :message, :project_id, :hash, :first_seen_on, presence: true
+    end
+
+    class Exception < ActiveRecord::Base
+      belongs_to :exception_category
+      validates :time, :svr_host, :svr_ip, :svr_host, :pid, :backtrace, :exception_category_id, presence: true
+    end
+  end
 end
