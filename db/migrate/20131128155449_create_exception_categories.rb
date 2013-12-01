@@ -1,7 +1,7 @@
 class CreateExceptionCategories < ActiveRecord::Migration
   def up
     create_table :exception_categories do |t|
-      t.string :type, limit: 40, null: false
+      t.string :exception_type, limit: 40, null: false
       t.text :message, null: false
       t.text :comment
       t.integer :project_id, null: false

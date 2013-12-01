@@ -2,6 +2,7 @@ module Garm
   module Model
     class Project < ActiveRecord::Base
       has_many :subscriptions
+      has_many :exception_categories
       validates :name, presence: true, length: { maximum: 20 }, uniqueness: true
     end
 
@@ -16,7 +17,7 @@ module Garm
       belongs_to :project
       has_many :exceptions
       validates :hash, uniqueness: true
-      validates :type, :message, :project_id, :hash, :first_seen_on, presence: true
+      validates :exception_type, :message, :project_id, :hash, :first_seen_on, presence: true
     end
 
     class Exception < ActiveRecord::Base
