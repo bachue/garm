@@ -185,6 +185,10 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                     var summaries_from_category = _.pick(category, SUMMARY_KEYS_FROM_CATEGROY);
                     summaries_from_category['first_seen_on'] = $scope.get_utc_string_with_tz(category.first_seen_on);
                     var summaries = _.extend(summaries_from_exception, summaries_from_category, exception.summaries);
+                    summaries = _.reduce(summaries, function(obj, value, key) { 
+                        if (value) obj[key] = value;
+                        return obj;
+                    }, {});
                     summaries = _.map(summaries, function(value, key) { return {key: SUMMARY_KEYS_I18N[key] ? SUMMARY_KEYS_I18N[key] : key, value: value}; });
                     summaries = _.sortBy(summaries, function(element) {
                         var idx = SUMMARY_KEYS_ORDER.indexOf(element.key);
