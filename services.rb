@@ -24,7 +24,7 @@ module Garm
 
     class ExceptionQuickLoader
       def self.load(category, exception_limit)
-        exceptions = category.exceptions.select([:id, :time, :svr_host, :svr_ip, :svr_zone, :pid, :version, :backtrace, :tag, :position, :description, :summaries, :ext]).limit exception_limit
+        exceptions = category.exceptions.select([:id, :time_utc, :svr_host, :svr_ip, :svr_zone, :pid, :version, :backtrace, :tag, :position, :description, :summaries, :ext]).limit exception_limit
         exceptions.as_json
       end
     end

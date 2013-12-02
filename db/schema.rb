@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20131128160601) do
 
   create_table "exceptions", force: true do |t|
     t.integer "exception_category_id",            null: false
-    t.integer "time",                             null: false
+    t.integer "time_utc",                         null: false
     t.string  "svr_host",              limit: 40, null: false
     t.string  "svr_ip",                limit: 15, null: false
     t.string  "svr_zone",              limit: 6,  null: false
