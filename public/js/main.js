@@ -67,22 +67,25 @@ if(env === 'dev') {
     });
 }
 
-require(['angular', 'app', 'domReady', 'jquery', 'bootstrap', 'plugins', 'application', 'exception', 'application_directives', 'projects'],
-    function(angular, app, domReady, $) {
-    app.config(function($routeProvider, $locationProvider) {
-    $routeProvider.
-        when('/', {
-            redirectTo: '/exceptions/'
-        }).
-        when('/exceptions/:project?/:category_id?/:exception_id?/:tab?', {
-            controller: 'Exception',
-            templateUrl: 'templates/exceptions.html'
-        }).
-        otherwise({
-            redirectTo: '/'
+require(['angular', 'app', 'domReady', 'jquery', 'application', 'exception', 'application',
+    'application_directives', 'projects_loader', 'exceptions_loader'],
+    function(angular, app, domReady, $, application_promise, exception_promise) {
+        $.when(application_promise, exception_promise).then(function() {
+            app.config(function($routeProvider, $locationProvider) {
+            $routeProvider.
+                when('/', {
+                    redirectTo: '/exceptions/'
+                }).
+                when('/exceptions/:project?/:category_id?/:exception_id?/:tab?', {
+                    controller: 'Exception',
+                    templateUrl: 'templates/exceptions.html'
+                }).
+                otherwise({
+                    redirectTo: '/'
+                });
+            });
+            domReady(function() {
+                angular.bootstrap(document, ['GarmApp']);
+            });
         });
-    });
-    domReady(function() {
-        angular.bootstrap(document, ['GarmApp']);
-    });
 });
