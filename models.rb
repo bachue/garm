@@ -4,6 +4,7 @@ module Garm
       has_many :subscriptions
       has_many :exception_categories
       validates :name, presence: true, length: { maximum: 20 }, uniqueness: true
+      attr_accessor :percent
     end
 
     class Subscription < ActiveRecord::Base

@@ -19,7 +19,10 @@ end
 
 get '/projects/_subscriptions' do
   projects = Project.select([:id, :name]).includes :subscriptions
-  json projects.as_json(include: {subscriptions: {only: [:id, :email, :interval_days]}})
+  # TODO: Calc real percentage here
+  projects.each {|project| project.percent = rand(100) }
+
+  json projects.as_json(methods: :percent, include: {subscriptions: {only: [:id, :email, :interval_days]}})
 end
 
 get '/projects/_exceptions' do
