@@ -31,7 +31,6 @@ ActiveRecord::Schema.define(version: 20131128160601) do
   add_index "exception_categories", ["project_id"], name: "index_exception_categories_on_project_id"
 
   create_table "exceptions", force: true do |t|
-    t.integer "exceptions_id",                    null: false
     t.integer "exception_category_id",            null: false
     t.integer "time",                             null: false
     t.string  "svr_host",              limit: 40, null: false
@@ -48,7 +47,6 @@ ActiveRecord::Schema.define(version: 20131128160601) do
   end
 
   add_index "exceptions", ["exception_category_id"], name: "index_exceptions_on_exception_category_id"
-  add_index "exceptions", ["exceptions_id"], name: "index_exceptions_on_exceptions_id"
 
   create_table "projects", force: true do |t|
     t.string   "name",       limit: 20, null: false
