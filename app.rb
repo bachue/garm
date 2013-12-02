@@ -17,7 +17,12 @@ configure :development, :test do
   set :database, "sqlite3:///db/#{settings.environment}.sqlite3"
 end
 
-get '/projects' do
+get '/projects/_subscriptions' do
+  projects = Project.select([:id, :name]).includes :subscriptions
+  json projects.as_json(include: {subscriptions: {only: [:id, :email, :interval_days]}})
+end
+
+get '/projects/_exceptions' do
   json ProjectQuickLoader.load(10, 10)
 end
 

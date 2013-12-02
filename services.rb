@@ -3,12 +3,11 @@ module Garm
     class ProjectQuickLoader
       def self.load(category_limit, exception_limit)
         # Just limit categories and exceptions, always load all subscriptions and projects for now
-        projects = Project.select([:id, :name]).includes :subscriptions
-        hash = projects.as_json(include: {subscriptions: {only: [:id, :email, :interval_days]}})
-        projects.each_with_index do |project, idx|
-          hash[idx]['exception_categories'] = ExceptionCategoryQuickLoader.load project, category_limit, exception_limit
+        projects = Project.select(:id)
+        projects.inject({}) do |h, project|
+          h[project.id] = ExceptionCategoryQuickLoader.load project, category_limit, exception_limit
+          h
         end
-        hash
       end
     end
 
