@@ -419,6 +419,7 @@ pre.error-comment {
   font-style: italic;
   color: #333;
   margin: 10px;
+  height: 130px;
 }
 
 textarea.error-comment {
