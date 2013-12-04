@@ -84,7 +84,9 @@ require(['angular', 'app', 'domReady', 'jquery', 'application', 'exception', 'ap
                     redirectTo: '/'
                 });
             });
+
             domReady(function() {
+                $('img.loading').hide('slow', function() { $(this).remove(); });
                 angular.bootstrap(document, ['GarmApp']);
             });
         });

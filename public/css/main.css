@@ -294,6 +294,13 @@ textarea {
 }
 
 /* Core Extension Style */
+img.loading {
+  position: absolute;
+  left: 50%;
+  margin-left: -32px;
+  top: 192px;
+}
+
 input.ng-invalid, textarea.ng-invalid, select.ng-invalid{
   color: red;
   border-color: red;
