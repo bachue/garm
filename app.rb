@@ -18,6 +18,7 @@ configure :development, :test do
 end
 
 get '/projects/_subscriptions' do
+  binding.pry
   projects = Project.select([:id, :name]).includes :subscriptions
   # TODO: Calc real percentage here
   projects.each {|project| project.percent = rand(100) }

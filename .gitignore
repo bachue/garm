@@ -2,3 +2,5 @@
 img/branding.png
 *.sqlite3
 *.sqlite3-journal
+
+garm_howl/Gemfile.lock
