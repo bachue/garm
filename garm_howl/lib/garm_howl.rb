@@ -31,6 +31,13 @@ module Garm
       :ext => {'Environment' => ENV}.merge(opts[:ext] || {})
     }
 
+    if opts[:context]
+      message[:ext].merge({
+        'Instance Variables' => get_instance_variables(opts[:context]),
+        'Class Variables' => get_class_variables(opts[:context])
+      })
+    end
+
     if defined?(Rails)
       # TODO: Add Rails specfic parameter here
     end
@@ -51,6 +58,21 @@ module Garm
         choices.each do |choice|
           return choice.read if choice.exist?
         end
+      end
+    end
+
+    def get_instance_variables env
+      env.instance_variables.inject({}) do |h, k|
+        h[k] = env.instance_variable_get k
+        h
+      end
+    end
+
+    def get_class_variables env
+      cls = env.is_a?(Class) ? env : env.class
+      cls.class_variables.inject({}) do |h, k|
+        h[k] = cls.class_variable_get k
+        h
       end
     end
 
