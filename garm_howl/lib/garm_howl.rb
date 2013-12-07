@@ -91,10 +91,6 @@ module Garm
       [error, context, request, options]
     end
 
-    def stringify_hash hash
-      Hash[hash.map {|k, v| [k, v.inspect]}]
-    end
-
     def build_params args
       error, context, request, options = extract_options! args
 
@@ -140,7 +136,7 @@ module Garm
 
       if request
         message[:ext].merge!({
-          'Request' => stringify_hash(request.env),
+          'Request' => stringify_hash(simplify_hash(request.env)),
           'Parameters' => request.params,
           'Session' => stringify_hash(request.session),
           'Cookies' => request.cookies
@@ -161,6 +157,10 @@ module Garm
       uri = URI(get_config['url'])
       uri.path = '/api/log'
       Net::HTTP.post_form uri, 'log' => MultiJson.dump(message)
+    end
+
+    def stringify_hash hash
+      hash.inject({}) {|h, (k, v)| h[k] = v.inspect; h }
     end
 
     InitialzeError = Class.new StandardError

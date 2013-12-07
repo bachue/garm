@@ -14,5 +14,9 @@ module Garm
 
     def append_framwork_info_to message, error, request
     end
+
+    def simplify_hash hash
+      hash
+    end
   end
 end

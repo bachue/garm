@@ -20,5 +20,9 @@ module Garm
       })
       message[:description] ||= "A #{error.class.name} occurred in #{request.env['sinatra.route']}"
     end
+
+    def simplify_hash hash
+      hash
+    end
   end
 end
