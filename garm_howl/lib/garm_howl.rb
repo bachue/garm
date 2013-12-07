@@ -4,8 +4,6 @@ require 'pathname'
 require 'yaml'
 
 module Garm
-  extend self
-
   attr_accessor :project, :hostname, :ip_addr, :timezone, :pid, :version, :config_path
 
   def howl *args
@@ -23,20 +21,11 @@ module Garm
     end
 
     def get_version
-      if defined?(Rails)
-        choices = [Rails.root.join('public')]
-      elsif defined?(Sinatra)
-        choices = [File.join(Sinatra::Base.settings.root || '.', 'public'),
-                   File.join(Sinatra::Base.settings.public_folder || '.')]
-      else
-        choices = ['public', '.']
-      end
-
       filenames = ['version', 'version.txt']
 
-      choices.each do |choice|
+      possible_version_paths.each do |dir|
         filenames.each do |filename|
-          path = Pathname.new "#{choice}/#{filename}"
+          path = Pathname.new "#{dir}/#{filename}"
           return path.read if path.exist?
         end
       end
@@ -46,20 +35,11 @@ module Garm
       return @config_path if @config_path
       return Sinatra::Base.settings.garm_config if defined?(Sinatra) && Sinatra::Base.settings.garm_config
 
-      if defined?(Rails)
-        choices = [Rails.root.join('config')]
-      elsif defined?(Sinatra)
-        choices = [File.join(Sinatra::Base.settings.root || '.'),
-                   File.join(Sinatra::Base.settings.root || '.', 'config')]
-      else
-        choices = ['config', '.']
-      end
-
       filenames = ['garm.yml', 'garm.yaml']
 
-      choices.each do |choice|
+      possible_config_paths.each do |dir|
         filenames.each do |filename|
-          path = Pathname.new "#{choice}/#{filename}"
+          path = Pathname.new "#{dir}/#{filename}"
           return path if path.exist?
         end
       end
@@ -67,15 +47,7 @@ module Garm
 
     def get_config path = get_config_path
       raise ArgumentError.new "Config file #{path} not exists" unless File.exist?(path)
-      content = YAML.load_file path
-
-      if defined?(Rails)
-        content = content[Rails.env]
-      elsif defined?(Sinatra)
-        content = content[Sinatra::Base.settings.environment.to_s]
-      end
-
-      content
+      parse_config YAML.load_file(path)
     end
 
     def get_instance_variables env
@@ -146,37 +118,26 @@ module Garm
       }
 
       if context
-        message[:ext].merge({
+        message[:ext].merge!({
           'Instance Variables' => stringify_hash(get_instance_variables(opts[:context])),
           'Class Variables' => stringify_hash(get_class_variables(opts[:context]))
         })
       end
 
       if request
-        message[:ext].merge({
+        message[:ext].merge!({
           'Request' => stringify_hash(request.env),
           'Parameters' => request.params,
           'Session' => stringify_hash(request.session),
           'Cookies' => request.cookies
         })
-        message[:summaries].merge({
+        message[:summaries].merge!({
           'Method' => request.env['REQUEST_METHOD'],
           'URL' => request.env['REQUEST_URI'],
           'Server Port' => request.env['SERVER_PORT']
         })
 
-        if defined?(Rails)
-          message[:summaries].merge({
-            'Controller' => request.params['controller'],
-            'Action' => request.params['action']
-          })
-          message[:description] ||= "A #{error.class.name} occurred in #{request.params['controller']}##{request.params['action']}"
-        elsif defined?(Sinatra)
-          message[:summaries].merge({
-            'Route' => request.env['sinatra.route']
-          })
-          message[:description] ||= "A #{error.class.name} occurred in #{request.env['sinatra.route']}"
-        end
+        append_framwork_info_to message, error, request
       end
 
       message
@@ -184,7 +145,28 @@ module Garm
 
     def send_message message
       data = MultiJson.dump message
+      # TODO
     end
 
     InitialzeError = Class.new StandardError
+
+    extend self
+    if defined?(Rails)
+      case Rails::VERSION::MAJOR
+      when 2
+        require 'garm_howl/frameworks/rails2'
+        extend Rails2
+      when 3, 4
+        require 'garm_howl/frameworks/rails3'
+        extend Rails3
+      else
+        raise "Doesn't support the current Rails version (#{Rails::VERSION::STRING})"
+      end
+    elsif defind?(Sinatra)
+      require 'garm_howl/frameworks/sinatra'
+      extend Sinatra
+    else
+      require 'garm_howl/frameworks/no_framework'
+      extend NoFramework
+    end
 end
