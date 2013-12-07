@@ -3,15 +3,15 @@
 module Garm
   module Rails
     def possible_version_paths
-      [Rails.root.join('public')]
+      [::Rails.root.join('public')]
     end
 
     def possible_config_paths
-      [Rails.root.join('config')]
+      [::Rails.root.join('config')]
     end
 
     def parse_config content
-      content[Rails.env]
+      content[::Rails.env]
     end
 
     def append_framwork_info_to message, error, request

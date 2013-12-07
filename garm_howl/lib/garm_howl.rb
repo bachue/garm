@@ -9,7 +9,7 @@ module Garm
   attr_accessor :project, :hostname, :ip_addr, :timezone, :pid, :version, :config_path
 
   def howl *args
-    message = build_message build_params(args)
+    message = build_message(*build_params(args))
     send_message message
   end
 
@@ -45,6 +45,8 @@ module Garm
           return path if path.exist?
         end
       end
+
+      raise 'No config file for Garm'
     end
 
     # Example for config (for Rails)
@@ -81,8 +83,8 @@ module Garm
       error = args.detect {|arg| arg.is_a?(Exception) }
       args.delete error
 
-      request = defined?(Rack::Request) args.detect {|arg| arg.is_a?(Rack::Request) }
-      args.delete request
+      request = args.detect {|arg| arg.is_a?(Rack::Request) } if defined?(Rack::Request)
+      args.delete request if request
 
       context = args.first # Believe the only rest one is context
 
@@ -105,12 +107,14 @@ module Garm
 
     def build_message error, context, request, options
       raise ArgumentError.new 'Please give me an exception' unless error.is_a?(Exception)
-      raise InitialzeError.new 'Please set current project name which you registered in Garm server' unless @project
+
+      project = options[:project] || @project
+      raise InitialzeError.new 'Please set current project name which you registered in Garm server' unless project
 
       init_variables
 
       message = {
-        :project => @project,
+        :project => project,
         :exception_type => error.class.name,
         :message => error.message,
         :backtrace => error.backtrace,
@@ -118,19 +122,19 @@ module Garm
         :svr_host => @hostname,
         :svr_zone => @timezone,
         :pid => @pid,
-        :version => @version unless @version == :unknown,
-        :important => !!opts[:important],
-        :tag => opts['tag'],
-        :position => opts[:position] || error.backtrace.first,
-        :description => opts[:description],
-        :summaries => opts[:summaries] || {},
-        :ext => {'Environment' => ENV}.merge(opts[:ext] || {})
+        :version => (@version unless @version == :unknown),
+        :important => !!options[:important],
+        :tag => options['tag'],
+        :position => options[:position] || error.backtrace.first,
+        :description => options[:description],
+        :summaries => options[:summaries] || {},
+        :ext => {'Environment' => ENV}.merge(options[:ext] || {})
       }
 
       if context
         message[:ext].merge!({
-          'Instance Variables' => stringify_hash(get_instance_variables(opts[:context])),
-          'Class Variables' => stringify_hash(get_class_variables(opts[:context]))
+          'Instance Variables' => stringify_hash(get_instance_variables(options[:context])),
+          'Class Variables' => stringify_hash(get_class_variables(options[:context]))
         })
       end
 
@@ -156,14 +160,14 @@ module Garm
     def send_message message
       uri = URI(get_config['url'])
       uri.path = '/api/log'
-      Net::HTTP.post_form url, 'log' => MultiJson.dump(message)
+      Net::HTTP.post_form uri, 'log' => MultiJson.dump(message)
     end
 
     InitialzeError = Class.new StandardError
 
     extend self
-    if defined?(Rails)
-      case Rails::VERSION::MAJOR
+    if defined?(::Rails)
+      case ::Rails::VERSION::MAJOR
       when 2
         require 'garm_howl/frameworks/rails2'
         extend Rails2
@@ -171,7 +175,7 @@ module Garm
         require 'garm_howl/frameworks/rails3'
         extend Rails3
       else
-        raise "Doesn't support the current Rails version (#{Rails::VERSION::STRING})"
+        raise "Doesn't support the current Rails version (#{::Rails::VERSION::STRING})"
       end
     elsif defind?(Sinatra)
       require 'garm_howl/frameworks/sinatra'
