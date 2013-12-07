@@ -2,6 +2,8 @@ require 'garm_howl/version'
 require 'socket'
 require 'pathname'
 require 'yaml'
+require 'uri'
+require 'net/http'
 
 module Garm
   attr_accessor :project, :hostname, :ip_addr, :timezone, :pid, :version, :config_path
@@ -44,6 +46,14 @@ module Garm
         end
       end
     end
+
+    # Example for config (for Rails)
+    # development:
+    #   url: http://localhost:3000
+    # test:
+    #   url: http://staging.garm
+    # production:
+    #   url: http://garm
 
     def get_config path = get_config_path
       raise ArgumentError.new "Config file #{path} not exists" unless File.exist?(path)
@@ -144,8 +154,9 @@ module Garm
     end
 
     def send_message message
-      data = MultiJson.dump message
-      # TODO
+      uri = URI(get_config['url'])
+      uri.path = '/api/log'
+      Net::HTTP.post_form url, 'log' => MultiJson.dump(message)
     end
 
     InitialzeError = Class.new StandardError
