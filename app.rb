@@ -82,15 +82,18 @@ end
 
 post '/api/exceptions' do
   parser = Yajl::Parser.new
-  data = parser.parse params['exception']
+  data = parser.parse params['e']
 
   ExceptionCategory.transaction do
     rollback 400, 'parameter sha1 is required' if data['sha1'].empty?
-    category = ExceptionCategory.find_by key: data['sha1']
+    rollback 400, 'parameter project is required' if data['project'].empty?
+
+    project = Project.find_by name: data['project']
+    rollback 400, "Failed to find project #{data['project']}" unless project
+
+    category = project.exception_categories.find_by key: data['sha1']
 
     unless category
-      project = Project.find_by name: data['project']
-      rollback 400, "Failed to find project #{data['project']}" unless project
       category = project.exception_categories.build data.slice('exception_type', 'message', 'important')
       category.key           = data['sha1']
       category.first_seen_on = data['time_utc']
@@ -104,6 +107,24 @@ post '/api/exceptions' do
       'version', 'backtrace', 'tag', 'position', 'description', 'summaries', 'ext')
     unless exception.save
       rollback 400, "Failed to create exception: #{exception.errors.full_messages}"
+    end
+
+    'success'
+  end
+end
+
+post '/api/logs' do
+  parser = Yajl::Parser.new
+  data = parser.parse params['l']
+
+  Log.transaction do
+    rollback 400, 'parameter log is required' if data['log'].empty?
+
+    data['log'].match /(.*?)\s*<<(\w+)>>\s*(.*)/
+
+    log = Log.new uuid: $2, log: "#{$1}#{$3}"
+    unless log.save
+      rollback 400, "Failed to create log: #{log.errors.full_messages}"
     end
 
     'success'

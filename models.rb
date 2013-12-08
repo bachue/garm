@@ -28,5 +28,9 @@ module Garm
       serialize :summaries
       serialize :ext
     end
+
+    class Log < ActiveRecord::Base
+      validates :uuid, presence: true
+    end
   end
 end

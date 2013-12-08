@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131128160601) do
+ActiveRecord::Schema.define(version: 20131208153615) do
 
   create_table "exception_categories", force: true do |t|
     t.string   "exception_type", limit: 40,                 null: false
@@ -47,6 +47,13 @@ ActiveRecord::Schema.define(version: 20131128160601) do
   end
 
   add_index "exceptions", ["exception_category_id"], name: "index_exceptions_on_exception_category_id"
+
+  create_table "logs", force: true do |t|
+    t.text "uuid", null: false
+    t.text "log"
+  end
+
+  add_index "logs", ["uuid"], name: "logs_uuid_index"
 
   create_table "projects", force: true do |t|
     t.string   "name",       limit: 20, null: false
