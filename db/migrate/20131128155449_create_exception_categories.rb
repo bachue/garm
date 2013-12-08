@@ -14,7 +14,7 @@ class CreateExceptionCategories < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :exception_categories, :key, name: 'exception_categories_key_uniq_index', unique: true
+    add_index :exception_categories, [:project_id, :key], name: 'exception_categories_project_key_uniq_index', unique: true
   end
 
   def down
