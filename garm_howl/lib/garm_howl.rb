@@ -115,11 +115,12 @@ module Garm
         :project => project,
         :exception_type => error.class.name,
         :message => error.message,
-        :backtrace => error.backtrace,
+        :backtrace => error.backtrace.join("\n"),
         :sha1 => sha1(error.class.name, error.message, error.backtrace),
         :time_utc => Time.now.utc.to_i,
         :svr_host => @hostname,
         :svr_zone => @timezone,
+        :svr_ip => @ip_addr,
         :pid => @pid,
         :position => options[:position] || error.backtrace.first,
         :summaries => options[:summaries] || {},
@@ -141,10 +142,11 @@ module Garm
       if request
         message[:ext].merge!({
           'Request' => stringify_hash(simplify_hash(request.env)),
-          'Parameters' => request.params,
-          'Session' => stringify_hash(request.session),
-          'Cookies' => request.cookies
+          'Parameters' => request.params
         })
+        message[:ext].merge! 'Session' => stringify_hash(request.session) unless request.session.empty?
+        message[:ext].merge! 'Cookies' => request.cookies unless request.cookies.empty?
+
         message[:summaries].merge!({
           'Method' => request.env['REQUEST_METHOD'],
           'URL' => request.env['REQUEST_URI'],

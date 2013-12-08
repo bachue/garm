@@ -1,7 +1,10 @@
 helpers do
   def rollback(code, message = nil)
     status code
-    logger.error message if message.present?
+    if message.present?
+      logger.error message
+      STDERR.puts message
+    end
     raise ActiveRecord::Rollback
   end
 end

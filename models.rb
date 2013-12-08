@@ -23,7 +23,10 @@ module Garm
 
     class Exception < ActiveRecord::Base
       belongs_to :exception_category
-      validates :time, :svr_host, :svr_ip, :svr_host, :pid, :backtrace, :exception_category_id, presence: true
+      validates :time_utc, :svr_host, :svr_ip, :svr_host, :pid, :backtrace, :exception_category_id, presence: true
+      serialize :tag
+      serialize :summaries
+      serialize :ext
     end
   end
 end

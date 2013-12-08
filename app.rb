@@ -18,7 +18,6 @@ configure :development, :test do
 end
 
 get '/projects/_subscriptions' do
-  binding.pry
   projects = Project.select([:id, :name]).includes :subscriptions
   # TODO: Calc real percentage here
   projects.each {|project| project.percent = rand(100) }
@@ -79,6 +78,36 @@ post '/projects/_run_commands' do
     end
   end
   json new_projects: new_project_list, new_subscriptions: new_subscription_list if status == 200
+end
+
+post '/api/exceptions' do
+  parser = Yajl::Parser.new
+  data = parser.parse params['exception']
+
+  ExceptionCategory.transaction do
+    rollback 400, 'parameter sha1 is required' if data['sha1'].empty?
+    category = ExceptionCategory.find_by key: data['sha1']
+
+    unless category
+      project = Project.find_by name: data['project']
+      rollback 400, "Failed to find project #{data['project']}" unless project
+      category = project.exception_categories.build data.slice('exception_type', 'message', 'important')
+      category.key           = data['sha1']
+      category.first_seen_on = data['time_utc']
+      category.first_seen_in = data['version'] if data['version']
+      unless category.save
+        rollback 400, "Failed to create exception category: #{category.errors.full_messages}"
+      end
+    end
+
+    exception = category.exceptions.build data.slice('time_utc', 'svr_host', 'svr_ip', 'svr_zone', 'pid',
+      'version', 'backtrace', 'tag', 'position', 'description', 'summaries', 'ext')
+    unless exception.save
+      rollback 400, "Failed to create exception: #{exception.errors.full_messages}"
+    end
+
+    'success'
+  end
 end
 
 get '/js/env.js' do
