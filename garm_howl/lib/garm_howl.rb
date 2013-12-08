@@ -133,10 +133,16 @@ module Garm
       message[:description] = options[:description] if options[:description]
 
       if context
-        message[:ext].merge!({
-          'Instance Variables' => stringify_hash(get_instance_variables(options[:context])),
-          'Class Variables' => stringify_hash(get_class_variables(options[:context]))
-        })
+        instance_variables = get_instance_variables(context).reject {|k, v| k.to_s.start_with? '@_' }
+        class_variables = get_class_variables(context)
+
+        unless instance_variables.empty?
+          message[:ext].merge! 'Instance Variables' => stringify_hash(instance_variables)
+        end
+
+        unless class_variables.empty?
+          message[:ext].merge! 'Class Variables' => stringify_hash(class_variables)
+        end
       end
 
       if request

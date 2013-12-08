@@ -41,7 +41,8 @@ module Garm
 
     def sha1 type, message, backtrace
       backtrace = backtrace.select {|trace| trace.start_with? ::Rails.root.to_s }
-      Digest::SHA1.hexdigest "#{type}#{message}#{backtrace.join}"
+                    .map {|trace| trace.match(/^(.+?):(\d+)(|:in `(.+)')$/); [$1,$4].join(':') }
+      Digest::SHA1.hexdigest "#{type}-#{message}-#{backtrace.join("\n")}"
     end
   end
 end
