@@ -4,13 +4,19 @@ require 'pathname'
 require 'yaml'
 require 'uri'
 require 'net/http'
+require 'garm_howl/core_ext/logger'
 
 module Garm
   attr_accessor :project, :hostname, :ip_addr, :timezone, :pid, :version, :config_path
 
   def howl *args
-    message = build_message(*build_params(args))
-    send_message message
+    message = build_exception_message(*build_params(args))
+    send_message message, '/api/exceptions', 'e'
+  end
+
+  def log log
+    data = {:log => log}
+    send_message data, '/api/logs', 'l'
   end
 
   private
@@ -103,7 +109,7 @@ module Garm
       [error, context, request, options]
     end
 
-    def build_message error, context, request, options
+    def build_exception_message error, context, request, options
       raise ArgumentError.new 'Please give me an exception' unless error.is_a?(Exception)
 
       project = options[:project] || @project
@@ -165,10 +171,10 @@ module Garm
       message
     end
 
-    def send_message message
+    def send_message message, path, key
       uri = URI(get_config['url'])
-      uri.path = '/api/exceptions'
-      Net::HTTP.post_form uri, 'exception' => MultiJson.dump(message)
+      uri.path = path
+      Net::HTTP.post_form uri, key => MultiJson.dump(message)
     end
 
     def stringify_hash hash
