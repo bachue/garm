@@ -1,5 +1,7 @@
 # This module is for something common amoung all Rails version
 
+require 'digest'
+
 module Garm
   module Rails
     def possible_version_paths
@@ -35,6 +37,11 @@ module Garm
                 end
         h
       end
+    end
+
+    def sha1 type, message, backtrace
+      backtrace = backtrace.select {|trace| trace.start_with? ::Rails.root.to_s }
+      Digest::SHA1.hexdigest "#{type}#{message}#{backtrace.join}"
     end
   end
 end

@@ -116,6 +116,7 @@ module Garm
         :exception_type => error.class.name,
         :message => error.message,
         :backtrace => error.backtrace,
+        :sha1 => sha1(error.class.name, error.message, error.backtrace),
         :time_utc => Time.now.utc.to_i,
         :svr_host => @hostname,
         :svr_zone => @timezone,
@@ -158,8 +159,8 @@ module Garm
 
     def send_message message
       uri = URI(get_config['url'])
-      uri.path = '/api/log'
-      Net::HTTP.post_form uri, 'log' => MultiJson.dump(message)
+      uri.path = '/api/exceptions'
+      Net::HTTP.post_form uri, 'exception' => MultiJson.dump(message)
     end
 
     def stringify_hash hash
