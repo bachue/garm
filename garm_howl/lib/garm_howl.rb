@@ -31,6 +31,8 @@ module Garm
           return path.read if path.exist?
         end
       end
+
+      nil
     end
 
     def get_config_path
@@ -118,14 +120,15 @@ module Garm
         :svr_host => @hostname,
         :svr_zone => @timezone,
         :pid => @pid,
-        :version => (@version unless @version == :unknown),
-        :important => !!options[:important],
-        :tag => options['tag'],
         :position => options[:position] || error.backtrace.first,
-        :description => options[:description],
         :summaries => options[:summaries] || {},
-        :ext => {'Environment' => ENV}.merge(options[:ext] || {})
+        :ext => {'Environment' => ENV.to_hash}.merge(options[:ext] || {})
       }
+
+      message[:version] = @version unless @version == :unknown
+      message[:important] = true if options[:important]
+      message[:tag] = options[:tag] if options[:tag]
+      message[:description] = options[:description] if options[:description]
 
       if context
         message[:ext].merge!({

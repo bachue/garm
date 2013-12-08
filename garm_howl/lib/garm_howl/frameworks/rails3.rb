@@ -1,4 +1,5 @@
 require 'garm_howl/frameworks/rails'
+require 'thread'
 
 module Garm
   module Rails3
@@ -16,10 +17,12 @@ module Garm
           begin
             @app.call env
           rescue => e
-            params = [e]
-            params << env['action_controller.instance'].request if env['action_controller.instance']
-            params << {:project => ::Rails::Application.subclasses.first.parent.name} unless Garm.project
-            Garm.howl(*params)
+            Thread.start do # TODO: Remove Thread call here
+              params = [e]
+              params << env['action_controller.instance'].request if env['action_controller.instance']
+              params << {:project => ::Rails::Application.subclasses.first.parent.name} unless Garm.project
+              Garm.howl(*params)
+            end
             raise
           end
         end
