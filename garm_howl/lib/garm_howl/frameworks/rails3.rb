@@ -42,7 +42,7 @@ module Garm
             uuid = SecureRandom.hex 128
             env['action_dispatch.cookies']['_session_uuid'] = uuid
           end
-          Thread.current[:_logger_uuid] = uuid
+          Garm.logger_uuid = uuid
           @app.call env
         end
       end
