@@ -61,7 +61,10 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
 
             $('.make-switch').off('switch-change').on('switch-change', function(e, data) {
                 $.ajax({url: '/projects/' + $rootScope.current_project.name + '/exception_categories/' + $rootScope.current_category.id,
-                    method: 'POST', data: {resolved: data.value}})
+                    method: 'POST', data: {resolved: data.value}}).done(function() {
+                        $rootScope.current_project.resolved = true;
+                        // TODO: Need to set resolved percent for current project
+                    });
             });
 
             var DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';

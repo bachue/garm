@@ -3,6 +3,7 @@ module Garm
     class Project < ActiveRecord::Base
       has_many :subscriptions
       has_many :exception_categories
+      has_many :exceptions, through: :exception_categories
       validates :name, presence: true, length: { maximum: 20 }, uniqueness: true
       attr_accessor :percent
     end
@@ -27,6 +28,8 @@ module Garm
       serialize :tag
       serialize :summaries
       serialize :ext
+
+      delegate :project, to: :exception_category
     end
 
     class Log < ActiveRecord::Base

@@ -20,8 +20,7 @@ end
 
 get '/projects/_subscriptions' do
   projects = Project.select([:id, :name]).includes :subscriptions
-  # TODO: Calc real percentage here
-  projects.each {|project| project.percent = rand(100) }
+  projects.each {|project| project.percent = ProjectQuickLoader.resolved_percent project }
 
   json projects.as_json(methods: :percent, include: {subscriptions: {only: [:id, :email, :interval_days]}})
 end
@@ -91,6 +90,8 @@ post '/projects/:project/exception_categories/:category_id' do
     rollback 400 unless category
     category.update resolved: params['resolved'] == 'true'
   end
+
+  # Return new percent of current project
 end
 
 post '/api/exceptions' do
