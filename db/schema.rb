@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 20131208153615) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "exception_categories", force: true do |t|
     t.string   "exception_type", limit: 40,                 null: false
     t.text     "message",                                   null: false
@@ -27,8 +30,8 @@ ActiveRecord::Schema.define(version: 20131208153615) do
     t.datetime "updated_at"
   end
 
-  add_index "exception_categories", ["key"], name: "exception_categories_key_uniq_index", unique: true
-  add_index "exception_categories", ["project_id"], name: "index_exception_categories_on_project_id"
+  add_index "exception_categories", ["project_id", "key"], name: "exception_categories_project_key_uniq_index", unique: true, using: :btree
+  add_index "exception_categories", ["project_id"], name: "index_exception_categories_on_project_id", using: :btree
 
   create_table "exceptions", force: true do |t|
     t.integer "exception_category_id",            null: false
@@ -46,14 +49,14 @@ ActiveRecord::Schema.define(version: 20131208153615) do
     t.text    "ext"
   end
 
-  add_index "exceptions", ["exception_category_id"], name: "index_exceptions_on_exception_category_id"
+  add_index "exceptions", ["exception_category_id"], name: "index_exceptions_on_exception_category_id", using: :btree
 
   create_table "logs", force: true do |t|
     t.text "uuid", null: false
     t.text "log"
   end
 
-  add_index "logs", ["uuid"], name: "logs_uuid_index"
+  add_index "logs", ["uuid"], name: "logs_uuid_index", using: :btree
 
   create_table "projects", force: true do |t|
     t.string   "name",       limit: 20, null: false
@@ -61,7 +64,7 @@ ActiveRecord::Schema.define(version: 20131208153615) do
     t.datetime "updated_at"
   end
 
-  add_index "projects", ["name"], name: "projects_name_uniq_index", unique: true
+  add_index "projects", ["name"], name: "projects_name_uniq_index", unique: true, using: :btree
 
   create_table "subscriptions", force: true do |t|
     t.string   "email",         limit: 40, null: false
@@ -71,7 +74,7 @@ ActiveRecord::Schema.define(version: 20131208153615) do
     t.datetime "updated_at"
   end
 
-  add_index "subscriptions", ["email", "project_id"], name: "subscriptions_email_project_uniq_index", unique: true
-  add_index "subscriptions", ["project_id"], name: "index_subscriptions_on_project_id"
+  add_index "subscriptions", ["email", "project_id"], name: "subscriptions_email_project_uniq_index", unique: true, using: :btree
+  add_index "subscriptions", ["project_id"], name: "index_subscriptions_on_project_id", using: :btree
 
 end

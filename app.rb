@@ -14,7 +14,7 @@ configure do
 end
 
 configure :development, :test do
-  set :database, "sqlite3:///db/#{settings.environment}.sqlite3"
+  set :database, "postgres://testuser@localhost/garm_#{settings.environment}"
 end
 
 get '/projects/_subscriptions' do

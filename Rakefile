@@ -11,7 +11,7 @@ task :db, [:environment] do |t, args|
   args.with_defaults(:environment => 'development')
   case args.environment
   when 'development', 'test'
-    Kernel.exec "sqlite3 -line #{File.dirname(__FILE__)}/db/#{args.environment}.sqlite3"
+    Kernel.exec "psql -U testuser -w -d garm_#{args.environment}"
   when 'production'
     raise 'Not Implemented'
   else

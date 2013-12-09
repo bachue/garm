@@ -6,11 +6,11 @@ gem 'sinatra-activerecord'
 gem 'yajl-ruby', require: 'yajl'
 gem 'activesupport', require: 'active_support/all'
 
-group :development do
+group :development, :test do
   gem 'rake'
   gem 'pry'
   gem 'pry-byebug'
-  gem 'sqlite3'
+  gem 'pg'
   gem 'shotgun', require: nil
   gem 'foreman', require: nil
 end
