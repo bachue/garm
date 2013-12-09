@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20131208153615) do
     t.datetime "updated_at"
   end
 
-  add_index "exception_categories", ["key"], name: "exception_categories_key_uniq_index", unique: true
+  add_index "exception_categories", ["project_id", "key"], name: "exception_categories_project_key_uniq_index", unique: true
   add_index "exception_categories", ["project_id"], name: "index_exception_categories_on_project_id"
 
   create_table "exceptions", force: true do |t|
