@@ -14,6 +14,7 @@ configure do
 end
 
 configure :development, :test do
+  enable :lock
   set :database, "sqlite3:///db/#{settings.environment}.sqlite3"
 end
 
