@@ -81,6 +81,18 @@ post '/projects/_run_commands' do
   json new_projects: new_project_list, new_subscriptions: new_subscription_list if status == 200
 end
 
+post '/projects/:project/exception_categories/:category_id' do
+  error 400 if params['project'].blank? || params['category_id'].blank? || params['resolved'].blank?
+
+  Project.transaction do
+    project = Project.find_by name: params['project']
+    rollback 400 unless project
+    category = project.exception_categories.find_by id: params['category_id']
+    rollback 400 unless category
+    category.update resolved: params['resolved'] == 'true'
+  end
+end
+
 post '/api/exceptions' do
   parser = Yajl::Parser.new
   data = parser.parse params['e']

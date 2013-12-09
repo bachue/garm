@@ -59,6 +59,11 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
             $('.make-switch').bootstrapSwitch(false);
             if ($rootScope.current_category) $('.make-switch').bootstrapSwitch('setState', $rootScope.current_category.important);
 
+            $('.make-switch').off('switch-change').on('switch-change', function(e, data) {
+                $.ajax({url: '/projects/' + $rootScope.current_project.name + '/exception_categories/' + $rootScope.current_category.id,
+                    method: 'POST', data: {resolved: data.value}})
+            });
+
             var DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
             var DATE_FORMAT_WITH_TIMEZONE = 'YYYY-MM-DD HH:mm:ss Z';
 
