@@ -40,12 +40,13 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
             if (!$rootScope.current_tab) $rootScope.current_tab = 'Summary';
 
             var update_path = function() {
-                var path = '/exceptions/';
-                path += [$rootScope.current_project.name,
-                         $rootScope.current_category.id,
-                         $rootScope.current_exception.id,
-                         $rootScope.current_tab].join('/');
-                $location.path(path);
+                // DOESN'T ENABLE IT NOW
+                // var path = '/exceptions/';
+                // path += [$rootScope.current_project.name,
+                //          $rootScope.current_category.id,
+                //          $rootScope.current_exception.id,
+                //          $rootScope.current_tab].join('/');
+                // $location.path(path);
             };
 
             if (!$routeParams.project) update_path();
