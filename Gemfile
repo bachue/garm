@@ -11,6 +11,5 @@ group :development do
   gem 'pry'
   gem 'pry-byebug'
   gem 'sqlite3'
-  gem 'shotgun', require: nil
   gem 'foreman', require: nil
 end

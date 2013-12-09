@@ -1,1 +1,1 @@
-webapp: bundle exec shotgun --port=8000 app.rb
+webapp: bundle exec ruby -rsinatra app.rb
