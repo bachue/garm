@@ -83,15 +83,14 @@ end
 post '/projects/:project/exception_categories/:category_id' do
   error 400 if params['project'].blank? || params['category_id'].blank? || params['resolved'].blank?
 
-  Project.transaction do
-    project = Project.find_by name: params['project']
-    rollback 400 unless project
-    category = project.exception_categories.find_by id: params['category_id']
-    rollback 400 unless category
-    category.update resolved: params['resolved'] == 'true'
-  end
+  project = Project.find_by name: params['project']
+  error 400 unless project
+  category = project.exception_categories.find_by id: params['category_id']
+  error 400 unless category
 
-  # Return new percent of current project
+  category.update resolved: params['resolved'] == 'true'
+
+  ProjectQuickLoader.resolved_percent(project).to_s
 end
 
 post '/api/exceptions' do
@@ -122,8 +121,6 @@ post '/api/exceptions' do
     unless exception.save
       rollback 400, "Failed to create exception: #{exception.errors.full_messages}"
     end
-
-    'success'
   end
 end
 
@@ -140,8 +137,6 @@ post '/api/logs' do
     unless log.save
       rollback 400, "Failed to create log: #{log.errors.full_messages}"
     end
-
-    'success'
   end
 end
 

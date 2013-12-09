@@ -57,13 +57,15 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
             // TODO: If these variable changes, please change the hash in URL
 
             $('.make-switch').bootstrapSwitch(false);
-            if ($rootScope.current_category) $('.make-switch').bootstrapSwitch('setState', $rootScope.current_category.important);
+            if ($rootScope.current_category) $('.make-switch').bootstrapSwitch('setState', $rootScope.current_category.resolved);
 
             $('.make-switch').off('switch-change').on('switch-change', function(e, data) {
                 $.ajax({url: '/projects/' + $rootScope.current_project.name + '/exception_categories/' + $rootScope.current_category.id,
-                    method: 'POST', data: {resolved: data.value}}).done(function() {
-                        $rootScope.current_project.resolved = true;
-                        // TODO: Need to set resolved percent for current project
+                    method: 'POST', data: {resolved: data.value}}).done(function(percent) {
+                        $timeout(function() {
+                            $rootScope.current_category.resolved = data.value;
+                            $rootScope.current_project.percent = Number(percent);
+                        });
                     });
             });
 
