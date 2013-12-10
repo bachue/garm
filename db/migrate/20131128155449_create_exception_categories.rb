@@ -11,7 +11,6 @@ class CreateExceptionCategories < ActiveRecord::Migration
       t.string :key, limit: 40, null: false
       t.integer :first_seen_on, null: false
       t.string :first_seen_in, limits: 11
-      t.timestamps
     end
 
     add_index :exception_categories, [:project_id, :key], name: 'exception_categories_project_key_uniq_index', unique: true

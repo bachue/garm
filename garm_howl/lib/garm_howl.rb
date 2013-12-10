@@ -9,13 +9,13 @@ require 'garm_howl/core_ext/logger'
 module Garm
   attr_accessor :project, :hostname, :ip_addr, :timezone, :pid, :version, :config_path
 
-  def howl *args
+  def howl *args # TODO: Use LogStash instead here
     message = build_exception_message(*build_params(args))
     send_message message, '/api/exceptions', 'e'
   end
 
-  def log log
-    data = {:log => log}
+  def log log # TODO: Use LogStash instead here
+    data = {:log => log, :time_utc => Time.now.to_i}
     send_message data, '/api/logs', 'l'
   end
 
@@ -123,7 +123,7 @@ module Garm
         :message => error.message,
         :backtrace => error.backtrace.join("\n"),
         :sha1 => sha1(error.class.name, error.message, error.backtrace),
-        :time_utc => Time.now.utc.to_i,
+        :time_utc => Time.now.to_i,
         :svr_host => @hostname,
         :svr_zone => @timezone,
         :svr_ip => @ip_addr,

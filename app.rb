@@ -133,7 +133,7 @@ post '/api/logs' do
 
     data['log'].match /(.*?)\s*<<(\w+)>>\s*(.*)/
 
-    log = Log.new uuid: $2, log: "#{$1}#{$3}"
+    log = Log.new uuid: $2, log: "#{$1}#{$3}", time_utc: data['time_utc']
     unless log.save
       rollback 400, "Failed to create log: #{log.errors.full_messages}"
     end

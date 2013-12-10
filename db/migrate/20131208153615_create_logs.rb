@@ -2,7 +2,8 @@ class CreateLogs < ActiveRecord::Migration
   def up
     create_table :logs do |t|
       t.text :uuid, null: false
-      t.text :log
+      t.text :log, null: false
+      t.integer :time_utc, null: false
     end
 
     add_index :logs, :uuid, name: 'logs_uuid_index'
