@@ -37,7 +37,8 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
             if (!$rootScope.current_project) $rootScope.current_project = $scope.projects[0];
             if (!$rootScope.current_category) $rootScope.current_category = $rootScope.current_project.exception_categories[0];
             if (!$rootScope.current_exception) $rootScope.current_exception = $rootScope.current_category.exceptions[0];
-            if (!$rootScope.current_tab) $rootScope.current_tab = 'Summary';
+            if (!$rootScope.current_tab || !_.find($rootScope.current_exception.tabs, function(tab) { return tab === $rootScope.current_tab }))
+                $rootScope.current_tab = 'Summary';
 
             var update_path = function() {
                 // DOESN'T ENABLE IT NOW
@@ -60,10 +61,12 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
             if ($rootScope.current_category) $('.make-switch').bootstrapSwitch('setState', $rootScope.current_category.resolved);
 
             $('.make-switch').off('switch-change').on('switch-change', function(e, data) {
+                $timeout(function() {
+                    $rootScope.current_category.resolved = data.value;
+                });
                 $.ajax({url: '/projects/' + $rootScope.current_project.name + '/exception_categories/' + $rootScope.current_category.id,
                     method: 'POST', data: {resolved: data.value}}).done(function(percent) {
                         $timeout(function() {
-                            $rootScope.current_category.resolved = data.value;
                             $rootScope.current_project.percent = Number(percent);
                         });
                     });
