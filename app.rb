@@ -81,16 +81,21 @@ post '/projects/_run_commands' do
 end
 
 post '/projects/:project/exception_categories/:category_id' do
-  error 400 if params['project'].blank? || params['category_id'].blank? || params['resolved'].blank?
+  error 400 if params['project'].blank? || params['category_id'].blank?
 
   project = Project.find_by name: params['project']
   error 400 unless project
   category = project.exception_categories.find_by id: params['category_id']
   error 400 unless category
 
-  category.update resolved: params['resolved'] == 'true'
-
-  ProjectQuickLoader.resolved_percent(project).to_s
+  if params['resolved']
+    category.update resolved: params['resolved'] == 'true'
+    ProjectQuickLoader.resolved_percent(project).to_s
+  elsif params['comment']
+    category.update comment: params['comment']
+  else # TODO: Support important & wont_fix in the future
+    error 400
+  end
 end
 
 post '/api/exceptions' do

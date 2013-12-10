@@ -108,7 +108,9 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
             $scope.unset_editing_comment = function(draft) {
                 $rootScope.current_category.editing_comment = false;
                 $rootScope.current_category.comment = draft;
-                // TODO: To send request here
+
+                $.ajax({url: '/projects/' + $rootScope.current_project.name + '/exception_categories/' + $rootScope.current_category.id,
+                    method: 'POST', data: {comment: draft}});
             };
 
             $scope.switch_to_tab = function(tab, $event) {
