@@ -103,8 +103,8 @@ post '/api/exceptions' do
   data = parser.parse params['e']
 
   ExceptionCategory.transaction do
-    rollback 400, 'parameter sha1 is required' if data['sha1'].empty?
-    rollback 400, 'parameter project is required' if data['project'].empty?
+    rollback 400, 'parameter sha1 is required' if data['sha1'].blank?
+    rollback 400, 'parameter project is required' if data['project'].blank?
 
     project = Project.find_by name: data['project']
     rollback 400, "Failed to find project #{data['project']}" unless project
@@ -134,11 +134,16 @@ post '/api/logs' do
   data = parser.parse params['l']
 
   Log.transaction do
-    rollback 400, 'parameter log is required' if data['log'].empty?
+    rollback 400, 'parameter log is required'      if data['log'].blank?
+    rollback 400, 'parameter time_utc is required' if data['time_utc'].blank?
+    rollback 400, 'parameter project is required'  if data['project'].blank?
+
+    project = Project.find_by name: data['project']
+    rollback 400, "Failed to find project #{data['project']}" unless project
 
     data['log'].match /(.*?)\s*<<(\w+)>>\s*(.*)/
 
-    log = Log.new uuid: $2, log: "#{$1}#{$3}", time_utc: data['time_utc']
+    log = project.logs.build uuid: $2, log: "#{$1}#{$3}", time_utc: data['time_utc']
     unless log.save
       rollback 400, "Failed to create log: #{log.errors.full_messages}"
     end

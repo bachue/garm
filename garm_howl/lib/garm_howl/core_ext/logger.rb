@@ -12,7 +12,7 @@ end
 
 class ::Logger
   def add_with_adding_uuid severity, message = nil, progname = nil, &block
-    if uuid = Garm.logger_uuid
+    if uuid = Garm.logger_uuid and Garm.project
       message = "<<#{uuid}>> #{message}"
       Thread.start { Garm.log message } # TODO: Remove this statement
     end

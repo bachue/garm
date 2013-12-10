@@ -3,6 +3,7 @@ class CreateLogs < ActiveRecord::Migration
     create_table :logs do |t|
       t.text :uuid, null: false
       t.text :log, null: false
+      t.references :project, index: true, null: false
       t.integer :time_utc, null: false
     end
 
