@@ -26,12 +26,12 @@ get '/projects/_subscriptions' do
 end
 
 get '/projects/_exceptions' do
-  json ProjectQuickLoader.load(10, 10)
+  json ProjectQuickLoader.load(:all, :all)
 end
 
 post '/projects/_run_commands' do
   error 400 if params['commands'].blank?
-  commands = JSON.load(params['commands'])
+  commands = Yajl::Parser.new.parse(params['commands'])
   new_project_list, new_subscription_list = {}, Hash.new {|h, k| h[k] = {} }
 
   Project.transaction do
@@ -98,9 +98,42 @@ post '/projects/:project/exception_categories/:category_id' do
   end
 end
 
+get '/projects/_flush' do
+  error 400 if params['d'].blank?
+
+  data = Yajl::Parser.new.parse params['d']
+
+  result = data.inject(Hash.new {|h, k| h[k] = {}}) do |h, (project_name, category_hash)|
+    project = Project.find_by name: project_name
+    error 400 unless project
+
+    latest_time = category_hash.values.map(&:to_i).max
+    new_categories = ExceptionCategoryQuickLoader.load project, :all, :all, 'first_seen_on > ?', latest_time
+
+    old_categories = category_hash.inject({}) do |h, (category_id, latest_time)|
+      category = project.exception_categories.find_by id: category_id
+      error 400 unless category
+
+      new_exceptions = ExceptionQuickLoader.load category, :all, 'time_utc > ?', latest_time.to_i
+      next h if new_exceptions.empty?
+      h[category.id] = {
+        exceptions: new_exceptions,
+        exception_size: ExceptionQuickLoader.count(category)
+      }
+      h
+    end
+
+    h[project_name][:new_categories] = new_categories if new_categories.present?
+    h[project_name][:old_categories] = old_categories if old_categories.present?
+    h
+  end
+
+require 'pp'
+  json result.tap {|hash| pp hash}
+end
+
 post '/api/exceptions' do
-  parser = Yajl::Parser.new
-  data = parser.parse params['e']
+  data = Yajl::Parser.new.parse params['e']
 
   ExceptionCategory.transaction do
     rollback 400, 'parameter sha1 is required' if data['sha1'].blank?
@@ -130,8 +163,7 @@ post '/api/exceptions' do
 end
 
 post '/api/logs' do
-  parser = Yajl::Parser.new
-  data = parser.parse params['l']
+  data = Yajl::Parser.new.parse params['l']
 
   Log.transaction do
     rollback 400, 'parameter log is required'      if data['log'].blank?

@@ -1,10 +1,15 @@
 define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'bootstrap_switch'], function(application_promise, $, _, moment, exceptions_loader) {
     var deferred = $.Deferred();
     $.when(application_promise, exceptions_loader).then(function(application, exceptions) {
-        deferred.resolve(application.controller('Exception', function($scope, $rootScope, $routeParams, $timeout, $location) {
+        deferred.resolve(application.controller('Exception', function($scope, $rootScope, $routeParams, $timeout, $interval, $location) {
             _.each(exceptions, function(exception_categories, project_id) {
                 _.find($scope.projects, function(project) { return project.id === Number(project_id); }).
                     exception_categories = exception_categories;
+                _.each(exception_categories, function(exception_category) {
+                    exception_category.latest_time = _.max(_.map(exception_category.exceptions, function(exception) {
+                        return exception.time_utc;
+                    }));
+                });
             });
 
             $rootScope.current_controller = 'Exceptions';
@@ -71,6 +76,21 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                         });
                     });
             });
+
+            if(!$rootScope.exception_flusher) {
+                $rootScope.exception_flusher = $interval(function() {
+                    var data = _.reduce($scope.projects, function(obj, project) {
+                        obj[project.name] = _.reduce(project.exception_categories, function(obj, category) {
+                            obj[category.id] = category.latest_time;
+                            return obj
+                        }, {});
+                        return obj;
+                    }, {});
+                    $.ajax({url: '/projects/_flush', dataType: 'JSON', data: {d: JSON.stringify(data)}}).done(function(data) {
+                        // TODO: continue here
+                    });
+                }, 5000);
+            }
 
             var DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
             var DATE_FORMAT_WITH_TIMEZONE = 'YYYY-MM-DD HH:mm:ss Z';
