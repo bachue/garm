@@ -2,17 +2,21 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
     var deferred = $.Deferred();
     $.when(application_promise, exceptions_loader).then(function(application, exceptions) {
         deferred.resolve(application.controller('Exception', function($scope, $rootScope, $routeParams, $timeout, $interval, $location) {
-            _.each(exceptions, function(exception_categories, project_id) {
-                _.find($scope.projects, function(project) { return project.id === Number(project_id); }).
-                    exception_categories = exception_categories;
-                _.each(exception_categories, function(exception_category) {
-                    exception_category.latest_time = _.max(_.map(exception_category.exceptions, function(exception) {
-                        return exception.time_utc;
-                    }));
+            if (!_.contains($rootScope.inited_controllers, 'Exceptions')) {
+                _.each(exceptions, function(exception_categories, project_id) {
+                    _.find($scope.projects, function(project) { return project.id === Number(project_id); }).
+                        exception_categories = exception_categories;
+                    _.each(exception_categories, function(exception_category) {
+                        exception_category.latest_time = _.max(_.map(exception_category.exceptions, function(exception) {
+                            return exception.time_utc;
+                        }));
+                    });
                 });
-            });
 
-            $rootScope.current_controller = 'Exceptions';
+                $rootScope.current_controller = 'Exceptions';
+                if ($rootScope.inited_controllers) $rootScope.inited_controllers.push('Exceptions');
+                else $rootScope.inited_controllers = ['Exceptions'];
+            }
 
             if ($routeParams.project) {
                 $rootScope.current_project = _.find($scope.projects, function(project) {

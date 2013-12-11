@@ -26,8 +26,13 @@ define(['directives'], function(directives) {
     directives.directive('flashItem', function() {
         return {
             link: function(scope, element) {
-                if (!element.hasClass('flash-on'))
+                if (!element.hasClass('flash-on') && !scope.exception_category.inited) {
+                    scope.exception_category.inited = true;
+                    _.each(scope.exception_category.exceptions, function(exception) { exception.inited = true; });
                     flash(element);
+                } else {
+                    element.addClass('flash-off');
+                }
             }
         }
     });
@@ -36,8 +41,10 @@ define(['directives'], function(directives) {
         return {
             link: function(scope, element) {
                 var parent = element.parents('li');
-                if (parent.hasClass('flash-off'))
+                if (parent.hasClass('flash-off') && !scope.exception.inited) {
+                    scope.exception.inited = true;
                     flash(parent);
+                }
             }
         }
     });
@@ -47,6 +54,6 @@ define(['directives'], function(directives) {
         element.addClass('flash-on');
         setTimeout(function() {
             element.addClass('flash-off');
-        }, 100);
+        }, 500);
     }
 });
