@@ -122,8 +122,8 @@ get '/projects/_flush' do
       h
     end
 
-    h[project_name][:new_categories] = new_categories if new_categories.present?
-    h[project_name][:old_categories] = old_categories if old_categories.present?
+    h[project_name][:new] = new_categories if new_categories.present?
+    h[project_name][:old] = old_categories if old_categories.present?
     h
   end
 

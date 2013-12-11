@@ -87,7 +87,21 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                         return obj;
                     }, {});
                     $.ajax({url: '/projects/_flush', dataType: 'JSON', data: {d: JSON.stringify(data)}}).done(function(data) {
-                        // TODO: continue here
+                        _.each(data, function(hash, project_name) {
+                            var project = _.find($scope.projects, function(project) { return project.name == project_name; })
+                            if (project) {
+                                if (hash['new'])
+                                    project.exception_categories.push.apply(project.exception_categories, hash['new']);
+                                if (hash['old']) {
+
+                                }
+                                _.each(project.exception_categories, function(exception_category) {
+                                    exception_category.latest_time = _.max(_.map(exception_category.exceptions, function(exception) {
+                                        return exception.time_utc;
+                                    }));
+                                });
+                            }
+                        });
                     });
                 }, 5000);
             }
