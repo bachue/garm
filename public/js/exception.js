@@ -93,7 +93,11 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                                 if (hash['new'])
                                     project.exception_categories.push.apply(project.exception_categories, hash['new']);
                                 if (hash['old']) {
-
+                                    _.each(hash['old'], function (new_exceptions, category_id){
+                                        var category = _.find(project.exception_categories, function(category) { return category.id == category_id; })
+                                        category.exceptions.push.apply(category.exceptions, new_exceptions.exceptions);
+                                        category.exception_size += new_exceptions.exception_size;
+                                    });
                                 }
                                 _.each(project.exception_categories, function(exception_category) {
                                     exception_category.latest_time = _.max(_.map(exception_category.exceptions, function(exception) {
