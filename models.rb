@@ -21,6 +21,12 @@ module Garm
       has_many :exceptions
       validates :exception_type, :message, :project_id, :key, :first_seen_on, presence: true
       validates_uniqueness_of :key, :scope => :project_id
+
+      scope :with_frequence, ->{ joins(:exceptions).select('exception_categories.id', 'count(*) / ((strftime("%s") - exception_categories.first_seen_on)*1.0 / 86400 ) AS f').group('exception_categories.id') }
+
+      def frequence
+        self.class.with_frequence.find(id).f
+      end
     end
 
     class Exception < ActiveRecord::Base

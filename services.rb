@@ -26,6 +26,7 @@ module Garm
         categories.each_with_index do |category, idx|
           hash[idx]['exceptions'] = ExceptionQuickLoader.load category, exception_limit
           hash[idx]['exception_size'] = ExceptionQuickLoader.count category
+          hash[idx]['frequence'] = category.frequence
         end
         hash
       end

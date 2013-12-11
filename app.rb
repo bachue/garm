@@ -117,7 +117,8 @@ get '/projects/_flush' do
       next h if new_exceptions.empty?
       h[category.id] = {
         exceptions: new_exceptions,
-        exception_size: ExceptionQuickLoader.count(category)
+        exception_size: ExceptionQuickLoader.count(category),
+        frequence: category.frequence
       }
       h
     end

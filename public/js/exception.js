@@ -108,6 +108,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                                         if (category) {
                                             _.each(new_exceptions.exceptions, function(exception) { category.exceptions.push(exception); });
                                             category.exception_size = new_exceptions.exception_size;
+                                            category.frequence = new_exceptions.frequence;
                                             messages.push({type: category.exception_type, message: category.message});
                                         };
                                     });
@@ -210,6 +211,30 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                     });
                 }});
             };
+
+            $scope.toggle_exception_category_label = function() {
+                var labels = $('.label.exception-category-stats-label');
+                if(!$rootScope.exception_category_stats_info || $rootScope.exception_category_stats_info == 'F') {
+                    $rootScope.exception_category_stats_info = 'C';
+                    $('#exception-category-stats-info').attr('title', 'Count');
+                    update_label_stats(function(category) { return category.exception_size; });
+                } else if ($rootScope.exception_category_stats_info == 'C') {
+                    $rootScope.exception_category_stats_info = 'F';
+                    $('#exception-category-stats-info').attr('title', 'Frequence');
+                    update_label_stats(function(category) { return category.frequence.toFixed(2); });
+                } else {
+                    throw 'Not implemented this stats info';
+                };
+
+                function update_label_stats(func) {
+                    _.each($scope.projects, function(project) {
+                        _.each(project.exception_categories, function(category) {
+                            category.label_stats = func(category);
+                        });
+                    });
+                }
+            };
+            if(!$rootScope.exception_category_stats_info) $scope.toggle_exception_category_label();
 
             $scope.switch_to_exception = function(category_id, exception_id) {
                 var category = _.find($rootScope.current_project.exception_categories, function(category) { return category.id == category_id; }), exception;
