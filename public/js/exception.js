@@ -1,4 +1,4 @@
-define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'bootstrap_switch'], function(application_promise, $, _, moment, exceptions_loader) {
+define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'bootstrap_switch', 'lib/jquery.notification'], function(application_promise, $, _, moment, exceptions_loader) {
     var deferred = $.Deferred();
     $.when(application_promise, exceptions_loader).then(function(application, exceptions) {
         deferred.resolve(application.controller('Exception', function($scope, $rootScope, $routeParams, $timeout, $interval, $location) {
@@ -90,13 +90,20 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                         _.each(data, function(hash, project_name) {
                             var project = _.find($scope.projects, function(project) { return project.name == project_name; })
                             if (project) {
-                                if (hash['new'])
+                                var messages = [];
+                                if (hash['new']) {
                                     project.exception_categories.push.apply(project.exception_categories, hash['new']);
+                                    messages.push.apply(messages, _.map(hash['new'], function(category) { return {type: category.exception_type, message: category.message}; }))
+                                }
+
                                 if (hash['old']) {
                                     _.each(hash['old'], function (new_exceptions, category_id){
                                         var category = _.find(project.exception_categories, function(category) { return category.id == category_id; })
-                                        category.exceptions.push.apply(category.exceptions, new_exceptions.exceptions);
-                                        category.exception_size += new_exceptions.exception_size;
+                                        if (category) {
+                                            category.exceptions.push.apply(category.exceptions, new_exceptions.exceptions);
+                                            category.exception_size += new_exceptions.exception_size;
+                                            messages.push({type: category.exception_type, message: category.message});
+                                        };
                                     });
                                 }
                                 _.each(project.exception_categories, function(exception_category) {
@@ -104,6 +111,9 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                                         return exception.time_utc;
                                     }));
                                 });
+                                _.each(_.uniq(messages), function(message) {
+                                    $.notification({iconUrl: 'img/branding-fallback.png', title: message.type, body: message.message});
+                                })
                             }
                         });
                     });
