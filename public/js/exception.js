@@ -118,6 +118,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                                         return exception.time_utc;
                                     }));
                                 });
+                                $scope.toggle_exception_category_label(true); // To update stats again
                                 notify(messages);
                             }
                         });
@@ -212,16 +213,25 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                 }});
             };
 
-            $scope.toggle_exception_category_label = function() {
+            $scope.toggle_exception_category_label = function(init) {
+                var init = !!init;
                 var labels = $('.label.exception-category-stats-label');
-                if(!$rootScope.exception_category_stats_info || $rootScope.exception_category_stats_info == 'F') {
-                    $rootScope.exception_category_stats_info = 'C';
-                    $('#exception-category-stats-info').attr('title', 'Count');
-                    update_label_stats(function(category) { return category.exception_size; });
+
+                if (init) { // Just when it has inited, no status will change
+                    if (!$rootScope.exception_category_stats_info)
+                        $rootScope.exception_category_stats_info = 'C';
+                } else {
+                    if ($rootScope.exception_category_stats_info == 'C') {
+                        $rootScope.exception_category_stats_info = 'F';
+                    } else if ($rootScope.exception_category_stats_info == 'F') {
+                        $rootScope.exception_category_stats_info = 'C';
+                    } else throw 'Error here';
+                }
+
+                if($rootScope.exception_category_stats_info == 'F') {
+                    update_label_stats(function(category) { return category.frequence < 100 ? category.frequence.toFixed(2) : 'Max'; });
                 } else if ($rootScope.exception_category_stats_info == 'C') {
-                    $rootScope.exception_category_stats_info = 'F';
-                    $('#exception-category-stats-info').attr('title', 'Frequence');
-                    update_label_stats(function(category) { return category.frequence.toFixed(2); });
+                    update_label_stats(function(category) { return category.exception_size; });
                 } else {
                     throw 'Not implemented this stats info';
                 };
@@ -234,7 +244,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                     });
                 }
             };
-            if(!$rootScope.exception_category_stats_info) $scope.toggle_exception_category_label();
+            if(!$rootScope.exception_category_stats_info) $scope.toggle_exception_category_label(true);
 
             $scope.switch_to_exception = function(category_id, exception_id) {
                 var category = _.find($rootScope.current_project.exception_categories, function(category) { return category.id == category_id; }), exception;
