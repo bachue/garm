@@ -22,7 +22,7 @@ module Garm
   private
     def init_variables
       @hostname ||= Socket.gethostname
-      @ip_addr  ||= IPSocket.getaddress(@hostname)
+      @ip_addr  ||= IPSocket.getaddress(@hostname) rescue '127.0.0.1'
       @timezone ||= Time.now.strftime('%:z')
       @pid      ||= Process.pid
       @version  ||= get_version || :unknown
