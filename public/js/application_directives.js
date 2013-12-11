@@ -22,4 +22,31 @@ define(['directives'], function(directives) {
             }
         };
     });
+
+    directives.directive('flashItem', function() {
+        return {
+            link: function(scope, element) {
+                if (!element.hasClass('flash-on'))
+                    flash(element);
+            }
+        }
+    });
+
+    directives.directive('flashParentItem', function() {
+        return {
+            link: function(scope, element) {
+                var parent = element.parents('li');
+                if (parent.hasClass('flash-off'))
+                    flash(parent);
+            }
+        }
+    });
+
+    function flash(element) {
+        element.removeClass('flash-off');
+        element.addClass('flash-on');
+        setTimeout(function() {
+            element.addClass('flash-off');
+        }, 100);
+    }
 });

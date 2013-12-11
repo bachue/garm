@@ -505,3 +505,15 @@ textarea.error-comment {
 #config-modal .active .edit-project-icon {
   color: white;
 }
+
+/* Flash animation style */
+
+.flash-on {
+  background-color: #ff7;
+}
+
+.flash-off {
+  background-color: white;
+  -webkit-transition: background 0.5s ease-in-out;
+  transition: background 0.5s ease-in-out;
+}

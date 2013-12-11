@@ -17,6 +17,9 @@ var shim = {
     },
     bootstrap_switch: {
         deps: ['bootstrap']
+    },
+    'lib/jquery.notification': {
+        deps: ['jquery']
     }
 };
 
