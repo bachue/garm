@@ -1,10 +1,10 @@
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-3">
         <div class="sidebar-nav list-nav">
             <div class="nav-stat">
-            <span class="label" data-ng-class="{'label-success': current_project.percent >= 80, 'label-warning': current_project.percent < 80 && current_project.percent >= 60, 'label-danger': current_project.percent < 60}" data-ng-bind="current_project.percent + '%'"></span>
+                <span class="label" data-ng-class="{'label-success': current_project.percent >= 80, 'label-warning': current_project.percent < 80 && current_project.percent >= 60, 'label-danger': current_project.percent < 60}" data-ng-bind="current_project.percent + '%'"></span>
             </div>
-            <table>
+            <table class="search-form">
                 <tr>
                     <td>
                         <div class="input-group">
@@ -43,7 +43,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-10">
+    <div class="col-md-9">
         <div class='error-status'>
             <div class="make-switch" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>"><input type="checkbox"></div>
         </div>

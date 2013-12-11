@@ -357,7 +357,7 @@ input.ng-invalid, textarea.ng-invalid, select.ng-invalid{
 
 .sidebar-nav .nav > li > a > .item-name {
   display: inline-block;
-  width: 80%;
+  width: 90%;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -369,6 +369,10 @@ input.ng-invalid, textarea.ng-invalid, select.ng-invalid{
 
 .sidebar-nav .list-group .list-group-item-heading {
   font-size: 15px;
+}
+
+.sidebar-nav .search-form {
+  width: 100%;
 }
 
 .nav-stat {
