@@ -92,15 +92,17 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                             if (project) {
                                 var messages = [];
                                 if (hash['new']) {
-                                    project.exception_categories.push.apply(project.exception_categories, hash['new']);
-                                    messages.push.apply(messages, _.map(hash['new'], function(category) { return {type: category.exception_type, message: category.message}; }))
+                                    _.each(hash['new'], function(category) {
+                                        project.exception_categories.push(category);
+                                        messages.push({type: category.exception_type, message: category.message});
+                                    });
                                 }
 
                                 if (hash['old']) {
                                     _.each(hash['old'], function (new_exceptions, category_id){
                                         var category = _.find(project.exception_categories, function(category) { return category.id == category_id; })
                                         if (category) {
-                                            category.exceptions.push.apply(category.exceptions, new_exceptions.exceptions);
+                                            _.each(new_exceptions.exceptions, function(exception) { category.exceptions.push(exception); });
                                             category.exception_size = new_exceptions.exception_size;
                                             messages.push({type: category.exception_type, message: category.message});
                                         };
@@ -111,9 +113,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                                         return exception.time_utc;
                                     }));
                                 });
-                                _.each(_.uniq(messages), function(message) {
-                                    $.notification({iconUrl: 'img/branding-fallback.png', title: message.type, body: message.message});
-                                })
+                                notify(messages);
                             }
                         });
                     });
@@ -264,6 +264,14 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
 
             if (_.isString($rootScope.current_exception.backtrace)) {
                 $rootScope.current_exception.backtrace = $rootScope.current_exception.backtrace.split('\n');
+            }
+
+            function notify(messages) {
+                _.each(_.uniq(messages), function(message) {
+                    $.notification({iconUrl: 'img/branding-fallback.png', title: message.type, body: message.message}).then(function(notification) {
+                        setTimeout(function() { notification.close(); }, 5000)
+                    });
+                });
             }
         }));
     });
