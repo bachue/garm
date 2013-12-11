@@ -67,8 +67,8 @@ if(env === 'dev') {
     });
 }
 
-require(['angular', 'app', 'domReady', 'jquery', 'application', 'exception', 'application',
-    'application_directives', 'projects_loader', 'exceptions_loader'],
+require(['angular', 'app', 'domReady', 'jquery', 'application', 'exception',
+    'application_directives', 'exception_filters', 'projects_loader', 'exceptions_loader'],
     function(angular, app, domReady, $, application_promise, exception_promise) {
         $.when(application_promise, exception_promise).then(function() {
             app.config(function($routeProvider, $locationProvider) {
