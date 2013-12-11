@@ -31,7 +31,7 @@ end
 
 post '/projects/_run_commands' do
   error 400 if params['commands'].blank?
-  commands = Yajl::Parser.new.parse(params['commands'])
+  commands = Yajl.load(params['commands'])
   new_project_list, new_subscription_list = {}, Hash.new {|h, k| h[k] = {} }
 
   Project.transaction do
@@ -100,8 +100,7 @@ end
 
 get '/projects/_flush' do
   error 400 if params['d'].blank?
-
-  data = Yajl::Parser.new.parse params['d']
+  data = Yajl.load params['d']
 
   result = data.inject(Hash.new {|h, k| h[k] = {}}) do |h, (project_name, category_hash)|
     project = Project.find_by name: project_name
@@ -128,12 +127,11 @@ get '/projects/_flush' do
     h
   end
 
-require 'pp'
-  json result.tap {|hash| pp hash}
+  json result
 end
 
 post '/api/exceptions' do
-  data = Yajl::Parser.new.parse params['e']
+  data = Yajl.load params['e']
 
   ExceptionCategory.transaction do
     rollback 400, 'parameter sha1 is required' if data['sha1'].blank?
@@ -163,7 +161,7 @@ post '/api/exceptions' do
 end
 
 post '/api/logs' do
-  data = Yajl::Parser.new.parse params['l']
+  data = Yajl.load params['l']
 
   Log.transaction do
     rollback 400, 'parameter log is required'      if data['log'].blank?
