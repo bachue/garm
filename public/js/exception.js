@@ -101,7 +101,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                                         var category = _.find(project.exception_categories, function(category) { return category.id == category_id; })
                                         if (category) {
                                             category.exceptions.push.apply(category.exceptions, new_exceptions.exceptions);
-                                            category.exception_size += new_exceptions.exception_size;
+                                            category.exception_size = new_exceptions.exception_size;
                                             messages.push({type: category.exception_type, message: category.message});
                                         };
                                     });
