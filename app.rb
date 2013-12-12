@@ -131,6 +131,34 @@ get '/projects/_flush' do
   json result
 end
 
+get '/projects/:project_name/_search' do
+  return json [] if params['q'].blank?
+  error 400 if params['project_name'].blank?
+
+  project = Project.find_by name: params['project_name']
+  error 400 unless project
+
+  keywords = params['q'].split ' '
+  where = keywords.map {|keyword| "lower(queries.text) like lower('%#{keyword}%')"}.join(' and ')
+
+  exception_category_fields = [:exception_type, :message, :comment].map {|field| "ifnull(exception_categories.#{field}, '')" }
+  exception_fields = [:svr_host, :svr_ip, :description, :version].map {|field| "ifnull(exceptions.#{field}, '')" }
+  exception_fields << "datetime(exceptions.time_utc, 'unixepoch')"
+  fields = ['exception_categories.exception_type AS type', 'exceptions.time_utc AS time',
+            'exceptions.id AS e_id', 'exception_categories.id AS c_id',
+            (exception_category_fields + exception_fields).join('||" "||') + ' AS text']
+
+  subquery = project.exception_categories.joins(:exceptions).select(fields)
+  arel = Arel::SelectManager.new Project.arel_table.engine
+  arel.project '*'
+  arel.from subquery.as('queries')
+  arel.where Arel.sql(where)
+  results = Project.find_by_sql([arel.to_sql, project.id]).map do |r|
+    {exception_type: r.type, time_utc: r.time, category_id: r.c_id, exception_id: r.e_id}
+  end
+  json results
+end
+
 post '/api/exceptions' do
   data = Yajl.load params['e']
 

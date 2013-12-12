@@ -189,30 +189,6 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                 }
             };
 
-            $scope.show_search = function() {
-                return $rootScope.exception_search.keyword.length > 0 && $rootScope.exception_search.focusing;
-            };
-
-            $scope.focus_on_search = function() {
-                $rootScope.exception_search.focusing = true;
-            };
-
-            $scope.blur_on_search = function() {
-                $timeout(function() {
-                    delete $rootScope.exception_search.focusing;
-                }, 10);
-            };
-
-            $scope.start_searching = function() {
-                if (!$rootScope.exception_search.keyword.length) return;
-                var request_id = Math.random();
-                $.ajax({url: '/mock-search.json', dataType: 'json', success: function(data) {
-                    $timeout(function() {
-                        $rootScope.exception_search.results = data;
-                    });
-                }});
-            };
-
             $scope.toggle_exception_category_label = function(init) {
                 var init = !!init;
                 var labels = $('.label.exception-category-stats-label');
@@ -275,6 +251,34 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                     count: 'Occurrence Count',
                     frequence: 'Occurrence Frequence'
                 }[$rootScope.current_exception_category_order];
+            };
+
+            $scope.show_search = function() {
+                return $rootScope.exception_search.keyword.length > 0 && $rootScope.exception_search.focusing;
+            };
+
+            $scope.focus_on_search = function() {
+                $rootScope.exception_search.focusing = true;
+            };
+
+            $scope.blur_on_search = function() {
+                $timeout(function() {
+                    delete $rootScope.exception_search.focusing;
+                }, 10);
+            };
+
+            $scope.start_searching = function() {
+                if (!$rootScope.exception_search.keyword.length) return;
+                var request_id = Math.random();
+                $.ajax({
+                    url: '/projects/' + $rootScope.current_project.name + '/_search',
+                    dataType: 'json', data: {q: $rootScope.exception_search.keyword},
+                    success: function(data) {
+                        $timeout(function() {
+                            $rootScope.exception_search.results = data;
+                        });
+                    }
+                });
             };
 
             $scope.switch_to_exception = function(category_id, exception_id) {
