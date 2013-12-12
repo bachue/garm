@@ -123,7 +123,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                             }
                         });
                     });
-                }, 5000);
+                }, 30000);
             }
 
             var DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
