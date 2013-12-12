@@ -1,136 +1,7 @@
-define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'bootstrap_switch', 'lib/jquery.notification'], function(application_promise, $, _, moment, exceptions_loader) {
+define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'exception_filters', 'bootstrap_switch', 'lib/jquery.notification'], function(application_promise, $, _, moment, exceptions_loader) {
     var deferred = $.Deferred();
     $.when(application_promise, exceptions_loader).then(function(application, exceptions) {
-        deferred.resolve(application.controller('Exception', function($scope, $rootScope, $routeParams, $timeout, $interval, $location) {
-            if (!_.contains($rootScope.inited_controllers, 'Exceptions')) {
-                _.each(exceptions, function(exception_categories, project_id) {
-                    _.find($scope.projects, function(project) { return project.id === Number(project_id); }).
-                        exception_categories = exception_categories;
-                    _.each(exception_categories, function(exception_category) {
-                        exception_category.latest_time = _.max(_.map(exception_category.exceptions, function(exception) {
-                            return exception.time_utc;
-                        }));
-                    });
-                });
-
-                $rootScope.current_controller = 'Exceptions';
-                if ($rootScope.inited_controllers) $rootScope.inited_controllers.push('Exceptions');
-                else $rootScope.inited_controllers = ['Exceptions'];
-            }
-
-            if ($routeParams.project) {
-                $rootScope.current_project = _.find($scope.projects, function(project) {
-                    return $routeParams.project === project.name;
-                });
-
-                if ($routeParams.category_id && $rootScope.current_project) {
-                    $rootScope.current_category = _.find($rootScope.current_project.exception_categories, function(category) {
-                        return category.id === Number($routeParams.category_id);
-                    });
-
-                    if ($routeParams.exception_id && $rootScope.current_category) {
-                        $rootScope.current_exception = _.find($rootScope.current_category.exceptions, function(exception) {
-                            return exception.id === Number($routeParams.exception_id);
-                        });
-
-                        if($routeParams.tab && $rootScope.current_exception) {
-                            $rootScope.current_exception.tabs = ['Summary', 'Backtrace', 'Versions'].concat(_.keys($scope.current_exception.ext || {}));
-                            $rootScope.current_tab = _.find($rootScope.current_exception.tabs, function(tab) {
-                                return $routeParams.tab === tab;
-                            });
-                        }
-                    }
-                }
-            }
-
-            if (!$rootScope.current_project) $rootScope.current_project = $scope.projects[0];
-            if (!$rootScope.current_category) $rootScope.current_category = $rootScope.current_project.exception_categories[0];
-            if (!$rootScope.current_exception) $rootScope.current_exception = $rootScope.current_category.exceptions[0];
-            if (!$rootScope.current_tab || !_.find($rootScope.current_exception.tabs, function(tab) { return tab === $rootScope.current_tab }))
-                $rootScope.current_tab = 'Summary';
-
-            var update_path = function() {
-                // DOESN'T ENABLE IT NOW
-                // var path = '/exceptions/';
-                // path += [$rootScope.current_project.name,
-                //          $rootScope.current_category.id,
-                //          $rootScope.current_exception.id,
-                //          $rootScope.current_tab].join('/');
-                // $location.path(path);
-            };
-
-            if (!$routeParams.project) update_path();
-
-            $rootScope.current_exception.tabs = _.keys($rootScope.current_exception.ext || {});
-            $rootScope.current_exception.all_tabs = ['Summary', 'Backtrace'].concat($rootScope.current_exception.tabs);
-
-            if ($rootScope.current_category.version_distribution.length > 1)
-                $rootScope.current_exception.all_tabs.push('Versions');
-
-            // TODO: If these variable changes, please change the hash in URL
-
-            $('.make-switch').bootstrapSwitch(false);
-            if ($rootScope.current_category) $('.make-switch').bootstrapSwitch('setState', $rootScope.current_category.resolved);
-
-            $('.make-switch').off('switch-change').on('switch-change', function(e, data) {
-                $timeout(function() {
-                    $rootScope.current_category.resolved = data.value;
-                });
-                $.ajax({url: '/projects/' + $rootScope.current_project.name + '/exception_categories/' + $rootScope.current_category.id,
-                    method: 'POST', data: {resolved: data.value}}).done(function(percent) {
-                        $timeout(function() {
-                            $rootScope.current_project.percent = Number(percent);
-                        });
-                    });
-            });
-
-            if(!$rootScope.exception_flusher) {
-                $rootScope.exception_flusher = $interval(function() {
-                    var data = _.reduce($scope.projects, function(obj, project) {
-                        obj[project.name] = _.reduce(project.exception_categories, function(obj, category) {
-                            obj[category.id] = category.latest_time;
-                            return obj
-                        }, {});
-                        return obj;
-                    }, {});
-                    $.ajax({url: '/projects/_flush', dataType: 'JSON', data: {d: JSON.stringify(data)}}).done(function(data) {
-                        _.each(data, function(hash, project_name) {
-                            var project = _.find($scope.projects, function(project) { return project.name == project_name; })
-                            if (project) {
-                                var messages = [];
-                                if (hash['new']) {
-                                    _.each(hash['new'], function(category) {
-                                        project.exception_categories.push(category);
-                                        messages.push({type: category.exception_type, message: category.message});
-                                    });
-                                }
-
-                                if (hash['old']) {
-                                    _.each(hash['old'], function (new_exceptions, category_id){
-                                        var category = _.find(project.exception_categories, function(category) { return category.id == category_id; })
-                                        if (category) {
-                                            _.each(new_exceptions.exceptions, function(exception) { category.exceptions.push(exception); });
-                                            category.exception_size = new_exceptions.exception_size;
-                                            category.frequence = new_exceptions.frequence;
-                                            category.version_distribution = new_exceptions.version_distribution;
-                                            category.date_distribution = new_exceptions.date_distribution;
-                                            messages.push({type: category.exception_type, message: category.message});
-                                        };
-                                    });
-                                }
-                                _.each(project.exception_categories, function(exception_category) {
-                                    exception_category.latest_time = _.max(_.map(exception_category.exceptions, function(exception) {
-                                        return exception.time_utc;
-                                    }));
-                                });
-                                $scope.toggle_exception_category_label(true); // To update stats again
-                                notify(messages);
-                            }
-                        });
-                    });
-                }, 30000);
-            }
-
+        deferred.resolve(application.controller('Exception', function($scope, $rootScope, $routeParams, $timeout, $interval, $location, $filter) {
             var DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
             var DATE_FORMAT_WITH_TIMEZONE = 'YYYY-MM-DD HH:mm:ss Z';
 
@@ -168,7 +39,8 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                 $rootScope.current_category.editing_comment = false;
                 $rootScope.current_category.comment = draft;
 
-                $.ajax({url: '/projects/' + $rootScope.current_project.name + '/exception_categories/' + $rootScope.current_category.id,
+                $.ajax({
+                    url: '/projects/' + $rootScope.current_project.name + '/exception_categories/' + $rootScope.current_category.id,
                     method: 'POST', data: {comment: draft}});
             };
 
@@ -304,6 +176,143 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                 //TODO: to implement it
                 throw 'Not implemented';
             };
+
+            if (!_.contains($rootScope.inited_controllers, 'Exceptions')) {
+                _.each(exceptions, function(exception_categories, project_id) {
+                    _.find($scope.projects, function(project) { return project.id === Number(project_id); }).
+                        exception_categories = exception_categories;
+                    _.each(exception_categories, function(exception_category) {
+                        exception_category.latest_time = _.max(_.map(exception_category.exceptions, function(exception) {
+                            return exception.time_utc;
+                        }));
+                    });
+                });
+
+                $rootScope.current_controller = 'Exceptions';
+                if ($rootScope.inited_controllers) $rootScope.inited_controllers.push('Exceptions');
+                else $rootScope.inited_controllers = ['Exceptions'];
+            }
+
+            if ($routeParams.project) {
+                $rootScope.current_project = _.find($scope.projects, function(project) {
+                    return $routeParams.project === project.name;
+                });
+
+                if ($routeParams.category_id && $rootScope.current_project) {
+                    $rootScope.current_category = _.find($rootScope.current_project.exception_categories, function(category) {
+                        return category.id === Number($routeParams.category_id);
+                    });
+
+                    if ($routeParams.exception_id && $rootScope.current_category) {
+                        $rootScope.current_exception = _.find($rootScope.current_category.exceptions, function(exception) {
+                            return exception.id === Number($routeParams.exception_id);
+                        });
+
+                        if($routeParams.tab && $rootScope.current_exception) {
+                            $rootScope.current_exception.tabs = ['Summary', 'Backtrace', 'Versions'].concat(_.keys($scope.current_exception.ext || {}));
+                            $rootScope.current_tab = _.find($rootScope.current_exception.tabs, function(tab) {
+                                return $routeParams.tab === tab;
+                            });
+                        }
+                    }
+                }
+            }
+            if (!$rootScope.current_project)
+                $rootScope.current_project = $scope.projects[0];
+            if (!$rootScope.current_category)
+                $rootScope.current_category =
+                    $filter('filterCategory')(
+                        $filter('orderCategoryBy')(
+                            $rootScope.current_project.exception_categories,
+                            $rootScope.current_exception_category_order, true),
+                        $rootScope.exception_search.scope, true)[0];
+            if (!$rootScope.current_exception)
+                $rootScope.current_exception =
+                    $filter('orderBy')($rootScope.current_category.exceptions, 'time_utc', true)[0];
+            if (!$rootScope.current_tab || !_.find($rootScope.current_exception.tabs, function(tab) { return tab === $rootScope.current_tab }))
+                $rootScope.current_tab = 'Summary';
+
+            var update_path = function() {
+                // DOESN'T ENABLE IT NOW
+                // var path = '/exceptions/';
+                // path += [$rootScope.current_project.name,
+                //          $rootScope.current_category.id,
+                //          $rootScope.current_exception.id,
+                //          $rootScope.current_tab].join('/');
+                // $location.path(path);
+            };
+
+            if (!$routeParams.project) update_path();
+
+            $rootScope.current_exception.tabs = _.keys($rootScope.current_exception.ext || {});
+            $rootScope.current_exception.all_tabs = ['Summary', 'Backtrace'].concat($rootScope.current_exception.tabs);
+
+            if ($rootScope.current_category.version_distribution.length > 1)
+                $rootScope.current_exception.all_tabs.push('Versions');
+
+            // TODO: If these variable changes, please change the hash in URL
+
+            $('.make-switch').bootstrapSwitch(false);
+            if ($rootScope.current_category) $('.make-switch').bootstrapSwitch('setState', $rootScope.current_category.resolved);
+
+            $('.make-switch').off('switch-change').on('switch-change', function(e, data) {
+                $timeout(function() {
+                    $rootScope.current_category.resolved = data.value;
+                });
+                $.ajax({url: '/projects/' + $rootScope.current_project.name + '/exception_categories/' + $rootScope.current_category.id,
+                    method: 'POST', data: {resolved: data.value}}).done(function(percent) {
+                        $timeout(function() {
+                            $rootScope.current_project.percent = Number(percent);
+                        });
+                    });
+            });
+
+            if(!$rootScope.exception_flusher) {
+                $rootScope.exception_flusher = $interval(function() {
+                    var data = _.reduce($scope.projects, function(obj, project) {
+                        obj[project.name] = _.reduce(project.exception_categories, function(obj, category) {
+                            obj[category.id] = category.latest_time;
+                            return obj
+                        }, {});
+                        return obj;
+                    }, {});
+                    $.ajax({url: '/projects/_flush', dataType: 'JSON', data: {d: JSON.stringify(data)}}).done(function(data) {
+                        _.each(data, function(hash, project_name) {
+                            var project = _.find($scope.projects, function(project) { return project.name == project_name; })
+                            if (project) {
+                                var messages = [];
+                                if (hash['new']) {
+                                    _.each(hash['new'], function(category) {
+                                        project.exception_categories.push(category);
+                                        messages.push({type: category.exception_type, message: category.message});
+                                    });
+                                }
+
+                                if (hash['old']) {
+                                    _.each(hash['old'], function (new_exceptions, category_id){
+                                        var category = _.find(project.exception_categories, function(category) { return category.id == category_id; })
+                                        if (category) {
+                                            _.each(new_exceptions.exceptions, function(exception) { category.exceptions.push(exception); });
+                                            category.exception_size = new_exceptions.exception_size;
+                                            category.frequence = new_exceptions.frequence;
+                                            category.version_distribution = new_exceptions.version_distribution;
+                                            category.date_distribution = new_exceptions.date_distribution;
+                                            messages.push({type: category.exception_type, message: category.message});
+                                        };
+                                    });
+                                }
+                                _.each(project.exception_categories, function(exception_category) {
+                                    exception_category.latest_time = _.max(_.map(exception_category.exceptions, function(exception) {
+                                        return exception.time_utc;
+                                    }));
+                                });
+                                $scope.toggle_exception_category_label(true); // To update stats again
+                                notify(messages);
+                            }
+                        });
+                    });
+                }, 30000);
+            }
 
             var SUMMARY_KEYS_FROM_EXCEPTION = ['svr_host', 'svr_ip', 'pid', 'version', 'seen_on_current_version', 'description', 'position'];
             var SUMMARY_KEYS_FROM_CATEGROY  = ['first_seen_on', 'first_seen_in'];
