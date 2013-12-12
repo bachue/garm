@@ -1,4 +1,19 @@
 define(['directives'], function(directives) {
+    directives.directive('setResolvedPercentageColor', function() {
+        return {
+            link: function(scope, element, attrs) {
+                // element.attr('data-ng-class', "{'label-success': current_project.percent >= 80, 'label-warning': current_project.percent < 80 && current_project.percent >= 60, 'label-danger': current_project.percent < 60}");
+                scope.$watch('current_project.percent', function() {
+                    if (!scope.current_project) return; // Not ready here
+                    element.removeClass('label-success label-warning label-danger');
+                    if (scope.current_project.percent >= 80) element.addClass('label-success');
+                    else if (scope.current_project.percent >= 60) element.addClass('label-warning');
+                    else element.addClass('label-danger');
+                });
+            }
+        };
+    });
+
     directives.directive('uniqEmail', function() {
         return {
             require: '?ngModel',
