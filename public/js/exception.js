@@ -21,6 +21,12 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                 return tab.toLowerCase();
             };
 
+            $scope.$on('current_project_changed', function(project) {
+                set_default_execute_category();
+                set_default_exception();
+                update_scope();
+            });
+
             $scope.set_current_category = function(category) {
                 $rootScope.current_category = category;
                 $scope.set_current_exception(
@@ -285,22 +291,34 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                     }
                 }
             }
-            if (!$rootScope.current_project)
+            if (!$rootScope.current_project) set_default_project();
+            if (!$rootScope.current_category) set_default_execute_category();
+            if (!$rootScope.current_exception) set_default_exception();
+            if (!$rootScope.current_tab) set_default_tab();
+
+            update_scope();
+
+            function set_default_project() {
                 $rootScope.current_project = $scope.projects[0];
-            if (!$rootScope.current_category)
+            }
+
+            function set_default_execute_category() {
                 $rootScope.current_category =
                     $filter('filterCategory')(
                         $filter('orderCategoryBy')(
                             $rootScope.current_project.exception_categories,
                             $rootScope.current_exception_category_order, true),
                         $rootScope.exception_search.scope, true)[0];
-            if (!$rootScope.current_exception)
+            }
+
+            function set_default_exception() {
                 $rootScope.current_exception =
                     $filter('orderBy')($rootScope.current_category.exceptions, 'time_utc', true)[0];
-            if (!$rootScope.current_tab)
-                $rootScope.current_tab = 'Summary';
+            }
 
-            update_scope();
+            function set_default_tab() {
+                $rootScope.current_tab = 'Summary';
+            }
 
             function update_scope() { // Every time when project, this function code will run
                 $rootScope.current_exception.tabs = _.keys($rootScope.current_exception.ext || {});
@@ -310,7 +328,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                     $rootScope.current_exception.all_tabs.push('Versions');
 
                 if (!_.find($rootScope.current_exception.all_tabs, function(tab) { return tab === $rootScope.current_tab }))
-                    $rootScope.current_tab = 'Summary';
+                    set_default_tab();
 
                 if ($rootScope.current_category)
                     $('.make-switch').bootstrapSwitch('setState', $rootScope.current_category.resolved);

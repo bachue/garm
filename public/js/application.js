@@ -40,6 +40,7 @@ define(['controllers', 'jquery', 'underscore', 'projects_loader'], function(cont
 
             $scope.set_current_project = function(project) {
                 $rootScope.current_project = project;
+                $scope.$broadcast('current_project_changed', project);
             };
 
             $scope.add_subscription = function(project) {
