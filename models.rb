@@ -23,9 +23,18 @@ module Garm
       validates_uniqueness_of :key, :scope => :project_id
 
       scope :with_frequence, ->{ joins(:exceptions).select('exception_categories.id', 'count(*) / ((strftime("%s") - exception_categories.first_seen_on)*1.0 / 86400 ) AS f').group('exception_categories.id') }
+      scope :with_occurance_count_version_distribution, ->{ joins(:exceptions).group('exceptions.version').select('exception_categories.id AS id', 'exceptions.version AS version', 'count(*) AS count') }
 
       def frequence
         self.class.with_frequence.find(id).f
+      end
+
+      def occurance_count_version_distribution
+        self.class.with_occurance_count_version_distribution.where(id: id).map do |pair|
+          {version: pair.version, count: pair.count}
+        end.sort_by do |hash|
+          Gem::Version.new hash[:version]
+        end
       end
     end
 

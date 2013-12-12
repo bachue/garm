@@ -118,7 +118,8 @@ get '/projects/_flush' do
       h[category.id] = {
         exceptions: new_exceptions,
         exception_size: ExceptionQuickLoader.count(category),
-        frequence: category.frequence
+        frequence: category.frequence,
+        version_distribution: category.occurance_count_version_distribution
       }
       h
     end

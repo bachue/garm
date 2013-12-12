@@ -34,7 +34,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                         });
 
                         if($routeParams.tab && $rootScope.current_exception) {
-                            $rootScope.current_exception.tabs = ['Summary', 'Backtrace'].concat(_.keys($scope.current_exception.ext || {}));
+                            $rootScope.current_exception.tabs = ['Summary', 'Backtrace', 'Versions'].concat(_.keys($scope.current_exception.ext || {}));
                             $rootScope.current_tab = _.find($rootScope.current_exception.tabs, function(tab) {
                                 return $routeParams.tab === tab;
                             });
@@ -63,6 +63,9 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
 
             $rootScope.current_exception.tabs = _.keys($rootScope.current_exception.ext || {});
             $rootScope.current_exception.all_tabs = ['Summary', 'Backtrace'].concat($rootScope.current_exception.tabs);
+
+            if ($rootScope.current_category.version_distribution.length > 1)
+                $rootScope.current_exception.all_tabs.push('Versions');
 
             // TODO: If these variable changes, please change the hash in URL
 
@@ -109,6 +112,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                                             _.each(new_exceptions.exceptions, function(exception) { category.exceptions.push(exception); });
                                             category.exception_size = new_exceptions.exception_size;
                                             category.frequence = new_exceptions.frequence;
+                                            category.version_distribution = new_exceptions.version_distribution;
                                             messages.push({type: category.exception_type, message: category.message});
                                         };
                                     });

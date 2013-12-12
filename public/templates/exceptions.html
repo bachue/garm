@@ -87,6 +87,9 @@
                         </tr>
                     </table>
                 </div>
+                <div id="error-versions" class="tab-pane fade" data-ng-class="{'in active': current_tab === 'Versions'}">
+                    <canvas data-init-versions-chart width="900" height="500"></canvas>
+                </div>
                 <div id="error-{{get_tab_name(tab)}}" class="tab-pane fade" data-ng-repeat="tab in current_exception.all_tabs" data-ng-class="{'in active': current_tab === tab}">
                     <table class="table error-table">
                         <tr data-ng-repeat="(key, value) in current_exception.ext[tab]">
