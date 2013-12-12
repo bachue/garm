@@ -247,9 +247,34 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
             if(!$rootScope.exception_category_stats_info) $scope.toggle_exception_category_label(true);
 
             $scope.exception_category_stats_tooltip = function() {
-                if ($rootScope.exception_category_stats_info == 'C') return 'Count';
-                else if ($rootScope.exception_category_stats_info == 'F') return 'Frequence';
-                else throw 'Not implemented this stats info';
+                return {
+                    C: 'Count',
+                    F: 'Frequence'
+                }[$rootScope.exception_category_stats_info];
+            };
+
+            $scope.order_exception_category = function() {
+                var orders = ['datetime', 'count', 'frequence'];
+                var idx = _.indexOf(orders, $rootScope.current_exception_category_order);
+                idx = (idx + 1) % orders.length;
+                $rootScope.current_exception_category_order = orders[idx];
+            };
+            if(!$rootScope.current_exception_category_order) $scope.order_exception_category();
+
+            $scope.exception_category_order_label = function() {
+                return {
+                    datetime: 'T',
+                    count: 'C',
+                    frequence: 'F'
+                }[$rootScope.current_exception_category_order];
+            };
+
+            $scope.exception_category_order_tooltip = function() {
+                return 'Order by: ' + {
+                    datetime: 'Time',
+                    count: 'Occurrence Count',
+                    frequence: 'Occurrence Frequence'
+                }[$rootScope.current_exception_category_order];
             };
 
             $scope.switch_to_exception = function(category_id, exception_id) {

@@ -3,6 +3,7 @@
         <div class="sidebar-nav list-nav">
             <div class="nav-stat-left">
                 <a href='#' class="label label-info" data-ng-bind="exception_category_stats_info" data-ng-click="toggle_exception_category_label()" data-ng-attr-title="{{exception_category_stats_tooltip()}}"></a>
+                <a href='#' class="label label-primary" data-ng-bind="exception_category_order_label()" data-ng-click="order_exception_category()" data-ng-attr-title="{{exception_category_order_tooltip()}}"></a>
             </div>
             <div class="nav-stat-right">
                 <span class="label" data-ng-class="{'label-success': current_project.percent >= 80, 'label-warning': current_project.percent < 80 && current_project.percent >= 60, 'label-danger': current_project.percent < 60}" data-ng-bind="current_project.percent + '%'" title="Resolved Percentage"></span>
@@ -27,7 +28,7 @@
                 </tr>
             </table>
             <ul class="nav" data-ng-hide="show_search()">
-                <li data-ng-class="{active: exception_category === current_category}" data-flash-item data-ng-repeat="exception_category in current_project.exception_categories | orderCategoryBy:'datetime':true">
+                <li data-ng-class="{active: exception_category === current_category}" data-flash-item data-ng-repeat="exception_category in current_project.exception_categories | orderCategoryBy:current_exception_category_order:true">
                     <a href='#' data-ng-click="set_current_category(exception_category);">
                         <span class="item-name" data-ng-bind="exception_category.exception_type + ': ' + exception_category.message"></span><span class="pull-right label exception-category-stats-label" data-ng-class="{'label-success': exception_category.resolved, 'label-danger': !exception_category.resolved}" data-ng-bind="exception_category.label_stats">
                     </a>

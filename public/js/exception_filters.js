@@ -7,8 +7,7 @@ define(['filters'], function(filters) {
             } else if(field == 'count') {
                 sortfunc = function(item) { return item.exception_size * factor; };
             } else if(field == 'frequence') {
-                // TODO: Implement frequence sorting here
-                throw 'not implemented';
+                sortfunc = function(item) { return item.frequence * factor; };
             };
 
             return _.sortBy(items, sortfunc)
