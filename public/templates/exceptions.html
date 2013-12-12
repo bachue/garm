@@ -73,24 +73,24 @@
                 </li>
             </ul>
             <div class="tab-content relative">
-                <div id="error-summaries" class="tab-pane fade" data-ng-class="{'in active': current_tab === 'Summary'}">
+                <div id="error-summaries" class="tab-pane fade in active" data-ng-if="current_tab === 'Summary'">
                     <table class="table error-table">
                         <tr data-ng-repeat="item in current_exception.all_summaries">
                             <th data-ng-bind="item.key"></th><td data-ng-bind="item.value"></td>
                         </tr>
                     </table>
                 </div>
-                <div id="error-backtrace" class="tab-pane fade" data-ng-class="{'in active': current_tab === 'Backtrace'}">
+                <div id="error-backtrace" class="tab-pane fade in active" data-ng-if="current_tab === 'Backtrace'">
                     <table class="table error-table">
                         <tr data-ng-repeat="item in current_exception.backtrace track by $index">
                             <td data-ng-bind="item"></td>
                         </tr>
                     </table>
                 </div>
-                <div id="error-versions" class="tab-pane fade" data-ng-class="{'in active': current_tab === 'Versions'}">
+                <div id="error-versions" class="tab-pane fade in active" data-ng-if="current_tab === 'Versions'">
                     <canvas data-init-versions-chart width="900" height="500"></canvas>
                 </div>
-                <div id="error-{{get_tab_name(tab)}}" class="tab-pane fade" data-ng-repeat="tab in current_exception.all_tabs" data-ng-class="{'in active': current_tab === tab}">
+                <div id="error-{{get_tab_name(tab)}}" class="tab-pane fade in active" data-ng-repeat="tab in current_exception.all_tabs" data-ng-if="current_tab === tab">
                     <table class="table error-table">
                         <tr data-ng-repeat="(key, value) in current_exception.ext[tab]">
                             <th data-ng-bind="key"></th><td><pre data-ng-bind="value"></pre></td>
