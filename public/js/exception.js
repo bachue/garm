@@ -246,6 +246,12 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
             };
             if(!$rootScope.exception_category_stats_info) $scope.toggle_exception_category_label(true);
 
+            $scope.exception_category_stats_tooltip = function() {
+                if ($rootScope.exception_category_stats_info == 'C') return 'Count';
+                else if ($rootScope.exception_category_stats_info == 'F') return 'Frequence';
+                else throw 'Not implemented this stats info';
+            };
+
             $scope.switch_to_exception = function(category_id, exception_id) {
                 var category = _.find($rootScope.current_project.exception_categories, function(category) { return category.id == category_id; }), exception;
                 if (category) {

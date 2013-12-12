@@ -1,9 +1,11 @@
 <div class="row">
     <div class="col-md-3">
         <div class="sidebar-nav list-nav">
-            <div class="nav-stat">
-                <a href='#' class="label label-info" data-ng-bind="exception_category_stats_info" data-ng-click="toggle_exception_category_label()"></a>
-                <span class="label" data-ng-class="{'label-success': current_project.percent >= 80, 'label-warning': current_project.percent < 80 && current_project.percent >= 60, 'label-danger': current_project.percent < 60}" data-ng-bind="current_project.percent + '%'"></span>
+            <div class="nav-stat-left">
+                <a href='#' class="label label-info" data-ng-bind="exception_category_stats_info" data-ng-click="toggle_exception_category_label()" data-ng-attr-title="{{exception_category_stats_tooltip()}}"></a>
+            </div>
+            <div class="nav-stat-right">
+                <span class="label" data-ng-class="{'label-success': current_project.percent >= 80, 'label-warning': current_project.percent < 80 && current_project.percent >= 60, 'label-danger': current_project.percent < 60}" data-ng-bind="current_project.percent + '%'" title="Resolved Percentage"></span>
             </div>
             <table class="search-form">
                 <tr>

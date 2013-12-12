@@ -375,16 +375,21 @@ input.ng-invalid, textarea.ng-invalid, select.ng-invalid{
   width: 100%;
 }
 
-.nav-stat {
-  text-align: right;
+.nav-stat-left {
+  float: left;
   padding-bottom: 10px;
 }
 
-.nav-stat:after {
+.nav-stat-right {
+  float: right;
+  padding-bottom: 10px;
+}
+
+.nav-stat-left:after, .nav-stat-right:after {
   clear: both;
 }
 
-.nav-stat .label {
+.nav-stat-left .label, .nav-stat-right .label {
   margin: 10px;
 }
 
