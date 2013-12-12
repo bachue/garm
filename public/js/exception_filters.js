@@ -12,7 +12,7 @@ define(['filters'], function(filters) {
                 throw 'Cannot order by this field: ' + field;
             };
 
-            return _.sortBy(items, sortfunc)
+            return _.sortBy(items, sortfunc);
         };
     });
 

@@ -2,8 +2,8 @@
     <div class="col-md-3">
         <div class="sidebar-nav list-nav">
             <div class="nav-stat-left">
-                <a href='#' class="label label-info" data-ng-bind="exception_category_stats_info" data-ng-click="toggle_exception_category_label()" data-ng-attr-title="{{exception_category_stats_tooltip()}}"></a>
-                <a href='#' class="label label-primary" data-ng-bind="exception_category_order_label()" data-ng-click="order_exception_category()" data-ng-attr-title="{{exception_category_order_tooltip()}}"></a>
+                <a href="javascript:void(0)" class="label label-info" data-ng-bind="exception_category_stats_info" data-ng-click="toggle_exception_category_label()" data-ng-attr-title="{{exception_category_stats_tooltip()}}"></a>
+                <a href="javascript:void(0)" class="label label-primary" data-ng-bind="exception_category_order_label()" data-ng-click="order_exception_category()" data-ng-attr-title="{{exception_category_order_tooltip()}}"></a>
             </div>
             <div class="nav-stat-right">
                 <span class="label" data-set-resolved-percentage-color data-ng-bind="current_project.percent + '%'" title="Resolved Percentage"></span>
@@ -20,8 +20,8 @@
                         <div class="btn-group">
                             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" data-ng-bind-html="truncate(exception_search.scope, 6) + ' <span class=\'caret\'></span>'"></button>
                             <ul class="dropdown-menu">
-                                <li><a tabindex="-1" href="#" data-ng-click="set_search_options('scope', 'All')">All</a></li>
-                                <li><a tabindex="-1" href="#" data-ng-click="set_search_options('scope', 'Unresolved Only')">Unresolved Only</a></li>
+                                <li><a tabindex="-1" href="javascript:void(0)" data-ng-click="set_search_options('scope', 'All')">All</a></li>
+                                <li><a tabindex="-1" href="javascript:void(0)" data-ng-click="set_search_options('scope', 'Unresolved Only')">Unresolved Only</a></li>
                             </ul>
                         </div>
                     </td>
@@ -29,18 +29,18 @@
             </table>
             <ul class="nav" data-ng-hide="show_search()">
                 <li data-ng-class="{active: exception_category === current_category}" data-flash-item data-ng-repeat="exception_category in current_project.exception_categories | orderCategoryBy:current_exception_category_order:true | filterCategory:exception_search.scope">
-                    <a href='#' data-ng-click="set_current_category(exception_category);">
+                    <a href="javascript:void(0)" data-ng-click="set_current_category(exception_category);">
                         <span class="item-name" data-ng-bind="exception_category.exception_type + ': ' + exception_category.message"></span><span class="pull-right label exception-category-stats-label" data-ng-class="{'label-success': exception_category.resolved, 'label-danger': !exception_category.resolved}" data-ng-bind="exception_category.label_stats">
                     </a>
                     <ul class="nav" id='nav-exception-category-{{exception_category.id}}' ng-show="exception_category === current_category">
                         <li data-ng-class="{active: exception === current_exception}" data-ng-repeat="exception in exception_category.exceptions | orderBy:'time_utc':true" data-flash-parent-item>
-                            <a href='#' data-ng-click="set_current_exception(exception)" data-ng-bind="get_utc_string_without_tz(exception.time_utc)"></a>
+                            <a href="javascript:void(0)" data-ng-click="set_current_exception(exception)" data-ng-bind="get_utc_string_without_tz(exception.time_utc)"></a>
                         </li>
                     </ul>
                 </li>
             </ul>
             <div class="list-group" data-ng-show="show_search()">
-                <a href="#" class="list-group-item" data-ng-repeat="result in exception_search.results | filterCategory:exception_search.scope" data-ng-click="switch_to_exception(result.category_id, result.exception_id)">
+                <a href="javascript:void(0)" class="list-group-item" data-ng-repeat="result in exception_search.results | filterCategory:exception_search.scope" data-ng-click="switch_to_exception(result.category_id, result.exception_id)">
                     <h4 class="list-group-item-heading" data-ng-bind="result.exception_type"></h4>
                     <p class="list-group-item-text" data-ng-bind="get_utc_string_without_tz(result.time_utc)"></p>
                 </a>
@@ -90,7 +90,7 @@
                 <div id="error-versions" class="tab-pane fade in active" data-ng-if="current_tab === 'Versions'">
                     <canvas data-init-versions-chart width="900" height="500"></canvas>
                 </div>
-                <div id="error-{{get_tab_name(tab)}}" class="tab-pane fade in active" data-ng-repeat="tab in current_exception.all_tabs" data-ng-if="current_tab === tab">
+                <div id="error-{{get_tab_name(tab)}}" class="tab-pane fade in active" data-ng-repeat="tab in current_exception.tabs" data-ng-if="current_tab === tab">
                     <table class="table error-table">
                         <tr data-ng-repeat="(key, value) in current_exception.ext[tab]">
                             <th data-ng-bind="key"></th><td><pre data-ng-bind="value"></pre></td>

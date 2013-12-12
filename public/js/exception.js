@@ -25,10 +25,12 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                 $rootScope.current_category = category;
                 $scope.set_current_exception(
                     $filter('orderBy')(category.exceptions, 'time_utc', true)[0]);
+                update_scope();
             };
 
             $scope.set_current_exception = function(exception) {
                 $rootScope.current_exception = exception;
+                update_scope();
             };
 
             $scope.set_editing_comment = function(comment) {
@@ -48,8 +50,8 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
             $scope.switch_to_tab = function(tab, $event) {
                 $event.preventDefault();
                 $rootScope.current_tab = tab;
-                update_path();
                 $($event.target).tab('show');
+                update_scope();
             };
 
             if (!$rootScope.exception_search) $rootScope.exception_search = {keyword: '', scope: 'All'};
@@ -166,6 +168,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                 if (category && exception) {
                     $rootScope.current_category = category;
                     $rootScope.current_exception = exception;
+                    update_scope();
                 } else {
                     $scope.load_exceptions_from_remote($rootScope.current_project.name, category_id, exception_id);
                     $scope.switch_to_exception(category_id, exception_id);
@@ -177,6 +180,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                 throw 'Not implemented';
             };
 
+            // Just regard it's controller initialize code, only run once
             if (!_.contains($rootScope.inited_controllers, 'Exceptions')) {
                 _.each(exceptions, function(exception_categories, project_id) {
                     _.find($scope.projects, function(project) { return project.id === Number(project_id); }).
@@ -193,8 +197,70 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                 else $rootScope.inited_controllers = ['Exceptions'];
 
                 $scope.toggle_exception_category_label(true);
+
+                $('.make-switch').bootstrapSwitch(false);
+                $('.make-switch').off('switch-change').on('switch-change', function(e, data) {
+                    $timeout(function() {
+                        $rootScope.current_category.resolved = data.value;
+                    });
+                    $.ajax({url: '/projects/' + $rootScope.current_project.name + '/exception_categories/' + $rootScope.current_category.id,
+                        method: 'POST', data: {resolved: data.value}}).done(function(percent) {
+                            $timeout(function() {
+                                $rootScope.current_project.percent = Number(percent);
+                            });
+                        });
+                });
+
+                // For flush exceptions from remote in each interval of time
+                $interval(function() {
+                    var data = _.reduce($scope.projects, function(obj, project) {
+                        obj[project.name] = _.reduce(project.exception_categories, function(obj, category) {
+                            obj[category.id] = category.latest_time;
+                            return obj
+                        }, {});
+                        return obj;
+                    }, {});
+                    $.ajax({url: '/projects/_flush', dataType: 'JSON', data: {d: JSON.stringify(data)}}).done(function(data) {
+                        _.each(data, function(hash, project_name) {
+                            var project = _.find($scope.projects, function(project) { return project.name == project_name; })
+                            if (project) {
+                                var messages = [];
+                                if (hash['new']) {
+                                    _.each(hash['new'], function(category) {
+                                        project.exception_categories.push(category);
+                                        if (!category.resolved)
+                                            messages.push({type: category.exception_type, message: category.message});
+                                    });
+                                }
+
+                                if (hash['old']) {
+                                    _.each(hash['old'], function (new_exceptions, category_id){
+                                        var category = _.find(project.exception_categories, function(category) { return category.id == category_id; })
+                                        if (category) {
+                                            _.each(new_exceptions.exceptions, function(exception) { category.exceptions.push(exception); });
+                                            category.exception_size = new_exceptions.exception_size;
+                                            category.frequence = new_exceptions.frequence;
+                                            category.version_distribution = new_exceptions.version_distribution;
+                                            category.date_distribution = new_exceptions.date_distribution;
+                                            if (!category.resolved)
+                                                messages.push({type: category.exception_type, message: category.message});
+                                        };
+                                    });
+                                }
+                                _.each(project.exception_categories, function(exception_category) {
+                                    exception_category.latest_time = _.max(_.map(exception_category.exceptions, function(exception) {
+                                        return exception.time_utc;
+                                    }));
+                                });
+                                $scope.toggle_exception_category_label(true); // To update stats again
+                                notify(messages);
+                            }
+                        });
+                    });
+                }, 30000);
             }
 
+            // Everytime when it switches to exception controller, these code will run
             if ($routeParams.project) {
                 $rootScope.current_project = _.find($scope.projects, function(project) {
                     return $routeParams.project === project.name;
@@ -231,129 +297,63 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
             if (!$rootScope.current_exception)
                 $rootScope.current_exception =
                     $filter('orderBy')($rootScope.current_category.exceptions, 'time_utc', true)[0];
-            if (!$rootScope.current_tab || !_.find($rootScope.current_exception.tabs, function(tab) { return tab === $rootScope.current_tab }))
+            if (!$rootScope.current_tab)
                 $rootScope.current_tab = 'Summary';
 
-            var update_path = function() {
-                // DOESN'T ENABLE IT NOW
-                // var path = '/exceptions/';
-                // path += [$rootScope.current_project.name,
-                //          $rootScope.current_category.id,
-                //          $rootScope.current_exception.id,
-                //          $rootScope.current_tab].join('/');
-                // $location.path(path);
-            };
+            update_scope();
 
-            if (!$routeParams.project) update_path();
+            function update_scope() { // Every time when project, this function code will run
+                $rootScope.current_exception.tabs = _.keys($rootScope.current_exception.ext || {});
+                $rootScope.current_exception.all_tabs = ['Summary', 'Backtrace'].concat($rootScope.current_exception.tabs);
 
-            $rootScope.current_exception.tabs = _.keys($rootScope.current_exception.ext || {});
-            $rootScope.current_exception.all_tabs = ['Summary', 'Backtrace'].concat($rootScope.current_exception.tabs);
+                if ($rootScope.current_category.version_distribution.length > 1)
+                    $rootScope.current_exception.all_tabs.push('Versions');
 
-            if ($rootScope.current_category.version_distribution.length > 1)
-                $rootScope.current_exception.all_tabs.push('Versions');
+                if (!_.find($rootScope.current_exception.all_tabs, function(tab) { return tab === $rootScope.current_tab }))
+                    $rootScope.current_tab = 'Summary';
 
-            // TODO: If these variable changes, please change the hash in URL
+                if ($rootScope.current_category)
+                    $('.make-switch').bootstrapSwitch('setState', $rootScope.current_category.resolved);
 
-            $('.make-switch').bootstrapSwitch(false);
-            if ($rootScope.current_category) $('.make-switch').bootstrapSwitch('setState', $rootScope.current_category.resolved);
+                var SUMMARY_KEYS_FROM_EXCEPTION = ['svr_host', 'svr_ip', 'pid', 'version', 'seen_on_current_version', 'description', 'position'];
+                var SUMMARY_KEYS_FROM_CATEGROY  = ['first_seen_on', 'first_seen_in'];
+                var SUMMARY_KEYS_ORDER = ['svr_host', 'svr_ip', 'pid', 'svr_time', 'version', 'first_seen_on', 'first_seen_in', 'seen_on_current_version', 'description', 'position'];
+                var SUMMARY_KEYS_I18N = {
+                    svr_host:                'Server Hostname',
+                    svr_ip:                  'Server IP',
+                    pid:                     'PID',
+                    svr_time:                'Server Time',
+                    version:                 'Version',
+                    first_seen_in:           'First Seen in',
+                    first_seen_on:           'First Seen on',
+                    seen_on_current_version: 'Seen on current version',
+                    description:             'Description',
+                    position:                'Postion'
+                };
 
-            $('.make-switch').off('switch-change').on('switch-change', function(e, data) {
-                $timeout(function() {
-                    $rootScope.current_category.resolved = data.value;
-                });
-                $.ajax({url: '/projects/' + $rootScope.current_project.name + '/exception_categories/' + $rootScope.current_category.id,
-                    method: 'POST', data: {resolved: data.value}}).done(function(percent) {
-                        $timeout(function() {
-                            $rootScope.current_project.percent = Number(percent);
-                        });
-                    });
-            });
-
-            if(!$rootScope.exception_flusher) {
-                $rootScope.exception_flusher = $interval(function() {
-                    var data = _.reduce($scope.projects, function(obj, project) {
-                        obj[project.name] = _.reduce(project.exception_categories, function(obj, category) {
-                            obj[category.id] = category.latest_time;
-                            return obj
+                if(!$rootScope.current_exception.all_summaries) {
+                    $rootScope.current_exception.all_summaries = (function(exception, category) {
+                        var summaries_from_exception = _.pick(exception, SUMMARY_KEYS_FROM_EXCEPTION);
+                        summaries_from_exception['svr_time'] = $scope.get_locale_string_with_tz(exception.time_utc, exception.svr_zone);
+                        var summaries_from_category = _.pick(category, SUMMARY_KEYS_FROM_CATEGROY);
+                        summaries_from_category['first_seen_on'] = $scope.get_utc_string_with_tz(category.first_seen_on);
+                        var summaries = _.extend(summaries_from_exception, summaries_from_category, exception.summaries);
+                        summaries = _.reduce(summaries, function(obj, value, key) {
+                            if (value) obj[key] = value;
+                            return obj;
                         }, {});
-                        return obj;
-                    }, {});
-                    $.ajax({url: '/projects/_flush', dataType: 'JSON', data: {d: JSON.stringify(data)}}).done(function(data) {
-                        _.each(data, function(hash, project_name) {
-                            var project = _.find($scope.projects, function(project) { return project.name == project_name; })
-                            if (project) {
-                                var messages = [];
-                                if (hash['new']) {
-                                    _.each(hash['new'], function(category) {
-                                        project.exception_categories.push(category);
-                                        messages.push({type: category.exception_type, message: category.message});
-                                    });
-                                }
-
-                                if (hash['old']) {
-                                    _.each(hash['old'], function (new_exceptions, category_id){
-                                        var category = _.find(project.exception_categories, function(category) { return category.id == category_id; })
-                                        if (category) {
-                                            _.each(new_exceptions.exceptions, function(exception) { category.exceptions.push(exception); });
-                                            category.exception_size = new_exceptions.exception_size;
-                                            category.frequence = new_exceptions.frequence;
-                                            category.version_distribution = new_exceptions.version_distribution;
-                                            category.date_distribution = new_exceptions.date_distribution;
-                                            messages.push({type: category.exception_type, message: category.message});
-                                        };
-                                    });
-                                }
-                                _.each(project.exception_categories, function(exception_category) {
-                                    exception_category.latest_time = _.max(_.map(exception_category.exceptions, function(exception) {
-                                        return exception.time_utc;
-                                    }));
-                                });
-                                $scope.toggle_exception_category_label(true); // To update stats again
-                                notify(messages);
-                            }
+                        summaries = _.map(summaries, function(value, key) { return {key: SUMMARY_KEYS_I18N[key] ? SUMMARY_KEYS_I18N[key] : key, value: value}; });
+                        summaries = _.sortBy(summaries, function(element) {
+                            var idx = SUMMARY_KEYS_ORDER.indexOf(element.key);
+                            return idx > 0 ? idx : SUMMARY_KEYS_ORDER.length;
                         });
-                    });
-                }, 30000);
-            }
+                        return summaries;
+                    })($rootScope.current_exception, $rootScope.current_category);
+                }
 
-            var SUMMARY_KEYS_FROM_EXCEPTION = ['svr_host', 'svr_ip', 'pid', 'version', 'seen_on_current_version', 'description', 'position'];
-            var SUMMARY_KEYS_FROM_CATEGROY  = ['first_seen_on', 'first_seen_in'];
-            var SUMMARY_KEYS_ORDER = ['svr_host', 'svr_ip', 'pid', 'svr_time', 'version', 'first_seen_on', 'first_seen_in', 'seen_on_current_version', 'description', 'position'];
-            var SUMMARY_KEYS_I18N = {
-                svr_host:                'Server Hostname',
-                svr_ip:                  'Server IP',
-                pid:                     'PID',
-                svr_time:                'Server Time',
-                version:                 'Version',
-                first_seen_in:           'First Seen in',
-                first_seen_on:           'First Seen on',
-                seen_on_current_version: 'Seen on current version',
-                description:             'Description',
-                position:                'Postion'
-            };
-
-            if(!$rootScope.current_exception.all_summaries) {
-                $rootScope.current_exception.all_summaries = (function(exception, category) {
-                    var summaries_from_exception = _.pick(exception, SUMMARY_KEYS_FROM_EXCEPTION);
-                    summaries_from_exception['svr_time'] = $scope.get_locale_string_with_tz(exception.time_utc, exception.svr_zone);
-                    var summaries_from_category = _.pick(category, SUMMARY_KEYS_FROM_CATEGROY);
-                    summaries_from_category['first_seen_on'] = $scope.get_utc_string_with_tz(category.first_seen_on);
-                    var summaries = _.extend(summaries_from_exception, summaries_from_category, exception.summaries);
-                    summaries = _.reduce(summaries, function(obj, value, key) { 
-                        if (value) obj[key] = value;
-                        return obj;
-                    }, {});
-                    summaries = _.map(summaries, function(value, key) { return {key: SUMMARY_KEYS_I18N[key] ? SUMMARY_KEYS_I18N[key] : key, value: value}; });
-                    summaries = _.sortBy(summaries, function(element) {
-                        var idx = SUMMARY_KEYS_ORDER.indexOf(element.key);
-                        return idx > 0 ? idx : SUMMARY_KEYS_ORDER.length;
-                    });
-                    return summaries;
-                })($rootScope.current_exception, $rootScope.current_category);
-            }
-
-            if (_.isString($rootScope.current_exception.backtrace)) {
-                $rootScope.current_exception.backtrace = $rootScope.current_exception.backtrace.split('\n');
+                if (_.isString($rootScope.current_exception.backtrace)) {
+                    $rootScope.current_exception.backtrace = $rootScope.current_exception.backtrace.split('\n');
+                }
             }
 
             function notify(messages) {

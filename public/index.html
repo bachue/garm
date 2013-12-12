@@ -49,15 +49,15 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-items">
-                    <li data-ng-class="{active: name === current_controller}" data-ng-repeat="name in controller_names"><a href='#' data-ng-bind="name"></a></li>
+                    <li data-ng-class="{active: name === current_controller}" data-ng-repeat="name in controller_names"><a href="javascript:void(0)" data-ng-bind="name"></a></li>
                 </ul>
-                <a href="#" class="btn-add-project navbar-right glyphicon glyphicon-wrench" alt="config" data-toggle="modal" data-target="#config-modal" title="Config Projects"></a>
+                <a href="javascript:void(0)" class="btn-add-project navbar-right glyphicon glyphicon-wrench" alt="config" data-toggle="modal" data-target="#config-modal" title="Config Projects"></a>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href='#' class="dropdown-toggle" data-toggle="dropdown" data-ng-bind-html="current_project.name + ' <b class=\'caret\'></b>'"></a>
+                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" data-ng-bind-html="current_project.name + ' <b class=\'caret\'></b>'"></a>
                         <ul class="dropdown-menu">
                             <li data-ng-repeat="project in projects">
-                                <a href="#" data-ng-click="set_current_project(project)"><span data-ng-bind="project.name"></span><span data-set-resolved-percentage-color class='pull-right label' data-ng-bind="project.percent + ' %'"></span></a>
+                                <a href="javascript:void(0)" data-ng-click="set_current_project(project)"><span data-ng-bind="project.name"></span><span data-set-resolved-percentage-color class='pull-right label' data-ng-bind="project.percent + ' %'"></span></a>
                             </li>
                         </ul>
                     </li>
@@ -94,7 +94,7 @@
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
                                                     <li data-ng-class="{active: $first}" data-ng-repeat="day in avaiable_interval_days">
-                                                        <a href="#" data-ng-bind="humanize_days(day)" data-ng-click="set_subscription_interval_days(day, subscription, project)"></a>
+                                                        <a href="javascript:void(0)" data-ng-bind="humanize_days(day)" data-ng-click="set_subscription_interval_days(day, subscription, project)"></a>
                                                     </li>
                                                 </ul>
                                             </div>
