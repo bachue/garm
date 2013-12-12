@@ -1,3 +1,5 @@
+require 'date'
+
 module Garm
   module Model
     class Project < ActiveRecord::Base
@@ -39,10 +41,24 @@ module Garm
       end
 
       def occurrence_count_date_distribution
+        result = []
         self.class.with_occurrence_count_date_distribution.where(id: id).order('date').map do |pair|
           {date: pair.date, count: pair.count}
+        end.each do |pair|
+          if result.last.present?
+            result.concat dates_in_range(Date.parse(result.last[:date]), Date.parse(pair[:date]))
+          end
+          result << pair
         end
+        result + dates_in_range(Date.parse(result.last[:date]), Date.today)
       end
+
+      private
+        def dates_in_range date1, date2
+          ((date1 + 1)...date2).map do |date|
+            {date: date.strftime('%F'), count: 0}
+          end
+        end
     end
 
     class Exception < ActiveRecord::Base
