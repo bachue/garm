@@ -23,7 +23,8 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
 
             $scope.set_current_category = function(category) {
                 $rootScope.current_category = category;
-                $scope.set_current_exception(category.exceptions[0]);
+                $scope.set_current_exception(
+                    $filter('orderBy')(category.exceptions, 'time_utc', true)[0]);
             };
 
             $scope.set_current_exception = function(exception) {
@@ -190,7 +191,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                 $rootScope.current_controller = 'Exceptions';
                 if ($rootScope.inited_controllers) $rootScope.inited_controllers.push('Exceptions');
                 else $rootScope.inited_controllers = ['Exceptions'];
-                
+
                 $scope.toggle_exception_category_label(true);
             }
 
