@@ -97,7 +97,6 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                     });
                 }
             };
-            if(!$rootScope.exception_category_stats_info) $scope.toggle_exception_category_label(true);
 
             $scope.exception_category_stats_tooltip = function() {
                 return {
@@ -191,6 +190,8 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                 $rootScope.current_controller = 'Exceptions';
                 if ($rootScope.inited_controllers) $rootScope.inited_controllers.push('Exceptions');
                 else $rootScope.inited_controllers = ['Exceptions'];
+                
+                $scope.toggle_exception_category_label(true);
             }
 
             if ($routeParams.project) {
