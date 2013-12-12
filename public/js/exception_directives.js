@@ -44,9 +44,8 @@ define(['directives', 'chart'], function(directives, Chart) {
                     labels: dates,
                     datasets: [
                         {
-                            fillColor : 'rgba(220, 220, 220, 0.4)',
-                            strokeColor : 'rgba(220, 220, 220, 0.8)',
-                            pointColor : 'rgba(220, 220, 220, 0.8)',
+                            strokeColor : 'rgba(220, 220, 220, 1)',
+                            pointColor : 'rgba(220, 220, 220, 1)',
                             pointStrokeColor : "#fff",
                             data: counts
                         }
