@@ -119,7 +119,8 @@ get '/projects/_flush' do
         exceptions: new_exceptions,
         exception_size: ExceptionQuickLoader.count(category),
         frequence: category.frequence,
-        version_distribution: category.occurance_count_version_distribution
+        version_distribution: category.occurrence_count_version_distribution,
+        date_distribution: category.occurrence_count_date_distribution
       }
       h
     end

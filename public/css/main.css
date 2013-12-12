@@ -308,6 +308,21 @@ input.ng-invalid, textarea.ng-invalid, select.ng-invalid{
   -webkit-box-shadow: 0 0 6px #d9534f;
 }
 
+.relative {
+  position: relative;
+}
+
+.absolute-top-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.as-background {
+  z-index: -1000;
+  width: 100%!important;
+}
+
 /* Transition Style */
 
 .dropdown-toggle, .dropdown-menu a, .nav > li > a {

@@ -27,7 +27,8 @@ module Garm
           hash[idx]['exceptions'] = ExceptionQuickLoader.load category, exception_limit
           hash[idx]['exception_size'] = ExceptionQuickLoader.count category
           hash[idx]['frequence'] = category.frequence
-          hash[idx]['version_distribution'] = category.occurance_count_version_distribution
+          hash[idx]['version_distribution'] = category.occurrence_count_version_distribution
+          hash[idx]['date_distribution'] = category.occurrence_count_date_distribution
         end
         hash
       end

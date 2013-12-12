@@ -113,6 +113,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                                             category.exception_size = new_exceptions.exception_size;
                                             category.frequence = new_exceptions.frequence;
                                             category.version_distribution = new_exceptions.version_distribution;
+                                            category.date_distribution = new_exceptions.date_distribution;
                                             messages.push({type: category.exception_type, message: category.message});
                                         };
                                     });

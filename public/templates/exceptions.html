@@ -72,7 +72,7 @@
                     <a data-ng-href="#error-{{get_tab_name(tab)}}" data-ng-bind="tab" data-ng-click="switch_to_tab(tab, $event)"></a>
                 </li>
             </ul>
-            <div class="tab-content">
+            <div class="tab-content relative">
                 <div id="error-summaries" class="tab-pane fade" data-ng-class="{'in active': current_tab === 'Summary'}">
                     <table class="table error-table">
                         <tr data-ng-repeat="item in current_exception.all_summaries">
@@ -97,6 +97,7 @@
                         </tr>
                     </table>
                 </div>
+                <canvas data-init-dates-chart class="absolute-top-left as-background" width="900" height="500"></canvas>
             </div>
         </div>
     </div>
