@@ -473,6 +473,12 @@ textarea.error-comment {
   font-weight: bold;
 }
 
+.log-track-table tr td:nth-child(2) {
+  font-size: 0.8em;
+  text-align: center;
+  min-width: 90px;
+}
+
 .log-track-table td {
   font-family: Monaco;
 }
