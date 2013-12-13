@@ -15,8 +15,12 @@ module Garm
   end
 
   def log log # TODO: Use LogStash instead here
-    data = {:log => log, :time_utc => Time.now.to_i, :project => @project || get_config['project']}
+    data = {:log => log, :time_utc => Time.now.to_i, :project => project}
     send_message data, '/api/logs', 'l'
+  end
+
+  def project
+    @project || get_config['project']
   end
 
   private
@@ -122,7 +126,7 @@ module Garm
     def build_exception_message error, context, request, options
       raise ArgumentError.new 'Please give me an exception' unless error.is_a?(Exception)
 
-      project = options[:project] || @project || get_config['project']
+      project = options[:project] || project
       raise InitialzeError.new 'Please set current project name which you registered in Garm server' unless project
 
       init_variables
