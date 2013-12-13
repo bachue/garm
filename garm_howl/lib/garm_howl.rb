@@ -162,6 +162,8 @@ module Garm
       end
 
       if request
+        message[:uuid] = request.cookies['_session_uuid']
+        
         message[:ext].merge!({
           'Request' => stringify_hash(simplify_hash(request.env)),
           'Parameters' => request.params
