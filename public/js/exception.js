@@ -233,6 +233,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                         }, {});
                         return obj;
                     }, {});
+                    if (!_.size(data)) return;
                     $.ajax({url: '/projects/_flush', dataType: 'JSON', data: {d: JSON.stringify(data)}}).done(function(data) {
                         _.each(data, function(hash, project_name) {
                             var project = _.find($scope.projects, function(project) { return project.name == project_name; })
@@ -240,6 +241,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                                 var messages = [];
                                 if (hash['new']) {
                                     _.each(hash['new'], function(category) {
+                                        if (!project.exception_categories) project.exception_categories = [];
                                         project.exception_categories.push(category);
                                         if (!category.resolved)
                                             messages.push({type: category.exception_type, message: category.message});

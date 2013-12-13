@@ -105,8 +105,8 @@ get '/projects/_flush' do
   result = data.inject(Hash.new {|h, k| h[k] = {}}) do |h, (project_name, category_hash)|
     project = Project.find_by name: project_name
     error 400 unless project
-
-    latest_time = category_hash.values.map(&:to_i).max
+     
+    latest_time = category_hash.values.map(&:to_i).max || 0
     new_categories = ExceptionCategoryQuickLoader.load project, :all, :all, 'first_seen_on > ?', latest_time
 
     old_categories = category_hash.inject({}) do |h, (category_id, latest_time)|
