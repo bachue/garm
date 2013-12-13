@@ -13,7 +13,7 @@ module Garm
       def self.resolved_percent project
         resolved_count = project.exceptions.where('exception_categories.resolved' => true).count
         count          = project.exceptions.count
-        100 * resolved_count / count
+        count > 0 ? 100 * resolved_count / count : 100
       end
     end
 

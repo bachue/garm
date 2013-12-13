@@ -184,7 +184,7 @@ post '/api/exceptions' do
     end
 
     exception = category.exceptions.build data.slice('time_utc', 'svr_host', 'svr_ip', 'svr_zone', 'pid',
-      'version', 'backtrace', 'tag', 'position', 'description', 'summaries', 'ext')
+      'version', 'backtrace', 'uuid', 'tag', 'position', 'description', 'summaries', 'ext')
     unless exception.save
       rollback 400, "Failed to create exception: #{exception.errors.full_messages}"
     end
