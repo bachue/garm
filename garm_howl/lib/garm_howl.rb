@@ -7,7 +7,7 @@ require 'net/http'
 require 'garm_howl/core_ext/logger'
 
 module Garm
-  attr_accessor :project, :hostname, :ip_addr, :timezone, :pid, :version, :config_path
+  attr_accessor :project, :hostname, :ip_addr, :timezone, :pid, :version, :config_path, :uuid_generator
 
   def howl *args # TODO: Use LogStash instead here
     message = build_exception_message(*build_params(args))
@@ -66,8 +66,10 @@ module Garm
     #   url: http://garm
 
     def get_config path = get_config_path
-      raise ArgumentError.new "Config file #{path} not exists" unless File.exist?(path)
-      parse_config YAML.load_file(path)
+      @config ||= begin
+        raise ArgumentError.new "Config file #{path} not exists" unless File.exist?(path)
+        parse_config YAML.load_file(path)
+      end
     end
 
     def get_instance_variables env

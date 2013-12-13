@@ -202,7 +202,7 @@ post '/api/logs' do
     project = Project.find_by name: data['project']
     rollback 400, "Failed to find project #{data['project']}" unless project
 
-    data['log'].match /(.*?)\s*<<(\w+)>>\s*(.*)/
+    data['log'].match /(.*?)\s*<<([\w-]+)>>\s*(.*)/
 
     log = project.logs.build uuid: $2, log: "#{$1}#{$3}", time_utc: data['time_utc']
     unless log.save

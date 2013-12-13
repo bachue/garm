@@ -1,6 +1,5 @@
 require 'garm_howl/frameworks/rails'
 require 'thread'
-require 'securerandom'
 
 module Garm
   module Rails3
@@ -39,7 +38,8 @@ module Garm
         def call env
           uuid = env['action_dispatch.cookies']['_session_uuid']
           unless uuid
-            uuid = SecureRandom.hex 128
+            require_relative '../uuid'
+            uuid = Garm.uuid_generator.call
             env['action_dispatch.cookies']['_session_uuid'] = uuid
           end
           Garm.logger_uuid = uuid
