@@ -9,6 +9,7 @@ class CreateExceptions < ActiveRecord::Migration
       t.integer :pid, null: false
       t.string :version, limit: 11
       t.text :backtrace, null: false
+      t.text :uuid
       t.text :tag
       t.text :position 
       t.text :description

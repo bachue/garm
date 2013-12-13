@@ -13,18 +13,16 @@
 ActiveRecord::Schema.define(version: 20131208153615) do
 
   create_table "exception_categories", force: true do |t|
-    t.string   "exception_type", limit: 40,                 null: false
-    t.text     "message",                                   null: false
-    t.text     "comment"
-    t.integer  "project_id",                                null: false
-    t.boolean  "important",                 default: false, null: false
-    t.boolean  "wont_fix",                  default: false, null: false
-    t.boolean  "resolved",                  default: false, null: false
-    t.string   "key",            limit: 40,                 null: false
-    t.integer  "first_seen_on",                             null: false
-    t.string   "first_seen_in"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string  "exception_type", limit: 40,                 null: false
+    t.text    "message",                                   null: false
+    t.text    "comment"
+    t.integer "project_id",                                null: false
+    t.boolean "important",                 default: false, null: false
+    t.boolean "wont_fix",                  default: false, null: false
+    t.boolean "resolved",                  default: false, null: false
+    t.string  "key",            limit: 40,                 null: false
+    t.integer "first_seen_on",                             null: false
+    t.string  "first_seen_in"
   end
 
   add_index "exception_categories", ["project_id", "key"], name: "exception_categories_project_key_uniq_index", unique: true
@@ -39,6 +37,7 @@ ActiveRecord::Schema.define(version: 20131208153615) do
     t.integer "pid",                              null: false
     t.string  "version",               limit: 11
     t.text    "backtrace",                        null: false
+    t.text    "uuid"
     t.text    "tag"
     t.text    "position"
     t.text    "description"
@@ -49,10 +48,13 @@ ActiveRecord::Schema.define(version: 20131208153615) do
   add_index "exceptions", ["exception_category_id"], name: "index_exceptions_on_exception_category_id"
 
   create_table "logs", force: true do |t|
-    t.text "uuid", null: false
-    t.text "log"
+    t.text    "uuid",       null: false
+    t.text    "log",        null: false
+    t.integer "project_id", null: false
+    t.integer "time_utc",   null: false
   end
 
+  add_index "logs", ["project_id"], name: "index_logs_on_project_id"
   add_index "logs", ["uuid"], name: "logs_uuid_index"
 
   create_table "projects", force: true do |t|
