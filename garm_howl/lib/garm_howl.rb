@@ -15,7 +15,7 @@ module Garm
   end
 
   def log log # TODO: Use LogStash instead here
-    data = {:log => log, :time_utc => Time.now.to_i, :project => @project}
+    data = {:log => log, :time_utc => Time.now.to_i, :project => @project || get_config['project']}
     send_message data, '/api/logs', 'l'
   end
 
@@ -25,7 +25,7 @@ module Garm
       @ip_addr  ||= IPSocket.getaddress(@hostname) rescue '127.0.0.1'
       @timezone ||= Time.now.strftime('%:z')
       @pid      ||= Process.pid
-      @version  ||= get_version || :unknown
+      @version  ||= get_version || get_config['version'] || :unknown
     end
 
     def get_version
@@ -58,6 +58,8 @@ module Garm
     end
 
     # Example for config (for Rails)
+    # project: RailsApp
+    # version: 0.1.0
     # development:
     #   url: http://localhost:3000
     # test:
@@ -68,7 +70,13 @@ module Garm
     def get_config path = get_config_path
       @config ||= begin
         raise ArgumentError.new "Config file #{path} not exists" unless File.exist?(path)
-        parse_config YAML.load_file(path)
+        YAML.load_file(path)
+      end
+    end
+
+    def server_config
+      @server_config ||= begin
+        parse_config get_config
       end
     end
 
@@ -114,7 +122,7 @@ module Garm
     def build_exception_message error, context, request, options
       raise ArgumentError.new 'Please give me an exception' unless error.is_a?(Exception)
 
-      project = options[:project] || @project
+      project = options[:project] || @project || get_config['project']
       raise InitialzeError.new 'Please set current project name which you registered in Garm server' unless project
 
       init_variables
@@ -174,7 +182,7 @@ module Garm
     end
 
     def send_message message, path, key
-      uri = URI(get_config['url'])
+      uri = URI(server_config['url'])
       uri.path = path
       Net::HTTP.post_form uri, key => MultiJson.dump(message)
     end
