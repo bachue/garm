@@ -17,6 +17,10 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                 return moment.unix(timestamp).zone(tz || '+00:00').format(DATE_FORMAT_WITH_TIMEZONE);
             };
 
+            $scope.show_the_view = function() {
+                return Boolean($rootScope.current_category && $rootScope.current_exception);
+            }
+
             $scope.get_tab_name = function(tab) {
                 return tab.toLowerCase();
             };
@@ -316,6 +320,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
             }
 
             function set_default_exception() {
+                if (!$rootScope.current_category) return;
                 $rootScope.current_exception =
                     $filter('orderBy')($rootScope.current_category.exceptions, 'time_utc', true)[0];
             }
@@ -325,6 +330,12 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
             }
 
             function update_scope() { // Every time when project, this function code will run
+                if (!$rootScope.current_category || !$rootScope.current_exception) {
+                    delete $rootScope.current_category;
+                    delete $rootScope.current_exception;
+                    return;
+                }
+
                 $rootScope.current_exception.tabs = _.keys($rootScope.current_exception.ext || {});
                 $rootScope.current_exception.all_tabs = ['Summary', 'Backtrace'].concat($rootScope.current_exception.tabs);
 
