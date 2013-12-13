@@ -215,14 +215,12 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
 
                 $('.make-switch').bootstrapSwitch(false);
                 $('.make-switch').off('switch-change').on('switch-change', function(e, data) {
-                    $timeout(function() {
-                        $rootScope.current_category.resolved = data.value;
-                    });
+                    $rootScope.current_category.resolved = data.value;
+                    $scope.$apply();
                     $.ajax({url: '/projects/' + $rootScope.current_project.name + '/exception_categories/' + $rootScope.current_category.id,
                         method: 'POST', data: {resolved: data.value}}).done(function(percent) {
-                            $timeout(function() {
-                                $rootScope.current_project.percent = Number(percent);
-                            });
+                            $rootScope.current_project.percent = Number(percent);
+                            $scope.$apply();
                         });
                 });
 
@@ -352,7 +350,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                     set_default_tab();
 
                 if ($rootScope.current_category)
-                    $('.make-switch').bootstrapSwitch('setState', $rootScope.current_category.resolved);
+                    $('.make-switch').bootstrapSwitch('setState', $rootScope.current_category.resolved, true);
 
                 var SUMMARY_KEYS_FROM_EXCEPTION = ['svr_host', 'svr_ip', 'pid', 'version', 'seen_on_current_version', 'description', 'position'];
                 var SUMMARY_KEYS_FROM_CATEGROY  = ['first_seen_on', 'first_seen_in'];
