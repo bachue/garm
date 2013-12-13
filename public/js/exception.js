@@ -266,7 +266,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                             }
                         });
                     });
-                }, 30000);
+                }, 5000);
             }
 
             // Everytime when it switches to exception controller, these code will run

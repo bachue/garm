@@ -32,7 +32,7 @@
                     <a href="javascript:void(0)" data-ng-click="set_current_category(exception_category);">
                         <span class="item-name" data-ng-bind="exception_category.exception_type + ': ' + exception_category.message"></span><span class="pull-right label exception-category-stats-label" data-ng-class="{'label-success': exception_category.resolved, 'label-danger': !exception_category.resolved}" data-ng-bind="exception_category.label_stats">
                     </a>
-                    <ul class="nav" id='nav-exception-category-{{exception_category.id}}' ng-show="exception_category === current_category">
+                    <ul class="nav" id='nav-exception-category-{{exception_category.id}}' data-ng-if="exception_category === current_category">
                         <li data-ng-class="{active: exception === current_exception}" data-ng-repeat="exception in exception_category.exceptions | orderBy:'time_utc':true" data-flash-parent-item>
                             <a href="javascript:void(0)" data-ng-click="set_current_exception(exception)" data-ng-bind="get_utc_string_without_tz(exception.time_utc)"></a>
                         </li>
