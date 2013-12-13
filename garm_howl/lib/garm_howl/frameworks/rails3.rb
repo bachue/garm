@@ -46,9 +46,33 @@ module Garm
         end
       end
     end
+
+    module Reporter
+      class Middleware
+        def initialize app
+          @app = app
+        end
+
+        def call env
+          request = Rack::Request.new env
+          if request.path_info && request.request_method == 'POST'
+            params = request.params
+            e = FrontendExceptionGenerator.generate params['name'], params['message'], params['backtrace']
+            Garm.howl(e,
+              :summaries => {'URL' => params['url'], 'User Agent' => request.user_agent},
+              :description => "A #{params['name']} occurred in #{params['url']}",
+              :ext => {'Cookies' => request.cookies})
+            [200, {}, ['']]
+          else
+            @app.call env
+          end
+        end
+      end
+    end
   end
 
-  class Railtie < ::Rails::Railtie
+  class Engine < ::Rails::Engine
+    config.app_middleware.use Rails::Reporter::Middleware
     config.app_middleware.use Rails::Exceptions::Middleware
     config.app_middleware.use Rails::Logger::Middleware
   end

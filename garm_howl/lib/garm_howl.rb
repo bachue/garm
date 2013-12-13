@@ -1,4 +1,5 @@
 require 'garm_howl/version'
+require 'garm_howl/frontend_exception_generator'
 require 'socket'
 require 'pathname'
 require 'yaml'
@@ -102,7 +103,7 @@ module Garm
     def extract_options! args
       options = args.last.is_a?(Hash) ? args.pop : {}
 
-      error = args.detect {|arg| arg.is_a?(Exception) }
+      error = args.detect {|arg| arg.is_a?(Exception) || arg.is_a?(FrontendException) }
       args.delete error
 
       request = args.detect {|arg| arg.is_a?(Rack::Request) } if defined?(Rack::Request)
@@ -124,7 +125,7 @@ module Garm
     end
 
     def build_exception_message error, context, request, options
-      raise ArgumentError.new 'Please give me an exception' unless error.is_a?(Exception)
+      raise ArgumentError.new 'Please give me an exception' unless error
 
       project = options[:project] || self.project
       raise InitialzeError.new 'Please set current project name which you registered in Garm server' unless project
@@ -174,6 +175,7 @@ module Garm
         })
         message[:ext].merge! 'Session' => stringify_hash(request.session) unless request.session.empty?
         message[:ext].merge! 'Cookies' => request.cookies unless request.cookies.empty?
+        message[:ext].merge! 'User-Agent' => request.user_agent unless request.user_agent.empty?
 
         message[:summaries].merge!({
           'Method' => request.env['REQUEST_METHOD'],
