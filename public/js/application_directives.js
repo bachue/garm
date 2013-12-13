@@ -65,6 +65,17 @@ define(['directives'], function(directives) {
         }
     });
 
+    directives.directive('slideItem', function() {
+        return {
+            link: function(scope, element) {
+                element.addClass('slide-on');
+                setTimeout(function() {
+                    element.addClass('slide-off');
+                }, 100);
+            }
+        }
+    });
+
     function flash(element) {
         element.removeClass('flash-off');
         element.addClass('flash-on');

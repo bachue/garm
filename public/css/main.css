@@ -537,3 +537,13 @@ textarea.error-comment {
   -webkit-transition: background 0.5s ease-in-out;
   transition: background 0.5s ease-in-out;
 }
+
+.slide-on {
+  height: 1px;
+}
+
+.slide-off {
+  height: 26px;
+  -webkit-transition: height 0.5s ease-in-out;
+  transition: height 0.5s ease-in-out;
+}
