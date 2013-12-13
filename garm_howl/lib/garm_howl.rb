@@ -126,7 +126,7 @@ module Garm
     def build_exception_message error, context, request, options
       raise ArgumentError.new 'Please give me an exception' unless error.is_a?(Exception)
 
-      project = options[:project] || project
+      project = options[:project] || self.project
       raise InitialzeError.new 'Please set current project name which you registered in Garm server' unless project
 
       init_variables

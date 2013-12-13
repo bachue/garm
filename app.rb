@@ -161,6 +161,18 @@ get '/projects/:project_name/_search' do
   json results
 end
 
+get '/exceptions/:exception_id/_track' do
+  exception = Garm::Model::Exception.select(:id, :time_utc, :uuid).find_by(id: params['exception_id'])
+  error 400 unless exception
+
+  uuid = exception.uuid
+  return json [] unless uuid
+
+  logs = Log.joins(:project).where(uuid: uuid).where(['logs.time_utc <= ?', exception.time_utc]).
+          select('logs.id', 'logs.log', 'logs.time_utc', 'projects.name AS project_name').order('logs.time_utc desc, logs.id desc')
+  json logs.as_json
+end
+
 post '/api/exceptions' do
   data = Yajl.load params['e']
 

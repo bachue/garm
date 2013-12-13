@@ -73,6 +73,7 @@ module Garm
 
     class Log < ActiveRecord::Base
       validates :uuid, presence: true
+      belongs_to :project
     end
   end
 end

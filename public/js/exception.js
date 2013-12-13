@@ -29,10 +29,10 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
 
             $scope.set_current_category = function(category) {
                 $rootScope.current_category = category;
-                $scope.set_current_exception(
-                    $filter('orderBy')(category.exceptions, 'time_utc', true)[0]);
+                var exception =  $filter('orderBy')(category.exceptions, 'time_utc', true)[0];
+                $scope.set_current_exception(exception);
                 update_scope();
-                $scope.$broadcast('current_category_changed', category);
+                $scope.$broadcast('current_category_changed', category, exception);
             };
 
             $scope.set_current_exception = function(exception) {
@@ -265,8 +265,9 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                                 notify(messages);
                             }
                         });
+                        $scope.$apply();
                     });
-                }, 5000);
+                }, 30000);
             }
 
             // Everytime when it switches to exception controller, these code will run
@@ -286,7 +287,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                         });
 
                         if($routeParams.tab && $rootScope.current_exception) {
-                            $rootScope.current_exception.tabs = ['Summary', 'Backtrace', 'Versions'].concat(_.keys($scope.current_exception.ext || {}));
+                            $rootScope.current_exception.tabs = ['Summary', 'Backtrace', 'Versions', 'Track'].concat(_.keys($scope.current_exception.ext || {}));
                             $rootScope.current_tab = _.find($rootScope.current_exception.tabs, function(tab) {
                                 return $routeParams.tab === tab;
                             });
@@ -329,6 +330,9 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
 
                 if ($rootScope.current_category.version_distribution.length > 1)
                     $rootScope.current_exception.all_tabs.push('Versions');
+
+                if ($rootScope.current_exception.uuid)
+                    $rootScope.current_exception.all_tabs.push('Track');
 
                 if (!_.find($rootScope.current_exception.all_tabs, function(tab) { return tab === $rootScope.current_tab }))
                     set_default_tab();

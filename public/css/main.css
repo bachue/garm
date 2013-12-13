@@ -469,6 +469,24 @@ textarea.error-comment {
   vertical-align: middle!important;
 }
 
+.log-track-table tr td:first-child {
+  font-weight: bold;
+}
+
+.log-track-table td {
+  font-family: Monaco;
+}
+
+.no-log-track {
+  position: absolute;
+  left: 50%;
+  margin-left: -491px;
+  top: 192px;
+  font-size: 100px;
+  font-weight: bolder;
+  color: #777;
+}
+
 /* Project config dialog style */
 
 .config-project-table .row {

@@ -73,4 +73,28 @@ define(['directives', 'chart'], function(directives, Chart) {
             });
         }
     });
+
+    directives.directive('exceptionLogTrackList', function() {
+        return {
+            link: function(scope, element) {
+                init_log_track(scope, element, scope.current_exception);
+                scope.$on('current_category_changed', function(event, category, exception) {
+                    init_log_track(scope, element, exception);
+                });
+                scope.$on('current_exception_changed', function(event, exception) {
+                    init_log_track(scope, element, exception);
+                });
+            }
+        };
+
+        function init_log_track(scope, element, exception) {
+            if (exception.logs || !exception.id) return;
+            $('<img class="loading" src="img/loading.gif" width="64" height="64" />').prependTo(element);
+            $.ajax({url: '/exceptions/' + exception.id + '/_track', dataType: 'JSON'}).done(function(logs) {
+                element.find('img.loading').hide('slow', function() { $(this).remove(); });
+                exception.logs = logs;
+                scope.$apply();
+            });
+        }
+    });
 });

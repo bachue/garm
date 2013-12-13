@@ -90,6 +90,18 @@
                 <div id="error-versions" class="tab-pane fade in active" data-ng-if="current_tab === 'Versions'">
                     <canvas data-init-versions-chart width="900" height="500"></canvas>
                 </div>
+                <div id="error-track" class="tab-pane fade in active" data-ng-if="current_tab === 'Track'">
+                    <strong data-ng-if="current_exception.logs && current_exception.logs.length == 0" class="no-log-track">
+                        Sorry, No Log Found
+                    </strong>
+                    <table class="table error-table log-track-table" data-exception-log-track-list>
+                        <tr data-ng-repeat="item in current_exception.logs track by $index">
+                            <td data-ng-bind="item.project_name"></td>
+                            <td data-ng-bind="get_utc_string_without_tz(item.time_utc)"></td>
+                            <td data-ng-bind="item.log"></td>
+                        </tr>
+                    </table>
+                </div>
                 <div id="error-{{get_tab_name(tab)}}" class="tab-pane fade in active" data-ng-repeat="tab in current_exception.tabs" data-ng-if="current_tab === tab">
                     <table class="table error-table">
                         <tr data-ng-repeat="(key, value) in current_exception.ext[tab]">
