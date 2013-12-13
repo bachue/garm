@@ -31,6 +31,9 @@ define(['directives', 'chart'], function(directives, Chart) {
         return {
             link: function(scope, element) {
                 init_chart(scope, element, scope.current_category);
+                scope.$on('after_current_project_changed', function(event, project, category) {
+                    init_chart(scope, element, category);
+                });
                 scope.$on('current_category_changed', function(event, category) {
                     init_chart(scope, element, category);
                 });
@@ -38,6 +41,8 @@ define(['directives', 'chart'], function(directives, Chart) {
         };
 
         function init_chart(scope, element, category) {
+            if(!category) return;
+            
             var pairs = category.date_distribution;
             var context = element.get(0).getContext('2d');
 
@@ -78,6 +83,9 @@ define(['directives', 'chart'], function(directives, Chart) {
         return {
             link: function(scope, element) {
                 init_log_track(scope, element, scope.current_exception);
+                scope.$on('after_current_project_changed', function(event, project, category, exception) {
+                    init_log_track(scope, element, exception);
+                });
                 scope.$on('current_category_changed', function(event, category, exception) {
                     init_log_track(scope, element, exception);
                 });

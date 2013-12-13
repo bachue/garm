@@ -18,7 +18,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
             };
 
             $scope.show_the_view = function() {
-                return Boolean($rootScope.current_category && $rootScope.current_exception);
+                return Boolean($rootScope.current_project && $rootScope.current_category && $rootScope.current_exception);
             }
 
             $scope.get_tab_name = function(tab) {
@@ -29,6 +29,8 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                 set_default_execute_category();
                 set_default_exception();
                 update_scope();
+                $scope.$broadcast('after_current_project_changed',
+                    $rootScope.current_project, $rootScope.current_category, $rootScope.current_exception);
             });
 
             $scope.set_current_category = function(category) {
@@ -311,6 +313,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
             }
 
             function set_default_execute_category() {
+                if(!$rootScope.current_project) return;
                 $rootScope.current_category =
                     $filter('filterCategory')(
                         $filter('orderCategoryBy')(

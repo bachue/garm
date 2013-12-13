@@ -50,7 +50,7 @@ module Garm
           end
           result << pair
         end
-        result + dates_in_range(Date.parse(result.last[:date]), Date.today)
+        result + dates_in_range(Date.parse(result.last[:date]), Date.today + 1)
       end
 
       private
