@@ -2,29 +2,43 @@ define(['directives', 'chart'], function(directives, Chart) {
     directives.directive('initVersionsChart', function() {
         return {
             link: function(scope, element) {
-                var pairs = scope.current_category.version_distribution;
-                if (pairs.length <= 1) { return; } // Won't show the chart if only one version
-
-                var versions = _.map(pairs, function(pair) { return pair.version; });
-                var counts = _.map(pairs, function(pair) { return pair.count; });
-
-                var data = {
-                    labels: versions,
-                    datasets: [
-                        {
-                            fillColor: 'rgba(151, 187, 205, 0.5)',
-                            strokeColor: 'rgba(151, 187, 205, 1)',
-                            data: counts
-                        }
-                    ]
-                };
-                var options = {scaleOverride: true, scaleSteps: _.max(counts), scaleStepWidth: 1};
-
-                element.html('');
-                var chart = new Chart(element.get(0).getContext('2d'));
-                chart.Bar(data, options);
+                init_chart(scope, element, scope.current_category);
+                scope.$on('after_current_project_changed', function(event, project, category) {
+                    init_chart(scope, element, category);
+                });
+                scope.$on('current_category_changed', function(event, category) {
+                    init_chart(scope, element, category);
+                });
             }
         };
+
+        function init_chart(scope, element, category) {
+            var pairs = category.version_distribution;
+            var context = element.get(0).getContext('2d');
+
+            if (pairs.length <= 1) { // Won't show the chart if only one version
+                return context.clearRect(0, 0, element.width(), element.height());
+            }
+
+            var versions = _.map(pairs, function(pair) { return pair.version; });
+            var counts = _.map(pairs, function(pair) { return pair.count; });
+
+            var data = {
+                labels: versions,
+                datasets: [
+                    {
+                        fillColor: 'rgba(151, 187, 205, 0.5)',
+                        strokeColor: 'rgba(151, 187, 205, 1)',
+                        data: counts
+                    }
+                ]
+            };
+            var options = {scaleOverride: true, scaleSteps: _.max(counts), scaleStepWidth: 1};
+
+            element.html('');
+            var chart = new Chart(context);
+            chart.Bar(data, options);
+        }
     });
 
     directives.directive('initDatesChart', function() {
@@ -42,7 +56,7 @@ define(['directives', 'chart'], function(directives, Chart) {
 
         function init_chart(scope, element, category) {
             if(!category) return;
-            
+
             var pairs = category.date_distribution;
             var context = element.get(0).getContext('2d');
 
