@@ -21,7 +21,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                 return tab.toLowerCase();
             };
 
-            $scope.$on('current_project_changed', function(project) {
+            $scope.$on('current_project_changed', function() {
                 set_default_execute_category();
                 set_default_exception();
                 update_scope();
@@ -32,11 +32,13 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                 $scope.set_current_exception(
                     $filter('orderBy')(category.exceptions, 'time_utc', true)[0]);
                 update_scope();
+                $scope.$broadcast('current_category_changed', category);
             };
 
             $scope.set_current_exception = function(exception) {
                 $rootScope.current_exception = exception;
                 update_scope();
+                $scope.$broadcast('current_exception_changed', exception);
             };
 
             $scope.set_editing_comment = function(comment) {
@@ -58,6 +60,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'e
                 $rootScope.current_tab = tab;
                 $($event.target).tab('show');
                 update_scope();
+                $scope.$broadcast('current_tab_changed', tab);
             };
 
             if (!$rootScope.exception_search) $rootScope.exception_search = {keyword: '', scope: 'All'};
