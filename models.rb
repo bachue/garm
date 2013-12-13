@@ -3,10 +3,10 @@ require 'date'
 module Garm
   module Model
     class Project < ActiveRecord::Base
-      has_many :subscriptions
-      has_many :exception_categories
+      has_many :subscriptions, dependent: :destroy
+      has_many :exception_categories, dependent: :destroy
       has_many :exceptions, through: :exception_categories
-      has_many :logs
+      has_many :logs, dependent: :destroy
       validates :name, presence: true, length: { maximum: 20 }, uniqueness: true
       attr_accessor :percent
     end
@@ -20,7 +20,7 @@ module Garm
 
     class ExceptionCategory < ActiveRecord::Base
       belongs_to :project
-      has_many :exceptions
+      has_many :exceptions, dependent: :destroy
       validates :exception_type, :message, :project_id, :key, :first_seen_on, presence: true
       validates_uniqueness_of :key, :scope => :project_id
 
