@@ -168,6 +168,7 @@ module Garm
 
       if request
         message[:uuid] = request.cookies['_session_uuid']
+        message[:summaries].merge! 'User-Agent' => request.user_agent unless request.user_agent.empty?
         
         message[:ext].merge!({
           'Request' => stringify_hash(simplify_hash(request.env)),
@@ -175,7 +176,6 @@ module Garm
         })
         message[:ext].merge! 'Session' => stringify_hash(request.session) unless request.session.empty?
         message[:ext].merge! 'Cookies' => request.cookies unless request.cookies.empty?
-        message[:ext].merge! 'User-Agent' => request.user_agent unless request.user_agent.empty?
 
         message[:summaries].merge!({
           'Method' => request.env['REQUEST_METHOD'],
