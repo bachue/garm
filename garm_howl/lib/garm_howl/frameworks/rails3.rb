@@ -55,7 +55,7 @@ module Garm
 
         def call env
           request = Rack::Request.new env
-          if request.path_info && request.request_method == 'POST'
+          if request.path_info == '/_error' && request.request_method == 'POST'
             params = request.params
             e = FrontendExceptionGenerator.generate params['name'], params['message'], params['backtrace']
             Garm.howl(e,
