@@ -1,5 +1,5 @@
 .DS_Store
-img/branding.png
+public/img/branding.png
 *.sqlite3
 *.sqlite3-journal
 
