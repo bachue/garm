@@ -1,8 +1,8 @@
 define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'lib/jquery.notification'], function(application_promise, $, _, moment, exceptions_loader) {
     var deferred = $.Deferred();
     $.when(application_promise, exceptions_loader).then(function(application, exceptions) {
-console.log('exceptions controller');
         deferred.resolve(application.controller('Exceptions', function($scope, $state, $timeout, $interval) {
+console.log('exceptions controller');
             var DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
             var DATE_FORMAT_WITH_TIMEZONE = 'YYYY-MM-DD HH:mm:ss Z';
 

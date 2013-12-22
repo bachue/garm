@@ -90,7 +90,6 @@ require(['angular', 'app', 'domReady', 'jquery', 'application', 'exceptions',
         $.when(application_promise, exceptions_promise, exception_project_promise, exception_category_promise,
                exception_promise, exception_tab_promise).then(function() {
             app.config(function($stateProvider, $urlRouterProvider) {
-                $urlRouterProvider.otherwise('');
                 $stateProvider.state('application', {
                     url: '',
                     templateUrl: 'templates/application.html',
@@ -116,6 +115,7 @@ require(['angular', 'app', 'domReady', 'jquery', 'application', 'exceptions',
                     templateUrl: 'templates/exception_tab.html',
                     controller: 'ExceptionTab'
                 });
+                $urlRouterProvider.otherwise('');
             });
 
             domReady(function() {

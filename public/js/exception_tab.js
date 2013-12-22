@@ -37,7 +37,12 @@ console.log('tab controller', $state.params);
             }
 
             if (!$state.params.tab_name && $scope.current.exception_tab) {
-                return $state.go('application.exceptions.project.exception_category.exception.tab', {tab_name: $scope.current.exception_tab});
+                return $state.go('application.exceptions.project.exception_category.exception.tab', {
+                    project_name: $scope.current.project.name,
+                    exception_category_id: $scope.current.exception_category.id,
+                    exception_id: $scope.current.exception.id,
+                    tab_name: $scope.current.exception_tab
+                });
             }
 
             if ($state.params.tab_name) {
@@ -48,8 +53,12 @@ console.log('tab controller', $state.params);
 
             if (!$scope.current.exception_tab) {
                 var tab = $scope.current.exception.all_tabs[0];
-                return $state.go('application.exceptions.project.exception_category.exception.tab', {tab_name: tab});
-                // TODO: Retry to recover the tab before
+                return $state.go('application.exceptions.project.exception_category.exception.tab', {
+                    project_name: $scope.current.project.name,
+                    exception_category_id: $scope.current.exception_category.id,
+                    exception_id: $scope.current.exception.id,
+                    tab_name: tab
+                });
             }
 
             $scope.$broadcast('current_exception_tab_changed', $scope.current.exception_tab); // TODO: Necessary?
