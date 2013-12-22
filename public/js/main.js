@@ -12,6 +12,9 @@ var shim = {
     angular_sanitize: {
         deps: ['angular']
     },
+    angular_ui_router: {
+        deps: ['angular']
+    },
     bootstrap: {
         deps: ['jquery']
     },
@@ -38,7 +41,8 @@ if(env === 'dev') {
             bootstrap: 'vendor/dev/bootstrap',
             bootstrap_switch: 'vendor/dev/bootstrap-switch',
             moment: 'vendor/dev/moment',
-            chart: 'vendor/dev/Chart'
+            chart: 'vendor/dev/Chart',
+            angular_ui_router: 'vendor/dev/angular-ui-router'
         },
         shim: shim
     });
@@ -54,7 +58,8 @@ if(env === 'dev') {
             bootstrap: 'http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min',
             bootstrap_switch: 'http://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.8/js/bootstrap-switch.min',
             moment: 'http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.4.0/moment.min',
-            chart: 'http://cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min'
+            chart: 'http://cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min',
+            angular_ui_router: 'http://angular-ui.github.io/ui-router/release/angular-ui-router.min.js'
         },
         shim: shim
     });
@@ -70,27 +75,46 @@ if(env === 'dev') {
             bootstrap: 'vendor/prod/bootstrap.min',
             bootstrap_switch: 'vendor/prod/bootstrap-switch.min',
             moment: 'vendor/prod/moment.min',
-            chart: 'vendor/dev/Chart.min'
+            chart: 'vendor/prod/Chart.min',
+            angular_ui_router: 'vendor/prod/angular-ui-router.min'
         },
         shim: shim
     });
 }
 
-require(['angular', 'app', 'domReady', 'jquery', 'application', 'exception',
-    'application_directives', 'exception_directives', 'exception_filters', 'projects_loader', 'exceptions_loader'],
-    function(angular, app, domReady, $, application_promise, exception_promise) {
-        $.when(application_promise, exception_promise).then(function() {
-            app.config(function($routeProvider, $locationProvider) {
-            $routeProvider.
-                when('/', {
-                    redirectTo: '/exceptions/'
-                }).
-                when('/exceptions/:project?/:category_id?/:exception_id?/:tab?', {
-                    controller: 'Exception',
-                    templateUrl: 'templates/exceptions.html'
-                }).
-                otherwise({
-                    redirectTo: '/'
+require(['angular', 'app', 'domReady', 'jquery', 'application', 'exceptions',
+    'exception_project', 'exception_category', 'exception', 'exception_tab',
+    'application_directives', 'exceptions_directives', 'exceptions_filters', 'projects_loader', 'exceptions_loader'],
+    function(angular, app, domReady, $, application_promise, exceptions_promise, exception_project_promise,
+             exception_category_promise, exception_promise, exception_tab_promise) {
+        $.when(application_promise, exceptions_promise, exception_project_promise, exception_category_promise,
+               exception_promise, exception_tab_promise).then(function() {
+            app.config(function($stateProvider, $urlRouterProvider) {
+                $urlRouterProvider.otherwise('');
+                $stateProvider.state('application', {
+                    url: '',
+                    templateUrl: 'templates/application.html',
+                    controller: 'Application'
+                }).state('application.exceptions', {
+                    url: '/exceptions',
+                    templateUrl: 'templates/exceptions.html',
+                    controller: 'Exceptions'
+                }).state('application.exceptions.project', {
+                    url: '/:project_name',
+                    template: '<ui-view />',
+                    controller: 'ExceptionProject'
+                }).state('application.exceptions.project.exception_category', {
+                    url: '/:exception_category_id',
+                    template: '<ui-view />',
+                    controller: 'ExceptionCategory'
+                }).state('application.exceptions.project.exception_category.exception', {
+                    url: '/:exception_id',
+                    templateUrl: 'templates/exception.html',
+                    controller: 'Exception'
+                }).state('application.exceptions.project.exception_category.exception.tab', {
+                    url: '/:tab_name',
+                    templateUrl: 'templates/exception_tab.html',
+                    controller: 'ExceptionTab'
                 });
             });
 

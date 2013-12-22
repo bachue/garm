@@ -6,7 +6,7 @@
                 <a href="javascript:void(0)" class="label label-primary" data-ng-bind="exception_category_order_label()" data-ng-click="order_exception_category()" data-ng-attr-title="{{exception_category_order_tooltip()}}"></a>
             </div>
             <div class="nav-stat-right">
-                <span class="label" data-set-resolved-percentage-color data-ng-bind="current_project.percent + '%'" title="Resolved Percentage"></span>
+                <span class="label" data-set-resolved-percentage-color data-ng-bind="current.project.percent + '%'" title="Resolved Percentage"></span>
             </div>
             <table class="search-form">
                 <tr>
@@ -28,13 +28,13 @@
                 </tr>
             </table>
             <ul class="nav" data-ng-hide="show_search()">
-                <!-- TODO: Use table here -->
-                <li data-ng-class="{active: exception_category === current_category}" data-flash-item data-ng-repeat="exception_category in current_project.exception_categories | orderCategoryBy:current_exception_category_order:true | filterCategory:exception_search.scope">
-                    <a href="javascript:void(0)" data-ng-click="set_current_category(exception_category);">
+                <!-- TODO: Use table here, for flexible UI adjusting -->
+                <li data-ng-class="{active: exception_category === current.exception_category}" data-flash-item data-ng-repeat="exception_category in current.project.exception_categories | orderCategoryBy:exception_category_order:true | filterCategory:exception_search.scope">
+                    <a href="javascript:void(0)" data-ng-click="set_current_exception_category(exception_category);">
                         <span class="item-name" data-ng-bind="exception_category.exception_type + ': ' + exception_category.message"></span><span class="pull-right label exception-category-stats-label" data-ng-class="{'label-success': exception_category.resolved, 'label-danger': !exception_category.resolved}" data-ng-bind="exception_category.label_stats"></span>
                     </a>
-                    <ul class="nav" id='nav-exception-category-{{exception_category.id}}' data-ng-show="exception_category === current_category">
-                        <li data-ng-class="{active: exception === current_exception}" data-ng-repeat="exception in exception_category.exceptions | orderBy:'time_utc':true" data-flash-parent-item data-slide-item>
+                    <ul class="nav" id='nav-exception-category-{{exception_category.id}}' data-ng-show="exception_category === current.exception_category">
+                        <li data-ng-class="{active: exception === current.exception}" data-ng-repeat="exception in exception_category.exceptions | orderBy:'time_utc':true" data-flash-parent-item data-slide-item>
                             <a href="javascript:void(0)" data-ng-click="set_current_exception(exception)" data-ng-bind="get_utc_string_without_tz(exception.time_utc)"></a>
                         </li>
                     </ul>
@@ -48,70 +48,5 @@
             </div>
         </div>
     </div>
-    <div class="col-md-9">
-        <div class='error-status'>
-            <div class="make-switch" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>"><input type="checkbox"></div>
-        </div>
-        <div class="row">
-            <div class="col-md-5 error-info">
-                <div class='error-type' data-ng-bind="current_category.exception_type"></div>
-                <div class='error-time' data-ng-bind="'Occurred on ' + get_utc_string_with_tz(current_exception.time_utc)"></div>
-                <div class='error-mesg' data-ng-bind="current_category.message"></div>
-            </div>
-            <div class="col-md-7 error-info">
-                <pre class='error-comment' data-ng-bind-html="current_category.comment | linky" data-ng-click="set_editing_comment(current_category.comment)" data-ng-hide="current_category.editing_comment"></pre>
-                <form data-ng-show="current_category.editing_comment">
-                    <div class="form-group"><textarea class="error-comment form-control" data-ng-model="current_category.comment_draft"></textarea></div>
-                    <button type="button" class="btn btn-primary btn-xs" data-ng-click="unset_editing_comment(current_category.comment_draft)">Save</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="error-details">
-            <ul class="nav nav-tabs">
-                <li data-ng-class="{active: current_tab == tab}" data-ng-repeat="tab in current_exception.all_tabs">
-                    <a data-ng-href="#error-{{get_tab_name(tab)}}" data-ng-bind="tab" data-ng-click="switch_to_tab(tab, $event)"></a>
-                </li>
-            </ul>
-            <div class="tab-content relative">
-                <div id="error-summaries" class="tab-pane fade in active" data-ng-if="current_tab === 'Summary'">
-                    <table class="table error-table">
-                        <tr data-ng-repeat="item in current_exception.all_summaries">
-                            <th data-ng-bind="item.key"></th><td data-ng-bind="item.value"></td>
-                        </tr>
-                    </table>
-                </div>
-                <div id="error-backtrace" class="tab-pane fade in active" data-ng-if="current_tab === 'Backtrace'">
-                    <table class="table error-table">
-                        <tr data-ng-repeat="item in current_exception.backtrace track by $index">
-                            <td data-ng-bind="item"></td>
-                        </tr>
-                    </table>
-                </div>
-                <div id="error-versions" class="tab-pane fade in active" data-ng-if="current_tab === 'Versions'">
-                    <canvas data-init-versions-chart width="900" height="500"></canvas>
-                </div>
-                <div id="error-track" class="tab-pane fade in active" data-ng-if="current_tab === 'Track'">
-                    <strong data-ng-if="current_exception.logs && current_exception.logs.length == 0" class="no-log-track">
-                        Sorry, No Log Found
-                    </strong>
-                    <table class="table error-table log-track-table" data-exception-log-track-list>
-                        <tr data-ng-repeat="item in current_exception.logs track by $index">
-                            <td data-ng-bind="item.project_name"></td>
-                            <td data-ng-bind="get_utc_string_without_tz(item.time_utc)"></td>
-                            <td data-ng-bind="item.log"></td>
-                        </tr>
-                    </table>
-                </div>
-                <div id="error-{{get_tab_name(tab)}}" class="tab-pane fade in active" data-ng-repeat="tab in current_exception.tabs" data-ng-if="current_tab === tab">
-                    <table class="table error-table">
-                        <tr data-ng-repeat="(key, value) in current_exception.ext[tab]">
-                            <th data-ng-bind="key"></th><td><pre data-ng-bind="value"></pre></td>
-                        </tr>
-                    </table>
-                </div>
-                <canvas data-init-dates-chart class="absolute-top-left as-background" width="900" height="500"></canvas>
-            </div>
-        </div>
-    </div>
+    <div class="col-md-9" data-ui-view></div>
 </div>

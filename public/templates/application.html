@@ -1,0 +1,100 @@
+<div><img class="loading" src="img/loading.gif" width="64" height="64" /></div>
+<header class="navbar navbar-default">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href='/'><img src="img/branding.png" alt="branding" height="40" onerror="this.src='img/branding-fallback.png'" /></a>
+    </div>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-items">
+            <li data-ng-class="{active: name === current.controller}" data-ng-repeat="name in controller_names"><a href="javascript:void(0)" data-ng-bind="name"></a></li>
+        </ul>
+        <a href="javascript:void(0)" class="btn-add-project navbar-right glyphicon glyphicon-wrench" alt="config" data-toggle="modal" data-target="#config-modal" title="Config Projects"></a>
+        <ul class="nav navbar-nav navbar-right" data-ng-if="current.project">
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" data-ng-bind-html="current.project.name + ' <b class=\'caret\'></b>'"></a>
+                <ul class="dropdown-menu">
+                    <li data-ng-repeat="project in projects">
+                        <a href="javascript:void(0)" data-ng-click="set_current_project(project)"><span data-ng-bind="project.name"></span><span data-set-resolved-percentage-color class='pull-right label' data-ng-bind="project.percent + ' %'"></span></a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</header>
+<ui-view />
+<div class="modal fade" id="config-modal" tabindex="-1" role="dialog" aria-labelledby="config-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="config-modal-label">Projects</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li data-ng-class="{active: $first}" data-ng-repeat="project in projects">
+                                <a data-ng-href="#config-project-{{project.name}}" data-ng-bind="project.name" data-toggle="tab"></a>
+                                <span class="edit-project-icon glyphicon glyphicon-wrench" title="Config this Project" data-ng-click="edit_project(project)"></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <form role="form" class="col-md-9 tab-content config-modal-form" name="config_modal_form">
+                        <div class="tab-pane fade" data-ng-class="{'active in': $first}" data-ng-repeat="project in projects" id="config-project-{{project.name}}">
+                            <div class="config-project-table">
+                                <div class="row btn-group show">
+                                    <button type="button" class="btn btn-success btn-add-subscription" data-ng-click="add_subscription(project)">New Subscription</button>
+                                </div>
+                                <div data-ng-repeat="subscription in project.subscriptions" class="row input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                            <span data-ng-bind="humanize_days(subscription.interval_days)"></span> <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li data-ng-class="{active: $first}" data-ng-repeat="day in avaiable_interval_days">
+                                                <a href="javascript:void(0)" data-ng-bind="humanize_days(day)" data-ng-click="set_subscription_interval_days(day, subscription, project)"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <input type="email" name="email" class="form-control" data-ng-model="subscription.email" placeholder="Email address" data-ng-change="update_subscription(subscription, project)" required data-ng-maxlength="40" data-uniq-email />
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="button" data-ng-click="remove_subscription(subscription, project)"><span class="glyphicon glyphicon-minus-sign" title="Remove this Subscription"></span></button>
+                                    </div>
+                                </div>
+                                <div class="row btn-group centered-row">
+                                    <button type="button" class="btn btn-danger btn-delete-project" ng-click="delete_project(project)">Delete this Project</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success left" data-ng-click="add_project()" id="start-edit-project-modal">New Project</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-disabled="config_modal_form.$invalid" data-ng-click="save_config()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="edit-project-modal" tabindex="-1" role="dialog" aria-labelledby="edit-project-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" name="edit_project_form">
+            <div class="modal-header">
+                <h4 class="modal-title" data-ng-bind="edit_project_modal_title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group col-xs-12">
+                    <input type="text" class="form-control" placeholder="Project Name" data-ng-model="edit_project_name" data-uniq-project name="project_name" required data-ng-maxlength="20" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-ng-disabled="edit_project_form.$invalid" data-ng-click="submit_project()">Save changes</button>
+            </div>
+        </form>
+    </div>
+</div>

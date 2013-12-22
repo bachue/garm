@@ -1,7 +1,12 @@
 define(['controllers', 'jquery', 'underscore', 'projects_loader'], function(controllers, $, _, projects_loader) {
     var deferred = $.Deferred();
     projects_loader.done(function(projects) {
-        deferred.resolve(controllers.controller('Application', function($scope, $rootScope, $timeout, $location) {
+        deferred.resolve(controllers.controller('Application', function($scope, $rootScope, $state, $timeout, $location) {
+
+$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+    console.log('0$stateChangeStart', toState, toParams);
+});
+
             $('#config-modal').
                 on('show.bs.modal', function() {
                     $scope.projects_backup = angular.copy($scope.projects);
@@ -27,9 +32,15 @@ define(['controllers', 'jquery', 'underscore', 'projects_loader'], function(cont
             $scope.controller_names = ['Exceptions'];
 
             $scope.projects = projects;
+            $scope.current = {}; // To store runtime info currently
+
+            $scope.inited_controllers = [];
 
             $scope.avaiable_interval_days = [1, 3, 7];
             $scope.config_change_commands = [];
+
+            // Default controller
+            if ($state.current.name === 'application') $state.go('.exceptions');
 
             $scope.humanize_days = function(days) {
                 if(days === 1) return '1 day';
@@ -39,8 +50,7 @@ define(['controllers', 'jquery', 'underscore', 'projects_loader'], function(cont
             };
 
             $scope.set_current_project = function(project) {
-                $rootScope.current_project = project;
-                $scope.$broadcast('current_project_changed', project);
+                $state.go('.exceptions.project', {project: project.name});
             };
 
             $scope.add_subscription = function(project) {

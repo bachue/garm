@@ -2,7 +2,7 @@ define(['directives'], function(directives) {
     directives.directive('setResolvedPercentageColor', function() {
         return {
             link: function(scope, element, attrs) {
-                var watch = scope.project ? 'project.percent' : 'current_project.percent';
+                var watch = scope.project ? 'project.percent' : 'current.project.percent';
                 scope.$watch(watch, function() {
                     var project = scope.project || scope.current_project;
                     if (!project) return; // Not ready here
