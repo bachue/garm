@@ -219,7 +219,7 @@ console.log('exceptions controller');
             }
 
             if (!$state.params.project_name)
-                $state.go('.project', {project_name: $scope.projects[0].name});
+                $state.go('application.exceptions.project');
 
             function notify(messages) {
                 _.each(_.uniq(messages), function(message) {

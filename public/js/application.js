@@ -1,7 +1,7 @@
 define(['controllers', 'jquery', 'underscore', 'projects_loader'], function(controllers, $, _, projects_loader) {
     var deferred = $.Deferred();
     projects_loader.done(function(projects) {
-        deferred.resolve(controllers.controller('Application', function($scope, $state, $timeout, $location) {
+        deferred.resolve(controllers.controller('Application', function($scope, $state, $timeout) {
 console.log('application controller');
             $('#config-modal').
                 on('show.bs.modal', function() {
@@ -36,7 +36,11 @@ console.log('application controller');
             $scope.config_change_commands = [];
 
             // Default controller
-            if ($state.current.name === 'application') $state.go('.exceptions');
+            if ($state.current.name === 'application') $state.go('application.exceptions');
+
+            $scope.toggle_config_modal = function() {
+                $('#config-modal').modal();
+            }
 
             $scope.humanize_days = function(days) {
                 if(days === 1) return '1 day';
@@ -158,7 +162,7 @@ console.log('application controller');
                 $scope.config_saving_confirmed = true;
 
                 if($scope.projects.indexOf($scope.current.project) == -1) {
-                    $state.go('.exceptions.project', {project_name: $scope.projects[0].name});
+                    $state.go('application.exceptions.project', {project_name: $scope.projects[0].name});
                 }
 
                 var commands = {commands: generate_commands($scope.config_change_commands)};

@@ -11,7 +11,7 @@
         <ul class="nav navbar-nav navbar-items">
             <li data-ng-class="{active: name === current.controller}" data-ng-repeat="name in controller_names"><a href="javascript:void(0)" data-ng-bind="name"></a></li>
         </ul>
-        <a href="javascript:void(0)" class="btn-add-project navbar-right glyphicon glyphicon-wrench" alt="config" data-toggle="modal" data-target="#config-modal" title="Config Projects"></a>
+        <a href="javascript:void(0)" class="btn-add-project navbar-right glyphicon glyphicon-wrench" alt="config" data-ng-click="toggle_config_modal()" title="Config Projects"></a>
         <ul class="nav navbar-nav navbar-right" data-ng-if="current.project">
             <li class="dropdown">
                 <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" data-ng-bind-html="current.project.name + ' <b class=\'caret\'></b>'"></a>
@@ -24,7 +24,6 @@
         </ul>
     </div>
 </header>
-<ui-view />
 <div class="modal fade" id="config-modal" tabindex="-1" role="dialog" aria-labelledby="config-modal-label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -97,3 +96,4 @@
         </form>
     </div>
 </div>
+<div data-ui-view></div>

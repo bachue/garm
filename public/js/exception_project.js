@@ -1,26 +1,23 @@
 define(['exceptions', 'jquery', 'exceptions_filters'], function(exceptions_promise, $) {
     var deferred = $.Deferred();
     $.when(exceptions_promise).then(function(exceptions) {
-        deferred.resolve(exceptions.controller('ExceptionProject', function($scope, $state, $filter) {
-console.log('project controller');
-            $scope.current.project = _.find($scope.projects, function(project) {
-                return $state.params.project_name === project.name;
-            });
+        deferred.resolve(exceptions.controller('ExceptionProject', function($scope, $state) {
+console.log('project controller', $state.params);
+            if (!$state.params.project_name && $scope.current.project)
+                $state.params.project_name = $scope.current.project.name
 
-            if ($scope.current.project) {
-                $scope.$broadcast('current_project_changed', $scope.current.project); // TODO: Necessary?
-
-                if (!$state.params.exception_category_id) {
-                    var candidate = 
-                        $filter('filterCategory')(
-                            $filter('orderCategoryBy')(
-                                $scope.current.project.exception_categories,
-                                $scope.exception_category_order, true),
-                            $scope.exception_search.scope, true)[0];
-                    $state.go('.exception_category', {exception_category_id: candidate.id});
-                }
+            if ($state.params.project_name) {
+                $scope.current.project = _.find($scope.projects, function(project) {
+                    return $state.params.project_name === project.name;
+                });
             }
-            else $state.go('^'); // If project can't be found, get back and rely on the default setting
+
+            if (!$scope.current.project)
+                return $state.go('application.exceptions.project', {project_name: $scope.projects[0].name});
+
+            $scope.$broadcast('current_project_changed', $scope.current.project); // TODO: Necessary?
+
+            $state.go('application.exceptions.project.exception_category');
         }));
     });
     return deferred.promise();
