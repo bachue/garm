@@ -1,11 +1,7 @@
 define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'bootstrap_switch', 'lib/jquery.notification'], function(application_promise, $, _, moment, exceptions_loader) {
     var deferred = $.Deferred();
     $.when(application_promise, exceptions_loader).then(function(application, exceptions) {
-        deferred.resolve(application.controller('Exceptions', function($scope, $rootScope, $state, $timeout, $interval) {
-$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-    console.log('1$stateChangeStart', toState, toParams);
-});
-
+        deferred.resolve(application.controller('Exceptions', function($scope, $state, $timeout, $interval) {
             var DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
             var DATE_FORMAT_WITH_TIMEZONE = 'YYYY-MM-DD HH:mm:ss Z';
 
@@ -247,7 +243,7 @@ $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState
                     });
                 }, 30000);
             }
-            
+
             if (!$state.params.project_name)
                 $scope.set_current_project($scope.projects[0]);
 

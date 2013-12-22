@@ -1,11 +1,7 @@
 define(['exceptions', 'jquery', 'exceptions_filters'], function(exceptions_promise, $) {
     var deferred = $.Deferred();
     $.when(exceptions_promise).then(function(exceptions) {
-        deferred.resolve(exceptions.controller('ExceptionProject', function($scope, $rootScope, $state, $filter) {
-$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-    console.log('2$stateChangeStart', toState, toParams);
-});
-
+        deferred.resolve(exceptions.controller('ExceptionProject', function($scope, $state, $filter) {
             $scope.current.project = _.find($scope.projects, function(project) {
                 return $state.params.project_name === project.name;
             });

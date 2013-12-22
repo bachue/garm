@@ -1,12 +1,7 @@
 define(['controllers', 'jquery', 'underscore', 'projects_loader'], function(controllers, $, _, projects_loader) {
     var deferred = $.Deferred();
     projects_loader.done(function(projects) {
-        deferred.resolve(controllers.controller('Application', function($scope, $rootScope, $state, $timeout, $location) {
-
-$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-    console.log('0$stateChangeStart', toState, toParams);
-});
-
+        deferred.resolve(controllers.controller('Application', function($scope, $state, $timeout, $location) {
             $('#config-modal').
                 on('show.bs.modal', function() {
                     $scope.projects_backup = angular.copy($scope.projects);

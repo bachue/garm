@@ -1,11 +1,7 @@
 define(['exception_project', 'jquery', 'exceptions_filters', 'bootstrap_switch'], function(project_promise, $) {
     var deferred = $.Deferred();
     $.when(project_promise).then(function(project) {
-        deferred.resolve(project.controller('ExceptionCategory', function($scope, $rootScope, $state, $filter) {
-$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-    console.log('3$stateChangeStart', toState, toParams);
-});
-
+        deferred.resolve(project.controller('ExceptionCategory', function($scope, $state, $filter) {
             $scope.current.exception_category = _.find($scope.current.project.exception_categories, function(category) {
                 return Number($state.params.exception_category_id) === category.id;
             });

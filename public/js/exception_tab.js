@@ -17,12 +17,11 @@ var SUMMARY_KEYS_I18N = {
 define(['exception', 'jquery'], function(exception_promise, $) {
     var deferred = $.Deferred();
     $.when(exception_promise).then(function(exception) {
-        deferred.resolve(exception.controller('ExceptionTab', function($scope, $rootScope, $state) {
-$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-    console.log('5$stateChangeStart', toState, toParams);
-});
-            $scope.get_tab_name = function(tab) {
-                return tab.toLowerCase();
+        deferred.resolve(exception.controller('ExceptionTab', function($scope, $state) {
+            $scope.switch_to_tab = function(tab, $event) {
+                $event.preventDefault();
+                $($event.target).tab('show');
+                $state.go('.', {tab_name: tab});
             };
 
             $scope.current.exception_tab = _.find($scope.current.exception.all_tabs, function(tab_name) {

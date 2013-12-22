@@ -1,27 +1,27 @@
     <ul class="nav nav-tabs">
         <li data-ng-class="{active: current.exception_tab === tab}" data-ng-repeat="tab in current.exception.all_tabs">
-            <a data-ng-href="#error-{{get_tab_name(tab)}}" data-ng-bind="tab" data-ng-click="switch_to_tab(tab, $event)"></a>
+            <a href='javascript:void(0)' data-ng-bind="tab" data-ng-click="switch_to_tab(tab, $event)"></a>
         </li>
     </ul>
     <div class="tab-content relative">
-        <div id="error-summaries" class="tab-pane fade in active" data-ng-if="current.exception_tab === 'Summary'">
+        <div class="tab-pane fade in active" data-ng-if="current.exception_tab === 'Summary'">
             <table class="table error-table">
                 <tr data-ng-repeat="item in current.exception.all_summaries">
                     <th data-ng-bind="item.key"></th><td data-ng-bind="item.value"></td>
                 </tr>
             </table>
         </div>
-        <div id="error-backtrace" class="tab-pane fade in active" data-ng-if="current.exception_tab === 'Backtrace'">
+        <div class="tab-pane fade in active" data-ng-if="current.exception_tab === 'Backtrace'">
             <table class="table error-table">
                 <tr data-ng-repeat="item in current.exception.backtrace track by $index">
                     <td data-ng-bind="item"></td>
                 </tr>
             </table>
         </div>
-        <div id="error-versions" class="tab-pane fade in active" data-ng-if="current.exception_tab === 'Versions'">
+        <div class="tab-pane fade in active" data-ng-if="current.exception_tab === 'Versions'">
             <canvas data-init-versions-chart width="900" height="500"></canvas>
         </div>
-        <div id="error-track" class="tab-pane fade in active" data-ng-if="current.exception_tab === 'Track'">
+        <div class="tab-pane fade in active" data-ng-if="current.exception_tab === 'Track'">
             <strong data-ng-if="current.exception.logs && current.exception.logs.length == 0" class="no-log-track">
                 Sorry, No Log Found
             </strong>
@@ -33,7 +33,7 @@
                 </tr>
             </table>
         </div>
-        <div id="error-{{get_tab_name(tab)}}" class="tab-pane fade in active" data-ng-repeat="tab in current.exception.tabs" data-ng-if="current.exception_tab === tab">
+        <div class="tab-pane fade in active" data-ng-repeat="tab in current.exception.tabs" data-ng-if="current.exception_tab === tab">
             <table class="table error-table">
                 <tr data-ng-repeat="(key, value) in current.exception.ext[tab]">
                     <th data-ng-bind="key"></th><td><pre data-ng-bind="value"></pre></td>

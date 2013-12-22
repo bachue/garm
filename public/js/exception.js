@@ -1,10 +1,7 @@
 define(['exception_category', 'jquery'], function(category_promise, $) {
     var deferred = $.Deferred();
     $.when(category_promise).then(function(category) {
-        deferred.resolve(category.controller('Exception', function($scope, $rootScope, $state) {
-$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-    console.log('4$stateChangeStart', toState, toParams);
-});
+        deferred.resolve(category.controller('Exception', function($scope, $state) {
             $scope.current.exception = _.find($scope.current.exception_category.exceptions, function(exception) {
                 return Number($state.params.exception_id) === exception.id;
             });
