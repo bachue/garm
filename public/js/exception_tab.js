@@ -18,6 +18,7 @@ define(['exception', 'jquery'], function(exception_promise, $) {
     var deferred = $.Deferred();
     $.when(exception_promise).then(function(exception) {
         deferred.resolve(exception.controller('ExceptionTab', function($scope, $state) {
+console.log('tab controller');
             $scope.switch_to_tab = function(tab, $event) {
                 $event.preventDefault();
                 $($event.target).tab('show');

@@ -2,6 +2,7 @@ define(['exceptions', 'jquery', 'exceptions_filters'], function(exceptions_promi
     var deferred = $.Deferred();
     $.when(exceptions_promise).then(function(exceptions) {
         deferred.resolve(exceptions.controller('ExceptionProject', function($scope, $state, $filter) {
+console.log('project controller');
             $scope.current.project = _.find($scope.projects, function(project) {
                 return $state.params.project_name === project.name;
             });

@@ -1,10 +1,29 @@
-define(['exception_category', 'jquery'], function(category_promise, $) {
+define(['exception_category', 'jquery', 'bootstrap_switch'], function(category_promise, $) {
     var deferred = $.Deferred();
     $.when(category_promise).then(function(category) {
+console.log('exception controller');
         deferred.resolve(category.controller('Exception', function($scope, $state) {
             $scope.current.exception = _.find($scope.current.exception_category.exceptions, function(exception) {
                 return Number($state.params.exception_id) === exception.id;
             });
+
+            $scope.init_switch = function() {
+                $('.make-switch').bootstrapSwitch(false);
+                $('.make-switch').off('switch-change').on('switch-change', function(e, data) {
+                    $scope.current.exception_category.resolved = data.value;
+                    $scope.$apply();
+                    $.ajax({url: '/projects/' + $scope.current.project.name + '/exception_categories/' + $scope.current.exception_category.id,
+                        method: 'POST', data: {resolved: data.value}}).done(function(percent) {
+                            $scope.current.project.percent = Number(percent);
+                            $scope.$apply();
+                        });
+                });
+            };
+
+            // $scope.$on('current_category_changed', function(event, category) {
+            //     debugger;
+            // });
+            $('.make-switch').bootstrapSwitch('setState', $scope.current.exception_category.resolved, true);
 
             if ($scope.current.exception) {
                 $scope.$broadcast('current_exception_changed', $scope.current.exception); // TODO: Necessary?

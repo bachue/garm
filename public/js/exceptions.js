@@ -1,6 +1,7 @@
-define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'bootstrap_switch', 'lib/jquery.notification'], function(application_promise, $, _, moment, exceptions_loader) {
+define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'lib/jquery.notification'], function(application_promise, $, _, moment, exceptions_loader) {
     var deferred = $.Deferred();
     $.when(application_promise, exceptions_loader).then(function(application, exceptions) {
+console.log('exceptions controller');
         deferred.resolve(application.controller('Exceptions', function($scope, $state, $timeout, $interval) {
             var DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
             var DATE_FORMAT_WITH_TIMEZONE = 'YYYY-MM-DD HH:mm:ss Z';
@@ -143,26 +144,10 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                 });
             };
 
-            $scope.switch_to_exception = function(category_id, exception_id) {
-                $state.go('.project.exception_category.exception', {exception_category_id: category_id, exception_id: exception_id});
-            };
-
             $scope.load_exceptions_from_remote = function(project_name, category_id, exception_id) {
                 //TODO: to implement it
                 throw 'Not implemented';
             };
-
-            $scope.set_current_project = function(project) {
-                $state.go('.project', {project_name: project.name});
-            }
-
-            $scope.set_current_exception_category = function(exception_category) {
-                $state.go('.project.exception_category', {exception_category_id: exception_category.id});
-            }
-
-            $scope.set_current_exception = function(exception_category, exception) {
-                $scope.switch_to_exception(exception_category.id, exception.id);
-            }
 
             // Just regard it's controller initialize code, only run once
             if (!_.contains($scope.inited_controllers, 'Exceptions')) {
@@ -180,17 +165,6 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
                 $scope.inited_controllers.push('Exceptions');
 
                 $scope.toggle_exception_category_label(true);
-
-                $('.make-switch').bootstrapSwitch(false);
-                $('.make-switch').off('switch-change').on('switch-change', function(e, data) {
-                    $scope.current.exception_category.resolved = data.value;
-                    $scope.$apply();
-                    $.ajax({url: '/projects/' + $scope.current.project.name + '/exception_categories/' + $scope.current.exception_category.id,
-                        method: 'POST', data: {resolved: data.value}}).done(function(percent) {
-                            $scope.current.project.percent = Number(percent);
-                            $scope.$apply();
-                        });
-                });
 
                 // For flush exceptions from remote in each interval of time
                 $interval(function() {
@@ -245,7 +219,7 @@ define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'b
             }
 
             if (!$state.params.project_name)
-                $scope.set_current_project($scope.projects[0]);
+                $state.go('.project', {project_name: $scope.projects[0].name});
 
             function notify(messages) {
                 _.each(_.uniq(messages), function(message) {

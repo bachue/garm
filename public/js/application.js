@@ -2,6 +2,7 @@ define(['controllers', 'jquery', 'underscore', 'projects_loader'], function(cont
     var deferred = $.Deferred();
     projects_loader.done(function(projects) {
         deferred.resolve(controllers.controller('Application', function($scope, $state, $timeout, $location) {
+console.log('application controller');
             $('#config-modal').
                 on('show.bs.modal', function() {
                     $scope.projects_backup = angular.copy($scope.projects);
@@ -42,10 +43,6 @@ define(['controllers', 'jquery', 'underscore', 'projects_loader'], function(cont
                 else if(days === 7) return '1 week';
                 else if(days < 7) return days + ' days';
                 else throw 'Not support days > 7';
-            };
-
-            $scope.set_current_project = function(project) {
-                $state.go('.exceptions.project', {project: project.name});
             };
 
             $scope.add_subscription = function(project) {
@@ -160,8 +157,8 @@ define(['controllers', 'jquery', 'underscore', 'projects_loader'], function(cont
             $scope.save_config = function() {
                 $scope.config_saving_confirmed = true;
 
-                if($scope.projects.indexOf($rootScope.current_project) == -1) {
-                    $scope.set_current_project($scope.projects[0]);
+                if($scope.projects.indexOf($scope.current.project) == -1) {
+                    $state.go('.exceptions.project', {project_name: $scope.projects[0].name});
                 }
 
                 var commands = {commands: generate_commands($scope.config_change_commands)};
