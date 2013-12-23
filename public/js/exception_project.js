@@ -4,7 +4,7 @@ define(['exceptions', 'jquery', 'exceptions_filters'], function(exceptions_promi
         deferred.resolve(exceptions.controller('ExceptionProject', function($scope, $state) {
 console.log('project controller', $state.params);
             if (!$state.params.project_name && $scope.current.project)
-                $state.params.project_name = $scope.current.project.name
+                return $state.go('application.exceptions.project', {project_name: $scope.current.project.name});
 
             if ($state.params.project_name) {
                 $scope.current.project = _.find($scope.projects, function(project) {

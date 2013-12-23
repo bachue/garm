@@ -4,7 +4,7 @@ define(['exception_project', 'jquery', 'exceptions_filters', 'bootstrap_switch']
         deferred.resolve(project.controller('ExceptionCategory', function($scope, $state, $filter) {
 console.log('category controller', $state.params);
             if (!$state.params.exception_category_id && $scope.current.exception_category)
-                $state.params.exception_category_id = $scope.current.exception_category.id
+                return $state.go('application.exceptions.project.exception_category', {exception_category_id: $scope.current.exception_category.id});
 
             if ($state.params.exception_category_id) {
                 $scope.current.exception_category = _.find($scope.current.project.exception_categories, function(category) {
