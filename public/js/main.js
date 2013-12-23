@@ -23,6 +23,9 @@ var shim = {
     },
     'jquery.notification': {
         deps: ['jquery']
+    },
+    'lib/bindonce': {
+        deps: ['angular']
     }
 };
 
@@ -82,7 +85,7 @@ if(env === 'dev') {
 require(['angular', 'app', 'domReady', 'jquery', 'application', 'exceptions',
     'exception_project', 'exception_category', 'exception', 'exception_tab',
     'application_directives', 'exceptions_directives', 'exceptions_filters', 'projects_loader', 'exceptions_loader',
-    'angular_ui_router', 'angular_sanitize', 'chart', 'moment', 'jquery.notification', 'bootstrap_switch'],
+    'angular_ui_router', 'angular_sanitize', 'chart', 'moment', 'jquery.notification', 'bootstrap_switch', 'lib/bindonce'],
     function(angular, app, domReady, $, application_promise, exceptions_promise, exception_project_promise,
              exception_category_promise, exception_promise, exception_tab_promise) {
         $.when(application_promise, exceptions_promise, exception_project_promise, exception_category_promise,

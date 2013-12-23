@@ -1,11 +1,11 @@
 <div class='error-status'>
     <div class="make-switch" data-ng-init="init_switch()" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>"><input type="checkbox"></div>
 </div>
-<div class="row">
+<div class="row" data-bindonce="current">
     <div class="col-md-5 error-info">
-        <div class='error-type' data-ng-bind="current.exception_category.exception_type"></div>
-        <div class='error-time' data-ng-bind="'Occurred on ' + get_utc_string_with_tz(current.exception.time_utc)"></div>
-        <div class='error-mesg' data-ng-bind="current.exception_category.message"></div>
+        <div class='error-type' data-bo-text="current.exception_category.exception_type"></div>
+        <div class='error-time' data-bo-text="'Occurred on ' + get_utc_string_with_tz(current.exception.time_utc)"></div>
+        <div class='error-mesg' data-bo-text="current.exception_category.message"></div>
     </div>
     <div class="col-md-7 error-info">
         <pre class='error-comment' data-ng-bind-html="current.exception_category.comment | linky" data-ng-click="set_editing_comment(current.exception_category.comment)" data-ng-hide="current.exception_category.editing_comment"></pre>

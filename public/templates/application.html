@@ -9,7 +9,7 @@
     </div>
     <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-items">
-            <li data-ng-class="{active: name === current.controller}" data-ng-repeat="name in controller_names"><a href="javascript:void(0)" data-ng-bind="name"></a></li>
+            <li data-ng-class="{active: name === current.controller}" data-bindonce data-ng-repeat="name in controller_names"><a href="javascript:void(0)" data-bo-text="name"></a></li>
         </ul>
         <a href="javascript:void(0)" class="btn-add-project navbar-right glyphicon glyphicon-wrench" alt="config" data-ng-click="toggle_config_modal()" title="Config Projects"></a>
         <ul class="nav navbar-nav navbar-right" data-ng-if="current.project">

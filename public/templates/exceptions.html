@@ -29,21 +29,21 @@
             </table>
             <ul class="nav" data-ng-hide="show_search()">
                 <!-- TODO: Use table here, for flexible UI adjusting -->
-                <li data-ng-class="{active: exception_category === current.exception_category}" data-flash-item data-ng-repeat="exception_category in current.project.exception_categories | orderCategoryBy:exception_category_order:true | filterCategory:exception_search.scope">
+                <li data-ng-class="{active: exception_category === current.exception_category}" data-flash-item data-bindonce data-ng-repeat="exception_category in current.project.exception_categories | orderCategoryBy:exception_category_order:true | filterCategory:exception_search.scope">
                     <a href="javascript:void(0)" data-ui-sref=".project.exception_category({exception_category_id: exception_category.id})">
-                        <span class="item-name" data-ng-bind="exception_category.exception_type + ': ' + exception_category.message"></span><span class="pull-right label exception-category-stats-label" data-ng-class="{'label-success': exception_category.resolved, 'label-danger': !exception_category.resolved}" data-ng-bind="exception_category.label_stats"></span>
+                        <span class="item-name" data-bo-text="exception_category.exception_type + ': ' + exception_category.message"></span><span class="pull-right label exception-category-stats-label" data-ng-class="{'label-success': exception_category.resolved, 'label-danger': !exception_category.resolved}" data-ng-bind="exception_category.label_stats"></span>
                     </a>
                     <ul class="nav" id='nav-exception-category-{{exception_category.id}}' data-ng-show="exception_category === current.exception_category">
-                        <li data-ng-class="{active: exception === current.exception}" data-ng-repeat="exception in exception_category.exceptions | orderBy:'time_utc':true" data-flash-parent-item data-slide-item>
-                            <a href="javascript:void(0)" data-ui-sref=".project.exception_category.exception({exception_category_id: exception_category.id, exception_id: exception.id})" data-ng-bind="get_utc_string_without_tz(exception.time_utc)"></a>
+                        <li data-ng-class="{active: exception === current.exception}" data-ng-repeat="exception in exception_category.exceptions | orderBy:'time_utc':true" data-bindonce data-flash-parent-item data-slide-item>
+                            <a href="javascript:void(0)" data-ui-sref=".project.exception_category.exception({exception_category_id: exception_category.id, exception_id: exception.id})" data-bo-text="get_utc_string_without_tz(exception.time_utc)"></a>
                         </li>
                     </ul>
                 </li>
             </ul>
             <div class="list-group" data-ng-show="show_search()">
-                <a href="javascript:void(0)" class="list-group-item" data-ng-repeat="result in exception_search.results | filterCategory:exception_search.scope" data-ui-sref=".project.exception_category.exception({exception_category_id: result.category_id, exception_id: result.exception_id})">
-                    <h4 class="list-group-item-heading" data-ng-bind="result.exception_type"></h4>
-                    <p class="list-group-item-text" data-ng-bind="get_utc_string_without_tz(result.time_utc)"></p>
+                <a href="javascript:void(0)" class="list-group-item" data-bindonce data-ng-repeat="result in exception_search.results | filterCategory:exception_search.scope" data-ui-sref=".project.exception_category.exception({exception_category_id: result.category_id, exception_id: result.exception_id})">
+                    <h4 class="list-group-item-heading" data-bo-text="result.exception_type"></h4>
+                    <p class="list-group-item-text" data-bo-text="get_utc_string_without_tz(result.time_utc)"></p>
                 </a>
             </div>
         </div>
