@@ -1,4 +1,4 @@
-define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'lib/jquery.notification'], function(application_promise, $, _, moment, exceptions_loader) {
+define(['application', 'jquery', 'underscore', 'moment', 'exceptions_loader', 'jquery.notification'], function(application_promise, $, _, moment, exceptions_loader) {
     var deferred = $.Deferred();
     $.when(application_promise, exceptions_loader).then(function(application, exceptions) {
         deferred.resolve(application.controller('Exceptions', function($scope, $state, $timeout, $interval) {
