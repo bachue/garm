@@ -204,19 +204,22 @@ post '/api/exceptions' do
 end
 
 post '/api/logs' do
-  data = Yajl.load params['l']
-
   Log.transaction do
-    rollback 400, 'parameter log is required'      if data['log'].blank?
-    rollback 400, 'parameter time_utc is required' if data['time_utc'].blank?
-    rollback 400, 'parameter project is required'  if data['project'].blank?
+    rollback 400, 'parameter log is required'      if params['log'].blank?
+    rollback 400, 'parameter timestamp is required' if params['timestamp'].blank?
+    rollback 400, 'parameter project is required'  if params['project'].blank?
 
-    project = Project.find_by name: data['project']
+    begin
+      time_utc = DateTime.parse(params['timestamp']).to_time.to_i
+    rescue ArgumentError
+      rollback 400, 'parameter timestamp invalid format'
+    end
+
+    project = Project.find_by name: params['project']
     rollback 400, "Failed to find project #{data['project']}" unless project
 
-    data['log'].match /(.*?)\s*<<([\w-]+)>>\s*(.*)/
+    log = project.logs.build uuid: params['uuid'], log: params['log'].gsub(/\e\[(\d+)m/, ''), time_utc: time_utc
 
-    log = project.logs.build uuid: $2, log: "#{$1}#{$3}".gsub(/\e\[(\d+)m/, ''), time_utc: data['time_utc']
     unless log.save
       rollback 400, "Failed to create log: #{log.errors.full_messages}"
     end

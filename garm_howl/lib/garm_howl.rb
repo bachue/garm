@@ -15,11 +15,6 @@ module Garm
     send_message message, '/api/exceptions', 'e'
   end
 
-  def log log # TODO: Use LogStash instead here
-    data = {:log => log, :time_utc => Time.now.to_i, :project => project}
-    send_message data, '/api/logs', 'l'
-  end
-
   def project
     @project || get_config['project']
   end

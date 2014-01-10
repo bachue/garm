@@ -11,4 +11,5 @@ group :development do
   gem 'pry'
   gem 'pry-byebug'
   gem 'sqlite3'
+  gem 'foreman'
 end
