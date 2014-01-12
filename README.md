@@ -1,5 +1,5 @@
 ##Garm##
 
-[Slides](http://bachue.github.io/garm)
+[Slides](http://bachue.github.io/garm/slides)
 
 ### Still under construction ###
