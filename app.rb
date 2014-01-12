@@ -168,7 +168,7 @@ get '/exceptions/:exception_id/_track' do
   uuid = exception.uuid
   return json [] unless uuid
 
-  logs = Log.joins(:project).where(uuid: uuid).where(['logs.time_utc <= ?', exception.time_utc]).
+  logs = Log.joins(:project).where(uuid: uuid).where(['logs.time_utc <= ?', exception.time_utc + 5]).
           select('logs.id', 'logs.log', 'logs.time_utc', 'projects.name AS project_name').order('logs.time_utc desc, logs.id desc')
   json logs.as_json
 end
@@ -216,7 +216,7 @@ post '/api/logs' do
     end
 
     project = Project.find_by name: params['project']
-    rollback 400, "Failed to find project #{data['project']}" unless project
+    rollback 400, "Failed to find project #{params['project']}" unless project
 
     log = project.logs.build uuid: params['uuid'], log: params['log'].gsub(/\e\[(\d+)m/, ''), time_utc: time_utc
 
