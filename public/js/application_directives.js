@@ -4,7 +4,7 @@ define(['directives'], function(directives) {
             link: function(scope, element, attrs) {
                 var watch = scope.project ? 'project.percent' : 'current.project.percent';
                 scope.$watch(watch, function() {
-                    var project = scope.project || scope.current_project;
+                    var project = scope.project || scope.current.project;
                     if (!project) return; // Not ready here
                     element.removeClass('label-success label-warning label-danger');
                     if (project.percent >= 80) element.addClass('label-success');
