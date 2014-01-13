@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="js/Chart.min.js"></script>
+    </head>
+    <body style="font-family: sans-serif;">
+        <table><tr>
+            <td style="padding: 5px;"><img src="branding.png" height="64" /></td>
+            <td style="padding: 5px;"><h1 style="padding-left: 10px;">Garm Summary Mail this Week</h1></td>
+        </tr></table>
+        <h3 style="font-size: 1em; font-style: italic; color: #999; padding-left: 500px;">From: 2013-12-08 to 2013-12-14</h3>
+        <p>
+            <canvas id="chart-1" width="1000" height="200"></canvas>
+        </p>
+        <article style="font-size: 15px;">
+            <p>
+                These exceptions are important:
+                <table style="width: 80%; font-size: 13px;">
+                    <tr style="background-color: rgba(151,187,205,0.5);">
+                        <th style="padding: 5px; width: 5%;">Project</th><th style="padding: 5px; width: 75%;">Exception</th><th style="padding: 5px; width: 5%;">Count</th><th style="padding: 5px; width: 5%">Link</th>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">ActiveRecord::StatementInvalid: SQLite3::ConstraintException: users.name may not be NULL: UPDATE "users" SET "name" = NULL, "updated_at" = '2013-12-14 03:06:40.156976' WHERE "users"."id" = 1</td>
+                        <td style="padding: 5px; text-align: center;">10</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                </table>
+            </p>
+            <p>
+                These exceptions were marked as resolved before but happened again in new version:
+                <table style="width: 80%; font-size: 13px;">
+                    <tr style="background-color: rgba(151,187,205,0.5);">
+                        <th style="padding: 5px; width: 5%;">Project</th><th style="padding: 5px; width: 75%;">Exception</th><th style="padding: 5px; width: 5%;">Count</th><th style="padding: 5px; width: 5%">Link</th>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">ActiveRecord::StatementInvalid: SQLite3::ConstraintException: users.name may not be NULL: INSERT INTO "users" ("created_at", "name", "updated_at") VALUES (?, ?, ?)</td>
+                        <td style="padding: 5px; text-align: center;">16</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                </table>
+            </p>
+            <p>
+                These exceptions happened frequently in this week:
+                <table style="width: 80%; font-size: 13px;">
+                    <tr style="background-color: rgba(151,187,205,0.5);">
+                        <th style="padding: 5px; width: 5%;">Project</th><th style="padding: 5px; width: 75%;">Exception</th><th style="padding: 5px; width: 5%;">Count</th><th style="padding: 5px; width: 5%">Link</th>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">ArgumentError: bad value for range</td>
+                        <td style="padding: 5px; text-align: center;">189</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">NameError: undefined local variable or method `formt' for #&lt;UsersController:0x007f8ea1d2fdc0&gt;</td>
+                        <td style="padding: 5px; text-align: center;">110</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                </table>
+            </p>
+            <p>
+                These exceptions happened for the first time in this week:
+                <table style="width: 80%; font-size: 13px;">
+                    <tr style="background-color: rgba(151,187,205,0.5);">
+                        <th style="padding: 5px; width: 5%;">Project</th><th style="padding: 5px; width: 65%;">Exception</th><th style="padding: 5px; width: 10%;">Version</th><th style="padding: 5px; width: 5%;">Count</th><th style="padding: 5px; width: 5%">Link</th>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">Phoenix</td>
+                        <td style="padding: 5px;">NameError: undefined local variable or method `usr' for #&lt;LoginController:0x004d5e514af6be&gt;</td>
+                        <td style="padding: 5px; text-align: center;">1.1.2</td>
+                        <td style="padding: 5px; text-align: center;">2</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                </table>
+            </p>
+            <p>
+                Current status of all projects:
+                <table style="width: 80%; font-size: 13px;">
+                    <tr style="background-color: rgba(151,187,205,0.5);">
+                        <th style="padding: 5px; width: 10%;">Project</th><th style="padding: 5px; width: 10%;">Resolved</th><th style="padding: 5px; width: 70%">Comment</th><th style="padding: 5px; width: 5%">Link</th>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px; text-align: center; color: red;">5%</td>
+                        <td style="padding: 5px;">We've lost control! Please pay more attention on bug fixing!</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">Phoenix</td>
+                        <td style="padding: 5px; text-align: center; color: orange;">67%</td>
+                        <td style="padding: 5px;">That's good, but still need to fix them.</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">Njord</td>
+                        <td style="padding: 5px; text-align: center; color: green;">98%</td>
+                        <td style="padding: 5px;">Good Job! Well done!</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                </table>
+            </p>
+            <p>
+                All exceptions happened in this week:
+                <table style="width: 80%; font-size: 13px;">
+                    <tr style="background-color: rgba(151,187,205,0.5);">
+                        <th style="padding: 5px; width: 5%;">Project</th><th style="padding: 5px; width: 75%;">Exception</th><th style="padding: 5px; width: 5%;">Count</th><th style="padding: 5px; width: 5%">Link</th>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">ArgumentError: bad value for range</td><td style="padding: 5px; text-align: center;">189</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">NameError: undefined local variable or method `formt' for #<UsersController:0x007f8ea1d2fdc0></td><td style="padding: 5px; text-align: center;">110</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">ActiveRecord::StatementInvalid: SQLite3::ConstraintException: users.name may not be NULL: INSERT INTO "users" ("created_at", "name", "updated_at") VALUES (?, ?, ?)</td><td style="padding: 5px; text-align: center;">16</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">ActionView::MissingTemplate: Missing template users/index, application/index with {:locale=>[:en], :formats=>[:yaml], :handlers=>[:erb, :builder, :coffee]}. Searched in: * "/Users/zhour6/tmp/rails3/app/views"
+                        </td><td style="padding: 5px; text-align: center;">14</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">TypeError: Property 'a' of object [object Object] is not a function</td><td style="padding: 5px; text-align: center;">14</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">Phoenix</td>
+                        <td style="padding: 5px;">ActiveRecord::RecordNotFound: Couldn't find ProPartner with id=2451</td><td style="padding: 5px; text-align: center;">12</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">NoMethodError: undefined method `all' for nil:NilClass</td><td style="padding: 5px; text-align: center;">12</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1); color: #888;">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">ActiveRecord::RecordNotFound: Couldn't find User with id=2 (Resolved)</td><td style="padding: 5px; text-align: center;">11</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">ActiveRecord::StatementInvalid: SQLite3::ConstraintException: users.name may not be NULL: UPDATE "users" SET "name" = NULL, "updated_at" = '2013-12-14 03:06:40.156976' WHERE "users"."id" = 1</td><td style="padding: 5px; text-align: center;">10</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">TypeError: Object  has no method 'tostring'</td><td style="padding: 5px; text-align: center;">9</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">TypeError: no implicit conversion of Symbol into Integer</td><td style="padding: 5px; text-align: center;">9</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">ActiveRecord::RecordNotFound: Couldn't find User with id=2</td><td style="padding: 5px; text-align: center;">8</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">ActiveRecord::RecordNotFound: Couldn't find User with id=x</td><td style="padding: 5px; text-align: center;">8</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">ReferenceError: $ is not defined</td><td style="padding: 5px; text-align: center;">7</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">ReferenceError: a is not defined</td><td style="padding: 5px; text-align: center;">5</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">RangeError: Maximum call stack size exceeded</td><td style="padding: 5px; text-align: center;">4</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">Phoenix</td>
+                        <td style="padding: 5px;">NameError: undefined local variable or method `usr' for #&lt;LoginController:0x004d5e514af6be&gt;</td><td style="padding: 5px; text-align: center;">2</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                    <tr style="background-color: rgba(151,187,205,0.1);">
+                        <td style="padding: 5px; text-align: center;">BUS</td>
+                        <td style="padding: 5px;">ActiveRecord::StatementInvalid: SQLite3::ConstraintException: users.name may not be NULL: UPDATE "users" SET "name" = NULL, "updated_at" = '2013-12-14 03:00:38.396480' WHERE "users"."id" = 1</td><td style="padding: 5px; text-align: center;">1</td>
+                        <td style="padding: 5px; text-align: center;"><a href='#'>Link</a></td>
+                    </tr>
+                </table>
+            </p>
+        </article>
+
+
+        <script>
+            var ctx = document.getElementById("chart-1").getContext("2d");
+            var chart1 = new Chart(ctx);
+            var data = {
+                labels : ['2013-12-08', '2013-12-09', '2013-12-10', '2013-12-11', '2013-12-12', '2013-12-13', '2013-12-14'],
+                datasets : [
+                    {
+                        fillColor : "rgba(215,87,76,0.5)",
+                        strokeColor : "rgba(215,87,76,1)",
+                        pointColor : "rgba(215,87,76,1)",
+                        pointStrokeColor : "#fff",
+                        data : [5,2,3,1,7,2,8]
+                    },
+                    {
+                        fillColor : "rgba(151,187,205,0.5)",
+                        strokeColor : "rgba(151,187,205,1)",
+                        pointColor : "rgba(151,187,205,1)",
+                        pointStrokeColor : "#fff",
+                        data : [28,48,40,19,96,27,100]
+                    }
+                ]
+            }
+            chart1.Line(data);
+        </script>
+    </body>
+</html>
