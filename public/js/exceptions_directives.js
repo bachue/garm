@@ -62,13 +62,6 @@ define(['directives', 'chart'], function(directives, Chart) {
 
                 var chart = new Chart(context);
                 chart.Line(data, options);
-
-                scope.$watch('current.tab', function() {
-                    if (scope.current.tab == 'Versions') // Avoid showing 2 charts in a tab
-                        element.hide();
-                    else
-                        element.show();
-                });
             }
         };
     });
