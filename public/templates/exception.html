@@ -8,9 +8,9 @@
         <div class='error-mesg' data-bo-text="current.exception_category.message"></div>
     </div>
     <div class="col-md-7 error-info">
-        <pre class='error-comment' data-ng-bind-html="current.exception_category.comment | linky" data-ng-click="set_editing_comment(current.exception_category.comment)" data-ng-hide="current.exception_category.editing_comment"></pre>
+        <pre class='error-comment' data-ng-bind-html="current.exception_category.comment || 'Click here to add your comment' | linky" data-ng-click="set_editing_comment(current.exception_category.comment)" data-ng-hide="current.exception_category.editing_comment"></pre>
         <form data-ng-show="current.exception_category.editing_comment">
-            <div class="form-group"><textarea class="error-comment form-control" data-ng-model="current.exception_category.comment_draft"></textarea></div>
+            <div class="form-group"><textarea class="error-comment form-control" data-ng-model="current.exception_category.comment_draft" placeholder="Comment"></textarea></div>
             <button type="button" class="btn btn-primary btn-xs" data-ng-click="unset_editing_comment(current.exception_category.comment_draft)">Save</button>
         </form>
     </div>
